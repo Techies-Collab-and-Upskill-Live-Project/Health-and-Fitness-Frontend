@@ -67,7 +67,18 @@ export default {
     fontFamily: {
       'montserrat': ['Montserrat', 'sans-serif'],
     },
-    extend: {},
+    extend: {
+      animation: {
+        scale: 'scale 5s cubic-bezier(.42,0,.58,1) reverse'
+      },
+      keyframes: {
+        scale: {
+          '0%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(4)' },
+          '100%': { transform: 'scale(1)' }
+        }
+      }
+    },
   },
   plugins: [],
 }
