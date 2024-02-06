@@ -58,7 +58,10 @@ export default {
         10: '#07070C',
         11: '#040407'
       },
-      white: '#D9D9D9',
+      white: {
+        1: '#D9D9D9',
+        2: '#F8F8F8'
+      },
       error: '#E0010F',
       success: '#2FD305',
       warning: '#FED51F',
@@ -66,19 +69,24 @@ export default {
     },
     fontFamily: {
       'montserrat': ['Montserrat', 'sans-serif'],
+      'inter': ['Inter', 'sans-serif'],
     },
     extend: {
       animation: {
-        scale: 'scale 5s cubic-bezier(.42,0,.58,1) reverse'
+        scale: 'scale 5s cubic-bezier(.42,0,.58,1)',
+        fade: 'fade 5s cubic-bezier(.42,0,.58,1)'
       },
       keyframes: {
         scale: {
           '0%': { transform: 'scale(1)' },
           '50%': { transform: 'scale(4)' },
-          '100%': { transform: 'scale(1)' }
+        },
+        fade: {
+          '0%': { opacity: 0 },
+          '50%': { transform: 'scale(2) translateY(2rem)', opacity: 1 },
         }
       }
-    },
+    }
   },
   plugins: [],
 }
