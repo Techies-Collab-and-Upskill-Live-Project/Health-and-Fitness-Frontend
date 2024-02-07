@@ -73,8 +73,8 @@ export default {
     },
     extend: {
       animation: {
-        scale: 'scale 5s cubic-bezier(.42,0,.58,1)',
-        fade: 'fade 5s cubic-bezier(.42,0,.58,1)'
+        scale: 'scale 5s cubic-bezier(.42,0,.58,1) reverse infinite',
+        fade: 'fade 5s cubic-bezier(.42,0,.58,1) reverse infinite'
       },
       keyframes: {
         scale: {

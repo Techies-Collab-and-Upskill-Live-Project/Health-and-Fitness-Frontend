@@ -1,4 +1,14 @@
-export default function SplashScreen() {
+import { useEffect } from "react";
+
+// eslint-disable-next-line react/prop-types
+export default function SplashScreen({ onTransition }) {
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      onTransition(); // Trigger transition after the delay
+    }, 7000); // Adjust the delay time in milliseconds (e.g., 2000 for 2 seconds)
+
+    return () => clearTimeout(delay); // Cleanup to avoid memory leaks
+  });
   return (
     <div className="flex flex-col items-center justify-center item-center my-0 mx-auto w-screen h-screen max-w-screen-sm bg-primary-9">
       <svg
