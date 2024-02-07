@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 const images = [
   { id: 0, name: "Group 26086143" },
@@ -22,7 +22,7 @@ export default function OnBoarding() {
   }, [currentID]);
   return (
     <div
-      className="px-4 pt-4 pb-7 grid grid-rows-[1.5fr_1fr] 
+      className="px-4 pt-4 pb-7 grid gap-3.5 grid-rows-[1.5fr_1fr] 
     bg-primary-1 my-0 mx-auto w-screen h-screen max-w-screen-sm"
     >
       <div className="grid content-between h-[416px]">
@@ -88,10 +88,10 @@ export default function OnBoarding() {
           <Button>Get started</Button>
         </div>
         <p className="text-base font-normal montserrat text-[#131313] text-center">
-          Already have an account?
-          <Link to="#" className="text-tomato-5">
+          Already have an account?<span> </span>
+          <a href="#" className="text-tomato-5">
             Log in
-          </Link>
+          </a>
         </p>
       </div>
     </div>
