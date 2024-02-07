@@ -65,7 +65,7 @@ export default {
       error: '#E0010F',
       success: '#2FD305',
       warning: '#FED51F',
-
+      tomatoCommon: '#FF5D5E',
     },
     fontFamily: {
       'montserrat': ['Montserrat', 'sans-serif'],
