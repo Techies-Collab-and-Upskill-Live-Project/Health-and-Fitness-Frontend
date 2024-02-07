@@ -9,10 +9,10 @@ function App() {
     setIsLoading(true);
   };
 
-  return isLoading ? (
+  return (isLoading ? (
     <OnBoarding />
   ) : (
     <SplashScreen onTransition={handleTransition} />
-  );
+  ))
 }
 export default App;
