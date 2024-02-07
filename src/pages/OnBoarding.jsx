@@ -69,18 +69,18 @@ export default function OnBoarding() {
             </p>
             <div className="flex gap-2.5">
               <div
-                className={` inline-block w-[20px] h-1 rounded-[5px] bg-${
-                  currentID === 0 ? "tomato-5" : "grey-1"
+                className={` inline-block w-[20px] h-1 rounded-[5px] ${
+                  currentID === 0 ? "bg-tomato-5" : "bg-grey-1"
                 }`}
               ></div>
               <div
-                className={`inline-block w-[20px] h-1 rounded-[5px] bg-${
-                  currentID === 1 ? "tomato-5" : "grey-1"
+                className={`inline-block w-[20px] h-1 rounded-[5px] ${
+                  currentID === 1 ? "bg-tomato-5" : "bg-grey-1"
                 }`}
               ></div>
               <div
-                className={`inline-block w-[20px] h-1 rounded-[5px] bg-${
-                  currentID === 2 ? "tomato-5" : "grey-1"
+                className={`inline-block w-[20px] h-1 rounded-[5px] ${
+                  currentID === 2 ? "bg-tomato-5" : "bg-grey-1"
                 }`}
               ></div>
             </div>
