@@ -5,7 +5,7 @@ export default function SplashScreen({ onTransition }) {
   useEffect(() => {
     const delay = setTimeout(() => {
       onTransition(); // Trigger transition after the delay
-    }, 7000); // Adjust the delay time in milliseconds (e.g., 2000 for 2 seconds)
+    }, 2000); // Adjust the delay time in milliseconds (e.g., 2000 for 2 seconds)
 
     return () => clearTimeout(delay); // Cleanup to avoid memory leaks
   });
