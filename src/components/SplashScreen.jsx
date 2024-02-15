@@ -1,20 +1,11 @@
-import { useEffect } from "react";
-
 // eslint-disable-next-line react/prop-types
-export default function SplashScreen({ onTransition }) {
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      onTransition(); // Trigger transition after the delay
-    }, 2000); // Adjust the delay time in milliseconds (e.g., 2000 for 2 seconds)
-
-    return () => clearTimeout(delay); // Cleanup to avoid memory leaks
-  });
+export default function SplashScreen() {
   return (
-    <div className="flex flex-col items-center justify-center item-center my-0 mx-auto w-screen h-screen max-w-screen-sm bg-primary-9">
+    <div className="display-none animate-fadeOut flex flex-col items-center justify-center item-center my-0 mx-auto w-screen h-screen max-w-screen-sm bg-primary-9">
       <svg
         width="25"
         height="24"
-        className="animate-scale"
+        className="animate-scale transition duration-1000"
         viewBox="0 0 25 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +59,7 @@ export default function SplashScreen({ onTransition }) {
           </clipPath>
         </defs>
       </svg>
-      <p className="opacity-0 text-white-2 font-inter text-xs animate-fade">
+      <p className="animate-fade text-white-2 font-inter text-xs">
         FudHouse
       </p>
     </div>

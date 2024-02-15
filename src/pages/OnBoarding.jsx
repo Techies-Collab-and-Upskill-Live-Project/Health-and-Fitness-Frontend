@@ -4,22 +4,22 @@ import { useState } from "react";
 
 const images = [
   { id: 0, name: "Group 26086143" },
-  { id: 1, name: "OBJECTS" },
-  { id: 2, name: "Group 26086144" },
+  // { id: 1, name: "OBJECTS" },
+  { id: 1, name: "Group 26086144" },
 ];
 
 export default function OnBoarding() {
   const [currentID, setCurrentID] = useState(0);
 
   useEffect(() => {
-    //Implementing the setInterval method to change the illustration
     const interval = setInterval(() => {
-      setCurrentID(currentID != 2 ? currentID + 1 : currentID);
-    }, 5000);
+      setCurrentID(currentID != 1 ? currentID + 1 : currentID);
+    }, 2300);
 
     //Clearing the interval
     return () => clearInterval(interval);
-  }, [currentID]);
+  });
+
   return (
     <div
       className="px-4 pt-4 pb-7 grid gap-3.5 grid-rows-[1.5fr_1fr] 
@@ -27,40 +27,27 @@ export default function OnBoarding() {
     >
       <div className="grid content-between h-[416px]">
         <img src="/Logo plain background.svg" alt="FudHouse logo" />
-        {images.map((image) =>
-          currentID === 1
-            ? currentID === image.id && (
-                <div
-                  className="mx-auto w-[246px] h-[207px] grid 
-                  justify-center items-center relative"
-                  key={image.id}
-                >
-                  <img
-                    src={`/${image.name}.svg`}
-                    alt={`image.name`}
-                    className="absolute top-0 left-2 z-[2]"
-                  />
-                  <img
-                    src="Background_Simple.svg"
-                    alt="Illustration background"
-                    className="absolute bottom-0 left-0 z-[1]"
-                  />
-                </div>
-              )
-            : currentID === image.id && (
-                <img
-                  src={`/${image.name}.svg`}
-                  alt={`image.name`}
-                  key={image.id}
-                  className="mx-auto"
-                />
-              )
+        {images.map(
+          (image) =>
+            currentID === image.id && (
+              <img
+                src={`/${image.name}.svg`}
+                alt={`image.name`}
+                key={image.id}
+                className={`mx-auto ${currentID != 1 && "animate-fadeOutImg"}`}
+              />
+            )
         )}
       </div>
       <div className="grid justify-center items-center gap-2">
         <div className="grid justify-items-center items-center gap-6">
           <div className="grid gap-6 content-between justify-items-center p-1">
-            <p className="h-[81px] flex items-end text-center font-montserrat text-[#000] text-lg">
+            <p
+              key={currentID}
+              className={`h-[81px] ${
+                currentID === 1 ? "animate-lastText" : "animate-textAnim"
+              } flex items-end text-center font-montserrat text-[#000] text-lg`}
+            >
               {currentID === 0
                 ? "Stay healthy as you track your food, exercise and water intake."
                 : currentID === 1
@@ -69,7 +56,7 @@ export default function OnBoarding() {
             </p>
             <div className="flex gap-2.5">
               <div
-                className={` inline-block w-[20px] h-1 rounded-[5px] ${
+                className={`inline-block w-[20px] h-1 rounded-[5px] ${
                   currentID === 0 ? "bg-tomato-5" : "bg-grey-1"
                 }`}
               ></div>
