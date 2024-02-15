@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import SplashScreen from "../components/SplashScreen";
+import SplashScreen from "../../components/SplashScreen";
 import OnBoarding from "./OnBoarding";
 
 export default function InitialScreen() {

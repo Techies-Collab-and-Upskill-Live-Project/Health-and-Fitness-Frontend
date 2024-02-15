@@ -1,11 +1,10 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import { Link } from 'react-router-dom';
 
 const images = [
   { id: 0, name: "Group 26086143" },
-  // { id: 1, name: "OBJECTS" },
-  { id: 1, name: "Group 26086144" },
+  { id: 1, name: "Group 26086145" },
+  { id: 2, name: "Group 26086144" },
 ];
 
 export default function OnBoarding() {
@@ -13,7 +12,7 @@ export default function OnBoarding() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentID(currentID != 1 ? currentID + 1 : currentID);
+      setCurrentID(currentID != 2 ? currentID + 1 : currentID);
     }, 2300);
 
     //Clearing the interval
@@ -34,7 +33,11 @@ export default function OnBoarding() {
                 src={`/${image.name}.svg`}
                 alt={`image.name`}
                 key={image.id}
-                className={`mx-auto ${currentID != 1 && "animate-fadeOutImg"}`}
+                className={`mx-auto ${
+                  currentID === 0
+                    ? "animate-fadeOutImg1"
+                    : currentID === 1 && "animate-fadeOutImg"
+                }`}
               />
             )
         )}
@@ -45,7 +48,11 @@ export default function OnBoarding() {
             <p
               key={currentID}
               className={`h-[81px] ${
-                currentID === 1 ? "animate-lastText" : "animate-textAnim"
+                currentID === 0
+                  ? "animate-textAnim1"
+                  : currentID === 1
+                  ? "animate-textAnim"
+                  : "animate-lastText"
               } flex items-end text-center font-montserrat text-[#000] text-lg`}
             >
               {currentID === 0

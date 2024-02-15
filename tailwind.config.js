@@ -76,10 +76,11 @@ export default {
         scale: 'scale 2s cubic-bezier(.42,0,.58,1)',
         fade: 'fade 2s cubic-bezier(.42,0,.58,1)',
         fadeOut: "fadeOut 1s 1.5s cubic-bezier(.42,0,.58,1)",
-        fadeOutImg: "fadeOut 1s 3.4s cubic-bezier(.42,0,.58,1)",
-        textAnim: "fadeOut 1s 3.4s cubic-bezier(.42,0,.58,1), textAnim 1s 1.5s cubic-bezier(.42,0,.58,1)",
+        fadeOutImg1: "fadeOut 1s 3.4s cubic-bezier(.42,0,.58,1)",
+        fadeOutImg: "fadeOut 1s 1.3s cubic-bezier(.42,0,.58,1)",
+        textAnim: "fadeOut 0.8s 1.6s cubic-bezier(.42,0,.58,1), textAnim 1s cubic-bezier(.42,0,.58,1)",
+        textAnim1: "fadeOut 1s 3.4s cubic-bezier(.42,0,.58,1), textAnim 1s 1.5s cubic-bezier(.42,0,.58,1)",
         lastText: "textAnim 1s cubic-bezier(.42,0,.58,1), fadeIn 0.5s ease-in",
-
       },
       keyframes: {
         scale: {
@@ -88,7 +89,7 @@ export default {
           "100%": { transform: "scale(2.7)" }
         },
         fade: {
-          '0%': { opacity: 0, transform: 'scale(3) translateY(15rem)' },
+          '0%': { opacity: 0, transform: 'scale(3) translateY(3rem)' },
           '50%': { opacity: 1, transform: 'scale(3) translateY(1.2rem)' },
           '100%': { transform: 'scale(1.5) translateY(1.2rem)' },
         },
@@ -97,7 +98,7 @@ export default {
           '100%': { opacity: 0 }
         },
         textAnim: {
-          '0%': { transform: 'translateY(100px)' },
+          '0%': { transform: 'translateY(30px)' },
           '100%': { transform: 'translateY(0px)' },
         },
         fadeIn: {
