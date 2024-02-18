@@ -1,11 +1,30 @@
 import { useEffect, useState } from "react";
-// import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const images = [
   { id: 0, name: "Group 26086143" },
   { id: 1, name: "Group 26086145" },
   { id: 2, name: "Group 26086144" },
 ];
+
+// eslint-disable-next-line react/prop-types
+function Button({ children }) {
+  const navigate = useNavigate();
+
+  function handleClick() {
+    navigate("/sign-up");
+  }
+
+  return (
+    <button
+      className="bg-primary-9 w-[328px] h-[48px] rounded-lg
+  font-4 text-white-2 text-center font-montserrat font-medium"
+      onClick={handleClick}
+    >
+      {children}
+    </button>
+  );
+}
 
 export default function OnBoarding() {
   const [currentID, setCurrentID] = useState(0);
@@ -63,43 +82,36 @@ export default function OnBoarding() {
             </p>
             <div className="flex gap-2.5">
               <div
-                className={`inline-block w-[20px] h-1 rounded-[5px] ${
-                  currentID === 0 ? "bg-tomato-5" : "bg-grey-1"
+                className={`
+                inline-block w-[20px] h-1 rounded-[5px] ${
+                  currentID === 0 ? "bg-tomatoCommon" : "bg-grey-1"
                 }`}
               ></div>
               <div
-                className={`inline-block w-[20px] h-1 rounded-[5px] ${
-                  currentID === 1 ? "bg-tomato-5" : "bg-grey-1"
+                className={`
+                transition-colors duration-700 cubic-bezier(.47,.45,.6,.27)
+                inline-block w-[20px] h-1 rounded-[5px] ${
+                  currentID === 1 ? "bg-tomatoCommon" : "bg-grey-1"
                 }`}
               ></div>
               <div
-                className={`inline-block w-[20px] h-1 rounded-[5px] ${
-                  currentID === 2 ? "bg-tomato-5" : "bg-grey-1"
+                className={`
+                transition-colors duration-700 cubic-bezier(.47,.45,.6,.27)
+                inline-block w-[20px] h-1 rounded-[5px] ${
+                  currentID === 2 ? "bg-tomatoCommon" : "bg-grey-1"
                 }`}
               ></div>
             </div>
           </div>
           <Button>Get started</Button>
         </div>
-        <p className="text-base font-normal montserrat text-[#131313] text-center">
+        <p className="text-base font-normal font-montserrat text-[#131313] text-center">
           Already have an account?<span> </span>
-          <a href="#" className="text-tomato-5">
+          <a href="#" className="text-tomatoCommon">
             Log in
           </a>
         </p>
       </div>
     </div>
-  );
-}
-
-// eslint-disable-next-line react/prop-types
-function Button({ children }) {
-  return (
-    <button
-      className="bg-primary-9 w-[328px] h-[48px] rounded-lg
-  font-4 text-white-2 text-center font-montserrat font-medium"
-    >
-      {children}
-    </button>
   );
 }
