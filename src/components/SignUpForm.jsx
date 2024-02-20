@@ -1,6 +1,9 @@
 import { InputField } from "./InputField";
 
 export function SignUpForm() {
+  // const emailRegEx = "/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$/";
+  // const passwordRegEx = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$/";
+
   return (
     <form className="mt-6 h-[476px] w-full">
       <div className="grid auto-rows-max gap-4 h-[344px]">
@@ -8,7 +11,6 @@ export function SignUpForm() {
           name="fname"
           label="Full name"
           placeholder="Enter full name"
-          pattern="^[A-Za-z\s'\-]+$"
           title="Enter a valid full name (letters, spaces, hyphens, and apostrophes only)"
         >
           <svg
@@ -32,7 +34,6 @@ export function SignUpForm() {
           name="email"
           label="Email"
           placeholder="Enter email address"
-          pattern="/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"
           title="Enter a valid email address"
         >
           <svg
@@ -57,8 +58,7 @@ export function SignUpForm() {
           name="username"
           label="User name"
           placeholder="Enter user name"
-          pattern="^(?=(?:.*[a-z]){0,1})(?=(?:.*[A-Z]){0,1})(?=(?:.*\d){0,1})[a-zA-Z0-9]{3,}$"
-          title="Enter a valid username"
+          title="Username must be of three or more characters"
         >
           <svg
             className="absolute left-[10px] flex items-center justify-center bottom-[14px]"
@@ -82,7 +82,6 @@ export function SignUpForm() {
           label="Password"
           placeholder="Enter password here"
           paddingLeft="pl-4"
-          pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/"
           title="Enter a strong password (at least 8 characters including uppercase, lowercase, digits, and special characters)"
         >
           <svg

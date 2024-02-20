@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 /* eslint-disable react/prop-types */
 export function InputField({
   type = "text",
@@ -5,10 +7,14 @@ export function InputField({
   label,
   placeholder,
   paddingLeft = "pl-[42px]",
-  pattern,
   title,
   children,
 }) {
+  const [value, setValue] = useState("");
+  function handleChange(e) {
+    setValue(e.target.value);
+  }
+
   return (
     <div className="grid auto-rows-max gap-2 h-[74px] text-grey-5">
       <label className="relative grid auto-rows-max gap-2 h-[74px] text-grey-5">
@@ -21,10 +27,11 @@ export function InputField({
           placeholder:text-xs placeholder:text-grey-5 placeholder:font-medium
         placeholder:font-montserrat`}
           placeholder={placeholder}
-          pattern={pattern}
           title={title}
           type={type}
           name={name}
+          value={value}
+          onChange={handleChange}
         />
       </label>
     </div>
