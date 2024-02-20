@@ -1,8 +1,30 @@
+import { useState } from "react";
 import { InputField } from "./InputField";
 
 export function SignUpForm() {
   // const emailRegEx = "/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$/";
   // const passwordRegEx = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$/";
+
+  const [fname, setFName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  function handleFNameChange(e) {
+    setFName(e.target.value);
+  }
+
+  function handleEmailChange(e) {
+    setEmail(e.target.value);
+  }
+
+  function handleUsernameChange(e) {
+    setUsername(e.target.value);
+  }
+
+  function handlePasswordChange(e) {
+    setPassword(e.target.value);
+  }
 
   return (
     <form className="mt-6 h-[476px] w-full">
@@ -12,6 +34,8 @@ export function SignUpForm() {
           label="Full name"
           placeholder="Enter full name"
           title="Enter a valid full name (letters, spaces, hyphens, and apostrophes only)"
+          onChange={handleFNameChange}
+          value={fname}
         >
           <svg
             className="absolute left-[10px] flex items-center justify-center bottom-[14px]"
@@ -35,6 +59,8 @@ export function SignUpForm() {
           label="Email"
           placeholder="Enter email address"
           title="Enter a valid email address"
+          onChange={handleEmailChange}
+          value={email}
         >
           <svg
             className="absolute left-[10px] flex items-center justify-center bottom-[17px]"
@@ -59,6 +85,8 @@ export function SignUpForm() {
           label="User name"
           placeholder="Enter user name"
           title="Username must be of three or more characters"
+          onChange={handleUsernameChange}
+          value={username}
         >
           <svg
             className="absolute left-[10px] flex items-center justify-center bottom-[14px]"
@@ -83,6 +111,8 @@ export function SignUpForm() {
           placeholder="Enter password here"
           paddingLeft="pl-4"
           title="Enter a strong password (at least 8 characters including uppercase, lowercase, digits, and special characters)"
+          onChange={handlePasswordChange}
+          value={password}
         >
           <svg
             className="absolute right-4 flex items-center justify-center bottom-[14px]"

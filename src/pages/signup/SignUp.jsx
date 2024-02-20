@@ -5,9 +5,8 @@ import { SignUpForm } from "../../components/SignUpForm";
 export default function SignUp() {
   return (
     <div
-      className="px-4 pt-4 pb-7 grid 
-    bg-white-3 my-0 mx-auto w-screen h-screen 
-    max-w-screen-sm font-montserrat auto-rows-max"
+      className="px-4 pt-4 pb-7 grid my-0 mx-auto w-screen h-screen 
+    max-w-screen-sm font-montserrat auto-rows-max bg-on-boarding bg-cover bg-white-4"
     >
       <NavBar>Sign Up</NavBar>
       <WelcomeMessage>Welcome to FudHouse</WelcomeMessage>
