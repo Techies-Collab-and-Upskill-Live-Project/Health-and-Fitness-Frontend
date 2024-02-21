@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Button } from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 
 const images = [
@@ -7,27 +8,9 @@ const images = [
   { id: 2, name: "Group 26086144" },
 ];
 
-// eslint-disable-next-line react/prop-types
-function Button({ children }) {
-  const navigate = useNavigate();
-
-  function handleClick() {
-    navigate("/sign-up");
-  }
-
-  return (
-    <button
-      className="bg-primary-9 w-[328px] h-[48px] rounded-lg
-  font-4 text-white-2 text-center font-montserrat font-medium"
-      onClick={handleClick}
-    >
-      {children}
-    </button>
-  );
-}
-
 export default function OnBoarding() {
   const [currentID, setCurrentID] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -37,6 +20,10 @@ export default function OnBoarding() {
     //Clearing the interval
     return () => clearInterval(interval);
   });
+
+  function handleClick() {
+    navigate("/sign-up");
+  }
 
   return (
     <div
@@ -103,7 +90,9 @@ export default function OnBoarding() {
               ></div>
             </div>
           </div>
-          <Button>Get started</Button>
+          <Button handleClick={handleClick} bgColor={"bg-primary-9"}>
+            Get started
+          </Button>
         </div>
         <p className="text-base font-normal font-montserrat text-[#131313] text-center">
           Already have an account?<span> </span>
