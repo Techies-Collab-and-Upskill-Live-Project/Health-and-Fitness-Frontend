@@ -110,6 +110,9 @@ export default {
       },
       backgroundImage: {
         'on-boarding': "url('/SignUpBG.png')",
+      },
+      screens: {
+        'xs': { 'raw': '(max-width: 350px)' },
       }
     },
     plugins: [],
