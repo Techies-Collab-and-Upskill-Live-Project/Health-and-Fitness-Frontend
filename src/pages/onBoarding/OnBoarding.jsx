@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Button } from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 
 const images = [
@@ -7,27 +8,9 @@ const images = [
   { id: 2, name: "Group 26086144" },
 ];
 
-// eslint-disable-next-line react/prop-types
-function Button({ children }) {
-  const navigate = useNavigate();
-
-  function handleClick() {
-    navigate("/sign-up");
-  }
-
-  return (
-    <button
-      className="bg-primary-9 w-[328px] h-[48px] rounded-lg
-  font-4 text-white-2 text-center font-montserrat font-medium"
-      onClick={handleClick}
-    >
-      {children}
-    </button>
-  );
-}
-
 export default function OnBoarding() {
   const [currentID, setCurrentID] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,12 +21,16 @@ export default function OnBoarding() {
     return () => clearInterval(interval);
   });
 
+  function handleClick() {
+    navigate("/sign-up");
+  }
+
   return (
     <div
       className="px-4 pt-4 pb-7 grid gap-3.5 grid-rows-[1.5fr_1fr] 
-    bg-primary-1 my-0 mx-auto w-screen h-screen max-w-screen-sm"
+    bg-primary-1 my-0 mx-auto max-w-screen-sm w-[476px]"
     >
-      <div className="grid content-between h-[416px]">
+      <div className="grid content-between h-[416px] xs:h-96">
         <img src="/Logo plain background.svg" alt="FudHouse logo" />
         {images.map(
           (image) =>
@@ -61,7 +48,7 @@ export default function OnBoarding() {
             )
         )}
       </div>
-      <div className="grid justify-center items-center gap-2">
+      <div className="grid items-center gap-2 w-full">
         <div className="grid justify-items-center items-center gap-6">
           <div className="grid gap-6 content-between justify-items-center p-1">
             <p
@@ -103,7 +90,13 @@ export default function OnBoarding() {
               ></div>
             </div>
           </div>
-          <Button>Get started</Button>
+          <Button
+            width="w-full"
+            handleClick={handleClick}
+            bgColor={"bg-primary-9"}
+          >
+            Get started
+          </Button>
         </div>
         <p className="text-base font-normal font-montserrat text-[#131313] text-center">
           Already have an account?<span> </span>

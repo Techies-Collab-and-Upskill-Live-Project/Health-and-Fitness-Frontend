@@ -62,7 +62,8 @@ export default {
         white: {
           1: '#D9D9D9',
           2: '#F8F8F8',
-          3: '#F5F5F5'
+          3: '#F5F5F5',
+          4: '#FFFFFF'
         },
         error: '#E0010F',
         success: '#2FD305',
@@ -106,6 +107,12 @@ export default {
           '0%': { opacity: 0 },
           '100%': { opacity: 1 }
         }
+      },
+      backgroundImage: {
+        'on-boarding': "url('/SignUpBG.png')",
+      },
+      screens: {
+        'xs': { 'raw': '(max-width: 350px)' },
       }
     },
     plugins: [],
