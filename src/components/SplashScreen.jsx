@@ -5,7 +5,7 @@ export default function SplashScreen() {
       <svg
         width="25"
         height="24"
-        className="animate-scale transition duration-1000"
+        className="animate-scale transition-transform duration-300"
         viewBox="0 0 25 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -59,9 +59,7 @@ export default function SplashScreen() {
           </clipPath>
         </defs>
       </svg>
-      <p className="animate-fade text-white-2 font-inter text-xs">
-        FudHouse
-      </p>
+      <p className="animate-fade text-white-2 font-inter text-xs">FudHouse</p>
     </div>
   );
 }

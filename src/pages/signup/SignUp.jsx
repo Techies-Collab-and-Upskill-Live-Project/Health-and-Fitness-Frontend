@@ -6,7 +6,7 @@ import { Button } from "../../components/Button";
 export default function SignUp() {
   return (
     <div
-      className="px-4 pt-4 pb-7 grid my-0 mx-auto w-[476px] 
+      className="px-4 pt-4 pb-7 grid my-0 mx-auto
     max-w-screen-sm font-montserrat auto-rows-max 
     bg-on-boarding bg-cover bg-white-4"
     >

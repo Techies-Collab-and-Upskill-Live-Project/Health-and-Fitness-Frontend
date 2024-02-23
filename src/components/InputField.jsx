@@ -24,7 +24,7 @@ export function InputField({
           required
           className={`block h-12 opacity-0.5 py-4 pr-[10px] ${paddingLeft} 
           w-full bg-transparent outline-1 outline-white border
-           rounded-lg focus:outline-none ${
+           rounded-lg focus:outline-none transition ${
              isValidEmail || isValidName || isValidPassword
                ? "focus:outline-primary-7"
                : "focus:outline-tomato-7"

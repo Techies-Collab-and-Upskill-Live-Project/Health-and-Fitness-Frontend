@@ -28,9 +28,9 @@ export default function OnBoarding() {
   return (
     <div
       className="px-4 pt-4 pb-7 grid gap-3.5 grid-rows-[1.5fr_1fr] 
-    bg-primary-1 my-0 mx-auto max-w-screen-sm w-[476px]"
+    bg-primary-1 my-0 mx-auto max-w-screen-sm w-screen h-[100dvh]"
     >
-      <div className="grid content-between h-[416px] xs:h-96">
+      <div className="grid content-between mb-4">
         <img src="/Logo plain background.svg" alt="FudHouse logo" />
         {images.map(
           (image) =>
@@ -39,7 +39,7 @@ export default function OnBoarding() {
                 src={`/${image.name}.svg`}
                 alt={`image.name`}
                 key={image.id}
-                className={`mx-auto ${
+                className={`mx-auto transition-transform duration ${
                   currentID === 0
                     ? "animate-fadeOutImg1"
                     : currentID === 1 && "animate-fadeOutImg"
