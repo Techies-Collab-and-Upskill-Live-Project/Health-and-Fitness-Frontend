@@ -203,7 +203,9 @@ export function SignUpForm() {
         <Button
           isValid={isValid}
           width="w-full"
-          bgColor={`${isValid ? "bg-primary-9" : "bg-grey-1"}`}
+          bgColor={`transition duration-300 ${
+            isValid ? "bg-primary-9" : "bg-grey-1"
+          }`}
         >
           Sign Up
         </Button>
