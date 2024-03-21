@@ -29,16 +29,17 @@ export default function ProfileScreen() {
     }
     const navigate = useNavigate();
     return (
+      <div>
         <div
         className="px-4 pt-4 pb-7 grid gap-3.5 grid-rows-[1.5fr_1fr] 
       bg-primary-1 my-0 mx-auto max-w-screen-sm w-screen h-[100dvh]"
       >
-        <div className="grid content-between mb-4">
+        <div className="grid content-between">
           <img src="/Logo plain background.svg" alt="FudHouse logo" />
         
         </div>   
-<div className="max-w-screen-sm w-screen h-[100dvh]">
-<div className="pb-60">
+<div className="max-w-screen-sm w-screen h-[100dvh] fixed">
+<div className="pt-10">
     <div className="w-11/12 h-3/6 ">
         <ul className=" justify-center flex flex-grow dark:text-gray-400 ">
     <li className="me-2">
@@ -133,6 +134,7 @@ export default function ProfileScreen() {
           </div>
       
          
+</div>
 </div>
     );
 }
