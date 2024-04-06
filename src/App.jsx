@@ -2,7 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import InitialScreen from "./pages/onBoarding/InitialScreen";
 import SignUp from "./pages/signup/SignUp";
 import OnBoarding from "./pages/onBoarding/OnBoarding";
-import Login from "./pages/login/Login.JSX";
+import Login from "./pages/login/Login";
+import ProfileScreen from "./pages/profile/ProfileScreen";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/on-boarding" element={<OnBoarding />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/log-in" element={<Login />} />
+        <Route path="/profile" element={<ProfileScreen />} />
       </Routes>
     </Router>
   );
