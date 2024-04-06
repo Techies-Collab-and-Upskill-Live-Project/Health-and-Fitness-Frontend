@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import InitialScreen from "./pages/onBoarding/InitialScreen";
 import SignUp from "./pages/signup/SignUp";
 import OnBoarding from "./pages/onBoarding/OnBoarding";
-import Login from "./pages/login/Login.JSX";
+import Login from "./pages/login/Login";
 import ProfileScreen from "./pages/profile/ProfileScreen";
 
 function App() {
