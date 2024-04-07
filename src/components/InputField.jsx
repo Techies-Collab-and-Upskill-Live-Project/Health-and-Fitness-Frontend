@@ -1,3 +1,5 @@
+import PasswordRequirement from "./PasswordRequirement";
+
 /* eslint-disable react/prop-types */
 export function InputField({
   type = "text",
@@ -13,11 +15,13 @@ export function InputField({
   isValidEmail = false,
   isValidName = false,
   isValidPassword = false,
+  focused,
+  errorText,
   children,
 }) {
   return (
-    <div className="grid auto-rows-max gap-2 h-[74px] text-grey-5">
-      <label className="relative grid auto-rows-max gap-2 h-[74px] text-grey-5">
+    <div className="grid auto-rows-max gap-2 text-grey-5">
+      <label className="relative grid auto-rows-max gap-2 text-grey-5">
         <span className="text-xs font-medium">{label}</span>
         {children}
         <input
@@ -43,6 +47,31 @@ export function InputField({
           onKeyUp={onKeyUp}
         />
       </label>
+      <>{errorText}</>
+      {focused && label === "Password" && (
+        <div className="mb-2 flex flex-col gap-1 text-xs">
+          <PasswordRequirement
+            condition={value.length > 6}
+            text={<span> A minimum of 8 characters</span>}
+          />
+          <PasswordRequirement
+            condition={/[A-Z]/.test(value)}
+            text={<span> Must contain 1 uppercase letter(A-Z)</span>}
+          />
+          <PasswordRequirement
+            condition={/[a-z]/.test(value)}
+            text={<span> Must contain 1 lowercase letter(a-z)</span>}
+          />
+          <PasswordRequirement
+            condition={/[!@#$%&*]/.test(value)}
+            text={<span> Must contain symbol[!@#$%&*]</span>}
+          />
+          <PasswordRequirement
+            condition={/\d/.test(value)}
+            text={<span> Must contain numbers</span>}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { Button } from "./Button";
 export function SignUpForm() {
   const emailRegEx = /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   const passwordRegEx =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
 
   const [fname, setFName] = useState("");
   const [email, setEmail] = useState("");
@@ -14,6 +14,7 @@ export function SignUpForm() {
   const [fNameIsFocus, setFNameIsFocus] = useState(false);
   const [emailIsFocus, setEmailIsFocus] = useState(false);
   const [usernameIsFocus, setUsernameIsFocus] = useState(false);
+  const [passwordIsFocus, setPasswordIsFocus] = useState(false);
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [isValidPassword, setIsValidPassword] = useState(false);
   const [isValidFName, setIsValidFName] = useState(false);
@@ -48,11 +49,8 @@ export function SignUpForm() {
     // Send data to the backend
   }
   return (
-    <form
-      onSubmit={(e) => handleFormSubmit(e)}
-      className="mt-6 h-[452px] w-full"
-    >
-      <div className="grid auto-rows-max gap-4 h-[344px]">
+    <form onSubmit={(e) => handleFormSubmit(e)} className="mt-6 w-full">
+      <div className="grid auto-rows-max gap-4">
         <InputField
           name="fname"
           label="Full name"
@@ -62,12 +60,22 @@ export function SignUpForm() {
           value={fname}
           onFocus={setFNameIsFocus}
           onKeyUp={() => {
-            fname.length >= 3 ? setIsValidFName(true) : setIsValidFName(false);
+            fname.length >= 1 && /^[A-Za-z.-]+$/.test(fname)
+              ? setIsValidFName(true)
+              : setIsValidFName(false);
           }}
           isValidName={isValidFName}
+          errorText={
+            !isValidFName &&
+            fname.length > 0 && (
+              <p className="text-error text-xs">
+                Names should include only letters, whitespaces, dots or hyphens
+              </p>
+            )
+          }
         >
           <svg
-            className="absolute left-[10px] flex items-center justify-center bottom-[14px]"
+            className="absolute left-[10px] flex items-center justify-center bottom-[10px]"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -99,9 +107,18 @@ export function SignUpForm() {
               : setIsValidEmail(false);
           }}
           isValidEmail={isValidEmail}
+          errorText={
+            !isValidEmail &&
+            email.length > 0 && (
+              <p className="text-xs">
+                <span className="text-error">Wrong email address format.</span>{" "}
+                &#x2018;name@mail.com&#x2019;
+              </p>
+            )
+          }
         >
           <svg
-            className="absolute left-[10px] flex items-center justify-center bottom-[17px]"
+            className="absolute left-[10px] flex items-center justify-center bottom-[13px]"
             width="22"
             height="18"
             viewBox="0 0 22 18"
@@ -138,7 +155,7 @@ export function SignUpForm() {
           isValidName={isValidUName}
         >
           <svg
-            className="absolute left-[10px] flex items-center justify-center bottom-[14px]"
+            className="absolute left-[10px] flex items-center justify-center bottom-[10px]"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -164,12 +181,22 @@ export function SignUpForm() {
           title="Enter a strong password (at least 8 characters including uppercase, lowercase, digits, and special characters)"
           onChange={handlePasswordChange}
           value={password}
+          onFocus={setPasswordIsFocus}
+          focused={passwordIsFocus}
           onKeyUp={() => {
             passwordRegEx.test(password)
               ? setIsValidPassword(true)
               : setIsValidPassword(false);
           }}
           isValidPassword={isValidPassword}
+          errorText={
+            !isValidPassword &&
+            password.length > 0 && (
+              <p className="text-error text-xs">
+                Your password does not meet the requirements
+              </p>
+            )
+          }
         >
           {showPassword ? (
             <img
