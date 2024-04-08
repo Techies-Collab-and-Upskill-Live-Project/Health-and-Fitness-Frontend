@@ -100,7 +100,7 @@ export default function OnBoarding() {
         </div>
         <p className="text-base font-normal font-montserrat text-[#131313] text-center">
           Already have an account?<span> </span>
-          <a href="#" className="text-tomatoCommon">
+          <a href="/log-in" className="text-tomatoCommon">
             Log in
           </a>
         </p>
