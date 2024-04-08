@@ -14,22 +14,37 @@ export default function ProfileSecondScreen() {
     const [dateIsFocus, setDateIsFocus] = useState(false);
     const [monthIsFocus, setMonthIsFocus] = useState(false);
     const [yearIsFocus, setYearIsFocus] = useState(false);
-    const date = new Date();
-    const [dateValue,setDateValue]=useState(date.getDay());
-    const [monthValue,setMonthValue]=useState(date.getMonth());
-    const [yearValue,setYearValue]=useState(date.getFullYear());
+
+    const [dateValue,setDateValue]=useState('');
+    const [monthValue,setMonthValue]=useState('');
+    const [yearValue,setYearValue]=useState('');
    function setDateField(e)
     {
      
-      e.target.value? setDateFieldState(true) && setDateValue(e.target.value):setDateFieldState(false);
+      if(e.target.value)
+      { setDateFieldState(true);
+        setDateValue(e.target.value);
+      }
+      else
+      setDateFieldState(false);
     }
     function setMonthField(e)
     {
-      e.target.value?  setMonthFieldState(true) && setMonthValue(e.target.value):setMonthFieldState(false);
+      if(e.target.value)
+      {  setMonthFieldState(true);
+        setMonthValue(e.target.value);
+      }
+      else
+      setMonthFieldState(false);
     }
     function setYearField(e)
     {
-      e.target.value? setYearFieldState(true) && setYearValue(e.target.value): setYearFieldState(false);
+      if(e.target.value)
+      {setYearFieldState(true);
+        setYearValue(e.target.value);
+      }
+      else
+      setYearFieldState(false);
     }
 
     const navigate = useNavigate();
