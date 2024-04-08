@@ -5,25 +5,31 @@ import { useNavigate } from "react-router-dom";
 
 export default function ProfileSecondScreen() {
 
-    const [datefield ,setDateFieldState ]=useState(false);
-    
+
+
+
+    const [datefield ,setDateFieldState ]=useState(false);  
     const [monthfield,setMonthFieldState]=useState(false);
     const [yearfield, setYearFieldState]=useState(false);
     const [dateIsFocus, setDateIsFocus] = useState(false);
     const [monthIsFocus, setMonthIsFocus] = useState(false);
     const [yearIsFocus, setYearIsFocus] = useState(false);
+    const date = new Date();
+    const [dateValue,setDateValue]=useState(date.getDay());
+    const [monthValue,setMonthValue]=useState(date.getMonth());
+    const [yearValue,setYearValue]=useState(date.getFullYear());
    function setDateField(e)
     {
      
-      e.target.value? setDateFieldState(true):setDateFieldState(false);
+      e.target.value? setDateFieldState(true) && setDateValue(e.target.value):setDateFieldState(false);
     }
     function setMonthField(e)
     {
-      e.target.value?  setMonthFieldState(true):setMonthFieldState(false);
+      e.target.value?  setMonthFieldState(true) && setMonthValue(e.target.value):setMonthFieldState(false);
     }
     function setYearField(e)
     {
-      e.target.value? setYearFieldState(true): setYearFieldState(false);
+      e.target.value? setYearFieldState(true) && setYearValue(e.target.value): setYearFieldState(false);
     }
 
     const navigate = useNavigate();
@@ -80,6 +86,7 @@ export default function ProfileSecondScreen() {
           placeholder="DD"
           onChange={setDateField}
           onFocus={setDateIsFocus}
+          value={dateValue}
   
         >
             </InputField>
@@ -90,6 +97,7 @@ export default function ProfileSecondScreen() {
           placeholder="MM"
           onChange={setMonthField}
           onFocus={setMonthIsFocus}
+          value={monthValue}
     
         >
         
@@ -101,6 +109,7 @@ export default function ProfileSecondScreen() {
           placeholder="YYYY"
           onChange={setYearField}
           onFocus={setYearIsFocus}
+          value={yearValue}
     
         >
          
