@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 
-export default function ProfileScreen() {
+export default function ProfileNutritionalGoal( { setShowGenderScreen  }) {
 
     const [looseWeightBtnState ,setlooseWeightBtnState ]=useState(false);
     
@@ -27,6 +27,10 @@ export default function ProfileScreen() {
       setgainWeightBtnState(false);
       setgetFitBtnState(true);
     }
+    function handleNextBtnClick()
+    {
+      setShowGenderScreen(true);
+    }
     const navigate = useNavigate();
     return (
       <div>
@@ -43,7 +47,7 @@ export default function ProfileScreen() {
     <div className="w-11/12 h-3/6 ">
         <ul className=" justify-center flex flex-grow dark:text-gray-400 ">
     <li className="me-2">
-        <a href="#" className="inline-block px-6 py-0.5 text-white bg-primary-9  active" aria-current="page"></a>
+        <a href="" className="inline-block px-6 py-0.5 text-white bg-primary-9  active" aria-current="page"></a>
     </li>
     <li className="me-2">
         <a href="#" className="inline-block  px-6 py-0.5 text-white bg-grey-4  active" aria-current="page"></a>
@@ -126,6 +130,7 @@ export default function ProfileScreen() {
           bgColor={`transition duration-300 ${
             looseWeightBtnState||gainWeightBtnState||getFitBtnState ? "bg-primary-9" : "bg-grey-1"
           }`}
+          handleClick={handleNextBtnClick}
         > <p className="text-[#131313]">Next</p></Button>
         </div>
         </div>
