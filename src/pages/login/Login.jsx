@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { SocialSignUp } from "../../components/SocialSignUp";
 import { WelcomeMessage } from "../../components/WelcomeMessage";
 import { NavBar } from "../../components/NavBar";
+import LoginForm from "../../components/LoginForm";
 
 export default function Login() {
   return (
@@ -14,7 +15,7 @@ export default function Login() {
     >
       <NavBar>Log in</NavBar>
       <WelcomeMessage>Welcome back!</WelcomeMessage>
-      {/* <SignUpForm /> */}
+      <LoginForm />
       <div className="full h-20 grid gap-4 mt-6 justify-items-center">
         <SocialSignUp />
         <p className="text-grey-5 font-medium text-[13px]">

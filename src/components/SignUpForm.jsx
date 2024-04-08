@@ -60,7 +60,7 @@ export function SignUpForm() {
           value={fname}
           onFocus={setFNameIsFocus}
           onKeyUp={() => {
-            fname.length >= 1 && /^[A-Za-z.-]+$/.test(fname)
+            fname.length >= 1 && /^[ A-Za-z.-]+$/.test(fname)
               ? setIsValidFName(true)
               : setIsValidFName(false);
           }}
