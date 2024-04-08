@@ -48,30 +48,32 @@ export function InputField({
         />
       </label>
       <>{errorText}</>
-      {focused && label === "Password" && (
-        <div className="mb-2 flex flex-col gap-1 text-xs">
-          <PasswordRequirement
-            condition={value.length > 6}
-            text={<span> A minimum of 8 characters</span>}
-          />
-          <PasswordRequirement
-            condition={/[A-Z]/.test(value)}
-            text={<span> Must contain 1 uppercase letter(A-Z)</span>}
-          />
-          <PasswordRequirement
-            condition={/[a-z]/.test(value)}
-            text={<span> Must contain 1 lowercase letter(a-z)</span>}
-          />
-          <PasswordRequirement
-            condition={/[!@#$%&*]/.test(value)}
-            text={<span> Must contain symbol[!@#$%&*]</span>}
-          />
-          <PasswordRequirement
-            condition={/\d/.test(value)}
-            text={<span> Must contain numbers</span>}
-          />
-        </div>
-      )}
+      {focused &&
+        title ===
+          "Enter a strong password (at least 8 characters including uppercase, lowercase, digits, and special characters)" && (
+          <div className="mb-2 flex flex-col gap-1 text-xs">
+            <PasswordRequirement
+              condition={value.length > 6}
+              text={<span> A minimum of 8 characters</span>}
+            />
+            <PasswordRequirement
+              condition={/[A-Z]/.test(value)}
+              text={<span> Must contain 1 uppercase letter(A-Z)</span>}
+            />
+            <PasswordRequirement
+              condition={/[a-z]/.test(value)}
+              text={<span> Must contain 1 lowercase letter(a-z)</span>}
+            />
+            <PasswordRequirement
+              condition={/[!@#$%&*]/.test(value)}
+              text={<span> Must contain symbol[!@#$%&*]</span>}
+            />
+            <PasswordRequirement
+              condition={/\d/.test(value)}
+              text={<span> Must contain numbers</span>}
+            />
+          </div>
+        )}
     </div>
   );
 }
