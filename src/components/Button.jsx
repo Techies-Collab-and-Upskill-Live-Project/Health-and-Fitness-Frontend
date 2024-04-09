@@ -7,6 +7,8 @@ export function Button({
   bgColor,
   border = "border-0",
   shadowBox = "shadow-none",
+  mt = "mt-0",  
+  type,
   children,
 }) {
   return (
@@ -14,10 +16,12 @@ export function Button({
       className={`${
         isValid ? `${bgColor} cursor-pointer` : `${bgColor} cursor-auto`
       } ${width} ${height} rounded-lg
-  font-4 text-white-2 text-center 
-  font-montserrat font-medium ${bgColor} ${border} ${shadowBox}`}
+  font-4 text-white-2 text-center  
+  font-montserrat font-medium active:scale-95
+   ${mt} ${bgColor} ${border} ${shadowBox}`}
       onClick={handleClick}
       disabled={!isValid}
+      type={type}
     >
       {children}
     </button>

@@ -1,18 +1,14 @@
 //* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
-//import { SignUpForm } from "../../components/SignUpForm";
 import { SocialSignUp } from "../../components/SocialSignUp";
 import { WelcomeMessage } from "../../components/WelcomeMessage";
 import { NavBar } from "../../components/NavBar";
 import LoginForm from "../../components/LoginForm";
+import AppWrapper from "../../components/AppWrapper";
 
 export default function Login() {
   return (
-    <div
-      className="px-4 pt-4 pb-7 grid my-0 mx-auto
-      max-w-screen-sm font-montserrat auto-rows-max 
-      bg-on-boarding bg-cover bg-white-4"
-    >
+    <AppWrapper>
       <NavBar>Log in</NavBar>
       <WelcomeMessage>Welcome back!</WelcomeMessage>
       <LoginForm />
@@ -26,6 +22,6 @@ export default function Login() {
           </Link>
         </p>
       </div>
-    </div>
+    </AppWrapper>
   );
 }
