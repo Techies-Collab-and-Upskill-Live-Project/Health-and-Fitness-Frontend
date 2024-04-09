@@ -18,7 +18,8 @@ export default {
           8: '#548D16',
           9: '#3F6A11',
           10: '#2A460B',
-          11: '#192A07'
+          11: '#192A07',
+          "light": '#7DD421'
         },
         secondary: {
           1: '#FFEDCC',

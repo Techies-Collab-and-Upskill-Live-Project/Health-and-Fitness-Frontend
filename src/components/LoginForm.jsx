@@ -115,7 +115,7 @@ function LoginForm() {
       </div>
       <div className="ml-1 flex justify-between font-inter text-sm mt-2">
         <p
-          className="flex gap-1 text-black items-center"
+          className="cursor-pointer flex gap-1 text-black items-center"
           onClick={() => setKeepLoggedIn((loggedIn) => !loggedIn)}
         >
           {keepLoggedIn ? (
@@ -149,6 +149,7 @@ function LoginForm() {
       </div>
       <div className="mt-6 grid gap-4 h-[84px]">
         <Button
+          handleClick={handleFormSubmit}
           isValid={isInputValid}
           width="w-full"
           bgColor={`transition duration-300 ${

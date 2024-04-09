@@ -4,14 +4,11 @@ import { SignUpForm } from "../../components/SignUpForm";
 import { SocialSignUp } from "../../components/SocialSignUp";
 import { WelcomeMessage } from "../../components/WelcomeMessage";
 import { NavBar } from "../../components/NavBar";
+import AppWrapper from "../../components/AppWrapper";
 
 export default function SignUp() {
   return (
-    <div
-      className="px-4 pt-4 pb-7 grid my-0 mx-auto
-    max-w-screen-sm font-montserrat auto-rows-max 
-    bg-on-boarding bg-cover bg-white-4"
-    >
+    <AppWrapper>
       <NavBar>Sign Up</NavBar>
       <WelcomeMessage>Welcome to FudHouse</WelcomeMessage>
       <SignUpForm />
@@ -28,6 +25,6 @@ export default function SignUp() {
       <p className="text-grey-5 font-normal w-full text-wrap px-6 text-xs mt-5 text-center">
         by signing up you agree to our terms and conditions and privacy policy.
       </p>
-    </div>
+    </AppWrapper>
   );
 }

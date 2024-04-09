@@ -10,7 +10,7 @@ export function NavBar({ children }) {
   return (
     <div
       className="
-    grid grid-cols-2 h-7 items-center w-full"
+    grid grid-cols-[auto_auto] h-7 items-center w-full text-grey-6"
     >
       <svg
         width="16"
