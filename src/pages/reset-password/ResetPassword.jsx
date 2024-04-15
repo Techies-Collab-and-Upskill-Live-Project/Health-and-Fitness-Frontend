@@ -108,7 +108,7 @@ export default function ResetPassword() {
         isValid={inputValid}
         width="w-full"
         bgColor={`transition duration-300 ${
-          inputValid ? "bg-primary-9" : "bg-primary-9"
+          inputValid ? "bg-primary-9" : "bg-grey-1"
         }`}
         handleClick={handleBtnClick}
       >
