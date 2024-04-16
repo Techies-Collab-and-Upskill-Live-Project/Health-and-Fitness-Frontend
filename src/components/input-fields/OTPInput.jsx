@@ -73,7 +73,7 @@ function OTPInput({
           Incorrect or expired code. Try again
         </p>
       )}
-      <div className="mt-8 flex justify-between font-montserrat font-medium text-sm">
+      <div className="mt-2 flex justify-between font-montserrat font-medium text-sm">
         <p className="text-primary-8 cursor-pointer">Resend code</p>
         <p className="text-grey-6">00 s</p>
       </div>

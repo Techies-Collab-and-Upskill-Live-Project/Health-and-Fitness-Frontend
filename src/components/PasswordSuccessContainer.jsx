@@ -6,7 +6,7 @@ function PasswordSuccessContainer() {
 
   return (
     <>
-      <div className="flex h-[370px] gap-3 flex-col justify-end items-center  font-montserrat text-grey-6">
+      <div className="flex h-[320px] gap-4 flex-col justify-end items-center  font-montserrat text-grey-6">
         <svg
           width="95"
           height="95"
@@ -47,7 +47,7 @@ function PasswordSuccessContainer() {
             fill="#34A853"
           />
         </svg>
-        <p className="h-16 font-montserrat font-semibold text-center text-[23px]">
+        <p className="h-16 w-[272px] font-montserrat font-semibold text-center text-[23px]">
           Your password has been changed
         </p>
         <p className="text-grey-6 text-[13px]">

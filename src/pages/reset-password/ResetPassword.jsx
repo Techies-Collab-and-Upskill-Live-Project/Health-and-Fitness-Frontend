@@ -60,6 +60,7 @@ export default function ResetPassword() {
       handleSubmitPassword();
     }
   }
+
   return (
     <AppWrapper>
       <NavBar>Forgotten your Password?</NavBar>

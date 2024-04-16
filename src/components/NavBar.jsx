@@ -9,10 +9,9 @@ export function NavBar({ children, type = "regular" }) {
   }
   return (
     <div
-      className="
-      cursor-pointer
-    grid grid-cols-[auto_auto] h-7 
-    items-center w-full text-grey-6"
+      className={`
+    grid ${type === "regular" && "grid-cols-[auto_auto]"} h-7 
+    items-center w-full text-grey-6`}
     >
       {type === "regular" && (
         <svg
@@ -22,6 +21,7 @@ export function NavBar({ children, type = "regular" }) {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           onClick={handleNavigateToHome}
+          className="cursor-pointer"
         >
           <path
             d="M16 7.5H3.83L9.42 1.91L8 0.5L0 8.5L8 16.5L9.41 15.09L3.83 9.5H16V7.5Z"
@@ -29,7 +29,9 @@ export function NavBar({ children, type = "regular" }) {
           />
         </svg>
       )}
-      <h4 className="text-xl font-semibold text-grey-6">{children}</h4>
+      <h4 className={`text-xl  ${type === "text" && "text-center"} w-full font-semibold text-grey-6`}>
+        {children}
+      </h4>
     </div>
   );
 }
