@@ -1,4 +1,4 @@
-import PasswordRequirement from "./PasswordRequirement";
+import PasswordRequirement from "../PasswordRequirement";
 
 /* eslint-disable react/prop-types */
 export function InputField({

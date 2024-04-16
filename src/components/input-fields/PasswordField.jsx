@@ -42,8 +42,8 @@ function PasswordField({
       }}
       isValidPassword={isValidPassword}
       errorText={
-        (!isValidPassword &&
-        password.length > 0) && (
+        !isValidPassword &&
+        password.length > 0 && (
           <p className="text-error text-xs">
             Your password does not meet the requirements
           </p>

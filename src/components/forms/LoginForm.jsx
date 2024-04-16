@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Button } from "./Button";
-import { InputField } from "./InputField";
+import { Button } from "../Button";
+import { InputField } from "../input-fields/InputField";
 import { Link } from "react-router-dom";
 
 function LoginForm() {

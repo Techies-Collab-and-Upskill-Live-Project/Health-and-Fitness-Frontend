@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { InputField } from "./InputField";
-import { Button } from "./Button";
-import EmailField from "./EmailField";
-import PasswordField from "./PasswordField";
+import { InputField } from "../input-fields/InputField";
+import { Button } from "../Button";
+import EmailField from "../input-fields/EmailField";
+import PasswordField from "../input-fields/PasswordField";
 
 export function SignUpForm() {
   const [fname, setFName] = useState("");

@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+/* eslint-disable react/prop-types */
+import {  useState } from "react";
 import { Button } from "../../components/Button";
-import {InputField} from "../../components/InputField";
+import {InputField} from "../../components/input-fields/InputField";
 import { useNavigate } from "react-router-dom";
 
 export default function ProfileDOBScreen({setshowWeightScreen}) {
@@ -58,7 +59,7 @@ export default function ProfileDOBScreen({setshowWeightScreen}) {
           <img src="/Logo plain background.svg" alt="FudHouse logo" />
         
         </div>   
-<div className="max-w-screen-sm w-screen h-[100dvh] fixed">
+<div className="max-w-screen-sm w-screen h-dvh fixed">
 <div className="pt-10">
     <div className="w-11/12 h-3/6 ">
         <ul className=" justify-center flex flex-grow dark:text-gray-400 ">

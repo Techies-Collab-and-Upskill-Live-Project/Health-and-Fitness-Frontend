@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "../../components/Button";
-import {InputField} from "../../components/InputField";
+import {InputField} from "../../components/input-fields/InputField";
 import { useNavigate } from "react-router-dom";
 
 export default function ProfileWeightScreen() {

@@ -1,7 +1,11 @@
 // eslint-disable-next-line react/prop-types
 export default function SplashScreen() {
   return (
-    <div className="display-none animate-fadeOut grid justify-items-center content-center my-0 mx-auto w-screen h-screen max-w-screen-sm bg-primary-9">
+    <div className="
+    display-none animate-fadeOut grid 
+    justify-items-center content-center my-0 
+    mx-auto w-screen h-dvh max-w-screen-sm 
+    bg-primary-9 overflow-auto">
       <svg
         width="25"
         height="24"

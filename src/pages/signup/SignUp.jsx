@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
-import { SignUpForm } from "../../components/SignUpForm";
+import { SignUpForm } from "../../components/forms/SignUpForm";
 import { SocialSignUp } from "../../components/SocialSignUp";
 import { WelcomeMessage } from "../../components/WelcomeMessage";
 import { NavBar } from "../../components/NavBar";
