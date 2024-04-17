@@ -9,6 +9,9 @@ export default function ProfileWeightScreen() {
     const [weightField ,setweightFieldState ]=useState(false);  
     const [weightIsFocus, setweightIsFocus] = useState(false);
     const [weightValue,setWeightValue]=useState('');
+    const [weightType,setWeightType]=useState('');
+    const [btnClickedKg,setBtnClickKg]=useState(false);
+    const [btnClickedLbs,setBtnClickLbs]=useState(false);
 
    function setweightField(e)
     {
@@ -19,6 +22,22 @@ export default function ProfileWeightScreen() {
       }
       else
       setweightFieldState(false);
+    }
+    function handleClickKg()
+    {
+        setBtnClickKg(true);
+        setBtnClickLbs(false);
+      
+    }
+    function handleClickLbs()
+    {
+        setBtnClickLbs(true);
+        setBtnClickKg(false);
+      
+    }
+    function handleNxtBtn()
+    {
+
     }
     
 
@@ -50,7 +69,7 @@ export default function ProfileWeightScreen() {
         <a href="#" className="inline-block  px-6 py-0.5 text-white bg-grey-4  active" aria-current="page"></a>
     </li>
     <li className="me-2">
-        <a href="#" className="inline-block px-6 py-0.5 text-white bg-grey-4 inactive" aria-current="page"></a>
+        <a href="#" className="inline-block px-6 py-0.5 text-white bg-grey-4 active" aria-current="page"></a>
     </li>
     <li className="me-2">
         <a href="#" className="inline-block px-6 py-0.5 text-white bg-grey-4 inactive" aria-current="page"></a>
@@ -61,7 +80,6 @@ export default function ProfileWeightScreen() {
         <p className="text-base font-normal font-montserrat text-[#131313] text-center">
           Let's build your profile</p>
           </div>
-        
           <div className="pb-12">
     <div className="font-bold font-montserrat text-[#131313] text-4xl text-center" >
     How much do you weigh right now?
@@ -76,11 +94,29 @@ export default function ProfileWeightScreen() {
           placeholder=""
           onChange={setweightField}
           onFocus={setweightIsFocus}
-          value={weightValue}
+          value={""}
   
         >
             </InputField>
             </div>
+        <Button
+          width="w-1/6"
+          height="h-14"
+          shadowBox="shadow-[0px_1px_2px_0px_#1018280d]"
+          border="border-[1px] border-[#D0D5DD]"
+          bgColor={`transition duration-300 ${
+            btnClickedKg? "bg-primary-9" : "bg-grey-1"
+          }`}
+        > <p className="text-[#131313]">Kg</p></Button>
+         <Button
+          width="w-1/6"
+          height="h-14"
+          shadowBox="shadow-[0px_1px_2px_0px_#1018280d]"
+          border="border-[1px] border-[#D0D5DD]"
+          bgColor={`transition duration-300 ${
+            btnClickedLbs? "bg-primary-9" : "bg-grey-1"
+          }`}
+        > <p className="text-[#131313]">Lbs</p></Button>
         
         </div>
         <div className="pt-4">
@@ -94,6 +130,7 @@ export default function ProfileWeightScreen() {
           height="h-14"
           shadowBox="shadow-[0px_1px_2px_0px_#1018280d]"
           border="border-[1px] border-[#D0D5DD]"
+          handleClick={handleNxtBtn}
           bgColor={`transition duration-300 ${
             weightField? "bg-primary-9" : "bg-grey-1"
           }`}
