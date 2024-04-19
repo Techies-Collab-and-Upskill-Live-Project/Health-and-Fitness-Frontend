@@ -3,15 +3,15 @@ import { Button } from "../../components/Button";
 import {InputField} from "../../components/InputField";
 import { useNavigate } from "react-router-dom";
 
-export default function ProfileWeightScreen({setShowHeightScreen}) {
+export default function ProfileHeightScreen() {
 
 
     const [weightField ,setweightFieldState ]=useState(false);  
     const [weightIsFocus, setweightIsFocus] = useState(false);
     const [weightValue,setWeightValue]=useState('');
     const [weightType,setWeightType]=useState('');
-    const [btnClickedKg,setBtnClickKg]=useState(false);
-    const [btnClickedLbs,setBtnClickLbs]=useState(false);
+    const [btnClickedCm,setBtnClickCm]=useState(false);
+    const [btnClickedFt,setBtnClickFt]=useState(false);
 
    function setweightField(e)
     {
@@ -25,19 +25,18 @@ export default function ProfileWeightScreen({setShowHeightScreen}) {
     }
     function handleClickKg()
     {
-        setBtnClickKg(true);
-        setBtnClickLbs(false);
+      setBtnClickCm(true);
+      setBtnClickFt(false);
       
     }
     function handleClickLbs()
     {
-        setBtnClickLbs(true);
-        setBtnClickKg(false);
+      setBtnClickCm(true);
+      setBtnClickFt(false);
       
     }
     function handleNxtBtn()
     {
-      setShowHeightScreen(true);
 
     }
     
@@ -70,7 +69,7 @@ export default function ProfileWeightScreen({setShowHeightScreen}) {
         <a href="#" className="inline-block  px-6 py-0.5 text-white bg-primary-9  active" aria-current="page"></a>
     </li>
     <li className="me-2">
-        <a href="#" className="inline-block px-6 py-0.5 text-white bg-grey-4 active" aria-current="page"></a>
+        <a href="#" className="inline-block px-6 py-0.5 text-white bg-primary-9 active" aria-current="page"></a>
     </li>
     <li className="me-2">
         <a href="#" className="inline-block px-6 py-0.5 text-white bg-grey-4 inactive" aria-current="page"></a>
@@ -83,7 +82,7 @@ export default function ProfileWeightScreen({setShowHeightScreen}) {
           </div>
           <div className="pb-12">
     <div className="font-bold font-montserrat text-[#131313] text-4xl text-center" >
-    How much do you weigh right now?
+    What is your Height?
     </div>
 </div>
 </div>
@@ -106,23 +105,23 @@ export default function ProfileWeightScreen({setShowHeightScreen}) {
           shadowBox="shadow-[0px_1px_2px_0px_#1018280d]"
           border="border-[1px] border-[#D0D5DD]"
           bgColor={`transition duration-300 ${
-            btnClickedKg? "bg-primary-9" : "bg-grey-1"
+            btnClickedCm? "bg-primary-9" : "bg-grey-1"
           }`}
-        > <p className="text-[#131313]">Kg</p></Button>
+        > <p className="text-[#131313]">Cm</p></Button>
          <Button
           width="w-1/6"
           height="h-14"
           shadowBox="shadow-[0px_1px_2px_0px_#1018280d]"
           border="border-[1px] border-[#D0D5DD]"
           bgColor={`transition duration-300 ${
-            btnClickedLbs? "bg-primary-9" : "bg-grey-1"
+            btnClickedFt? "bg-primary-9" : "bg-grey-1"
           }`}
-        > <p className="text-[#131313]">Lbs</p></Button>
+        > <p className="text-[#131313]">Ft</p></Button>
         
         </div>
         <div className="pt-4">
           <p className="text-base font-normal font-montserrat text-sm text-[#131313] text-center">
-          We use your weight to recommend meals that suits your nutritional goal.
+          We use your weight and height and to recommend meals that suits your nutritional goal.
           </p>
           </div>
           <div className="w-11/12 h-3/6  justify-center flex flex-col pl-4 pb-4 pt-6">
