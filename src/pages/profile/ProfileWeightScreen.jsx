@@ -89,7 +89,7 @@ export default function ProfileWeightScreen({ setShowHeightScreen }) {
                 />
               </div>
             </div>
-            <div className="w-11/12 h-3/6  justify-center flex flex-row pl-4 pb-16 ">
+            <div className="w-11/12 h-3/6  justify-center flex flex-row pl-4 pb-12 ">
               <Button
                 width="w-1/6"
                 height="h-14"
