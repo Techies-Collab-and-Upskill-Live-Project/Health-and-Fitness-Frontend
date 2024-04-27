@@ -3,40 +3,40 @@ import { Button } from "../../components/Button";
 import { InputField } from "../../components/InputField";
 import { useNavigate } from "react-router-dom";
 
-export default function ProfileWeightScreen({ setShowHeightScreen }) {
-  const [weightValue, setWeightValue] = useState('');
-  const [selectedType, setSelectedType] = useState("Kg");
-  const [btnClickedKg, setBtnClickKg] = useState(true);
-  const [btnClickedLbs, setBtnClickLbs] = useState(false);
-  const [weightIsFocus, setWeightIsFocus] = useState(false);
+export default function ProfileHeightScreen() {
+  const [heightValue, setheightValue] = useState('');
+  const [selectedType, setSelectedType] = useState("Cm");
+  const [btnClickedCm, setBtnClickCm] = useState(true);
+  const [btnClickedFt, setBtnClickFt] = useState(false);
+  const [heightIsFocus, setheightIsFocus] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
-    if (weightValue !== "") {
-      setInputValue(`${weightValue} ${selectedType}`);
+    if (heightValue !== "") {
+      setInputValue(`${heightValue} ${selectedType}`);
     } else {
       setInputValue(` ${selectedType}`);
     }
-  }, [weightValue, selectedType]);
+  }, [heightValue, selectedType]);
 
-  function setWeightField(e) {
-    setWeightValue(e.target.value);
+  function setheightField(e) {
+    setheightValue(e.target.value);
   }
 
-  function handleClickKg() {
-    setBtnClickKg(true);
-    setBtnClickLbs(false);
-    setSelectedType("Kg");
+  function handleClickCm() {
+    setBtnClickCm(true);
+    setBtnClickFt(false);
+    setSelectedType("Cm");
   }
 
-  function handleClickLbs() {
-    setBtnClickLbs(true);
-    setBtnClickKg(false);
-    setSelectedType("Lbs");
+  function handleClickFt() {
+    setBtnClickFt(true);
+    setBtnClickCm(false);
+    setSelectedType("Ft");
   }
 
   function handleNxtBtn() {
-    setShowHeightScreen(true);
+
   }
 
   const navigate = useNavigate();
@@ -63,7 +63,7 @@ export default function ProfileWeightScreen({ setShowHeightScreen }) {
                   <a href="#" className="inline-block  px-6 py-0.5 text-white bg-primary-9  active" aria-current="page"></a>
                 </li>
                 <li className="me-2">
-                  <a href="#" className="inline-block px-6 py-0.5 text-white bg-grey-4 active" aria-current="page"></a>
+                  <a href="#" className="inline-block px-6 py-0.5 text-white bg-primary-9 active" aria-current="page"></a>
                 </li>
                 <li className="me-2">
                   <a href="#" className="inline-block px-6 py-0.5 text-white bg-grey-4 inactive" aria-current="page"></a>
@@ -74,50 +74,50 @@ export default function ProfileWeightScreen({ setShowHeightScreen }) {
               </div>
               <div className="pb-12">
                 <div className="font-bold font-montserrat text-[#131313] text-4xl text-center" >
-                  How much do you weigh right now?
+                  What is your Height?
                 </div>
               </div>
             </div>
             <div className="w-11/12 justify-center flex flex-row pl-4 pb-16 ">
               <div className="w-1/6 h-4/6 mr-1">
                 <InputField
-                  name="weight"
+                  name="height"
                   placeholder=""
-                  onChange={setWeightField}
-                  onFocus={setWeightIsFocus}
+                  onChange={setheightField}
+                  onFocus={setheightIsFocus}
                   value={inputValue}
                 />
               </div>
             </div>
-            <div className="w-11/12 h-3/6  justify-center flex flex-row pl-4 pb-12 ">
+            <div className="w-11/12 h-3/6  justify-center flex flex-row pl-4 pb-16 ">
               <Button
                 width="w-1/6"
                 height="h-14"
                 shadowBox="shadow-[0px_1px_2px_0px_#1018280d]"
                 border="border-[1px] border-[#D0D5DD]"
-                handleClick={handleClickKg}
+                handleClick={handleClickCm}
                 bgColor={`transition duration-300 ${
-                  btnClickedKg ? "bg-primary-9" : "bg-grey-1"
+                  btnClickedCm ? "bg-primary-9" : "bg-grey-1"
                 }`}
               >
-                <p className="text-[#131313]">Kg</p>
+                <p className="text-[#131313]">Cm</p>
               </Button>
               <Button
                 width="w-1/6"
                 height="h-14"
                 shadowBox="shadow-[0px_1px_2px_0px_#1018280d]"
                 border="border-[1px] border-[#D0D5DD]"
-                handleClick={handleClickLbs}
+                handleClick={handleClickFt}
                 bgColor={`transition duration-300 ${
-                  btnClickedLbs ? "bg-primary-9" : "bg-grey-1"
+                  btnClickedFt ? "bg-primary-9" : "bg-grey-1"
                 }`}
               >
-                <p className="text-[#131313]">Lbs</p>
+                <p className="text-[#131313]">Ft</p>
               </Button>
             </div>
             <div className="pt-4">
               <p className="text-base font-normal font-montserrat text-sm text-[#131313] text-center">
-                We use your weight to recommend meals that suits your nutritional goal.
+              We use your weight and height and to recommend <br></br>meals that suits your nutritional goal.
               </p>
             </div>
             <div className="w-11/12 h-3/6  justify-center flex flex-col pl-4 pb-4 pt-6">
