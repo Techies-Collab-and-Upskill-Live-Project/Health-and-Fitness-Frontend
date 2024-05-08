@@ -1,3 +1,5 @@
+export const BASE_URL = "http://localhost:8000"
+
 export async function registerUser(formData) {
     const jsonFormData = {};
     formData.forEach((value, key) => {
@@ -6,7 +8,7 @@ export async function registerUser(formData) {
     formData["keep_logged_in"] = false
     const jsonString = JSON.stringify(jsonFormData);
     try {
-        const response = await fetch('http://localhost:8000/auth/users/', {
+        const response = await fetch(`${BASE_URL}/auth/users/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
