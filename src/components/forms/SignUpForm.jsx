@@ -1,4 +1,8 @@
 import { useState } from "react";
+
+import { useMutation } from "@tanstack/react-query";
+
+import { registerUser } from "../../services/apiAuths";
 import { InputField } from "../input-fields/InputField";
 import { Button } from "../Button";
 import EmailField from "../input-fields/EmailField";
@@ -20,6 +24,20 @@ export function SignUpForm() {
   const isValid =
     isValidEmail && isValidFName && isValidUName && isValidPassword;
 
+  const { isLoading: isSubmiting, mutate } = useMutation({
+    mutationFn: registerUser,
+    networkMode: "always",
+    onSuccess: (data) => {
+      if (data.status == 201) {
+        console.log("User created succesfully");
+        // Redirect to activation page
+      } else {
+        // Handle errors
+      }
+    },
+    onError: (err) => console.error(err.message),
+  });
+
   function handleFNameChange(e) {
     setFName(e.target.value);
   }
@@ -30,14 +48,15 @@ export function SignUpForm() {
 
   function handleFormSubmit(e) {
     e.preventDefault();
-    // Send data to the backend
+    const formData = new FormData(e.target);
+    mutate(formData);
   }
 
   return (
     <form onSubmit={(e) => handleFormSubmit(e)} className="mt-6 w-full">
       <div className="grid auto-rows-max gap-4">
         <InputField
-          name="fname"
+          name="fullname"
           label="Full name"
           placeholder="Enter full name"
           title="Enter a valid full name (letters, spaces, hyphens, and apostrophes only)"
@@ -122,7 +141,8 @@ export function SignUpForm() {
       </div>
       <div className="mt-6 grid gap-4 h-[84px]">
         <Button
-          isValid={isValid}
+          type={"submit"}
+          isValid={isValid || !isSubmiting}
           width="w-full"
           bgColor={`transition duration-300 ${
             isValid ? "bg-primary-9" : "bg-grey-1"

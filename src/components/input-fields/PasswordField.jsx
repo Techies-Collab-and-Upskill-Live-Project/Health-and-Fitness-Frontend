@@ -16,7 +16,9 @@ function PasswordField({
 
   function handlePasswordChange(e) {
     setPassword(e.target.value);
-    setTempPass(e.target.value);
+    if (setTempPass != null){
+      setTempPass(e.target.value);
+    }
   }
 
   function handleShowPassword() {

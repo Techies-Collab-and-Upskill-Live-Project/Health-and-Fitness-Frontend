@@ -53,7 +53,7 @@ export function InputField({
           "Enter a strong password (at least 8 characters including uppercase, lowercase, digits, and special characters)" && (
           <div className="mb-2 flex flex-col gap-1 text-xs">
             <PasswordRequirement
-              condition={value.length > 6}
+              condition={value.length > 7}
               text={<span> A minimum of 8 characters</span>}
             />
             <PasswordRequirement

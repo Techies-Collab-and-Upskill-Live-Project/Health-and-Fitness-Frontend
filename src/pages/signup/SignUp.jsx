@@ -17,7 +17,6 @@ export default function SignUp() {
         <p className="text-grey-5 font-medium text-[13px]">
           Already have an account?
           <Link to="/log-in" className="text-primary-9">
-            {" "}
             Log in
           </Link>
         </p>
