@@ -12,6 +12,7 @@ import ResetPassword from "./pages/reset-password/ResetPassword";
 import PasswordResetSuccess from "./pages/passwordRestSuccess/PasswordResetSuccess";
 import WelcomeScreen from "./pages/onBoarding/WelcomeScreen";
 import ActivateAccount from "./pages/accountActivation/ActivateAccount";
+import ActivateAccountSuccess from "./pages/ActivationSuccess/ActivationSuccess";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,10 +39,8 @@ function App() {
             path="/reset-password-success"
             element={<PasswordResetSuccess />}
           />
-          <Route
-            path="/account/activate"
-            element={<ActivateAccount />}
-          />
+          <Route path="/account/activate" element={<ActivateAccount />} />
+          <Route path="/account/activate/success" element={<ActivateAccountSuccess />} />
         </Routes>
       </Router>
     </QueryClientProvider>
