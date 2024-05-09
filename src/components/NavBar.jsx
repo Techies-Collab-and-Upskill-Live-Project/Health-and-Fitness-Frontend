@@ -29,7 +29,7 @@ export function NavBar({ children, type = "regular" }) {
           />
         </svg>
       )}
-      <h4 className={`text-xl  ${type === "text" && "text-center"} w-full font-semibold text-grey-6`}>
+      <h4 className={`text-xl  ${type === "text" && "text-center"} font-montserrat w-full font-semibold text-grey-6`}>
         {children}
       </h4>
     </div>
