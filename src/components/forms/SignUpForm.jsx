@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 
 import { registerUser } from "../../services/apiAuths";
@@ -24,15 +25,21 @@ export function SignUpForm() {
   const isValid =
     isValidEmail && isValidFName && isValidUName && isValidPassword;
 
+  const navigate = useNavigate();
+
   const { isLoading: isSubmiting, mutate } = useMutation({
     mutationFn: registerUser,
     networkMode: "always",
     onSuccess: (data) => {
       if (data.status == 201) {
-        console.log("User created succesfully");
-        // Redirect to activation page
+        localStorage.setItem("email", data["email"]);
+        navigate("/account/activate");
       } else {
-        // Handle errors
+        Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
+          errorMessages.forEach((errorMessage) => {
+            console.log(`${fieldName}: ${errorMessage}`); //Make toast
+          });
+        });
       }
     },
     onError: (err) => console.error(err.message),

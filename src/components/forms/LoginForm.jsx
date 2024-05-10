@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { Button } from "../Button";
 import { InputField } from "../input-fields/InputField";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  getUserProfile,
+  logInUser,
+  updateKeepLoggedIn,
+} from "../../services/apiAuths";
 
 function LoginForm() {
-  const [passwordIsCorrect, setPasswordIsCorrect] = useState(false);
+  const [passwordNotCorrect, setPasswordNotCorrect] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [usernameIsFocus, setUsernameIsFocus] = useState(false);
@@ -14,13 +20,71 @@ function LoginForm() {
 
   const isInputValid = username.length > 0 && password.length > 0;
 
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  // Query user Profile
+  const { data: profile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getUserProfile,
+    networkMode: "always",
+    enabled: !!localStorage.getItem("access")
+  });
+
+  // KeepLoggedIn Mutation function
+  const { mutate: update_keep_logged_in } = useMutation({
+    mutationFn: updateKeepLoggedIn,
+    networkMode: "always",
+    onSuccess: () => {
+      console.log("User data patched successfully");
+    },
+    onError: (error) => {
+      console.error("Error patching user data:", error);
+    },
+  });
+
+  const { isLoading: isSubmiting, mutate } = useMutation({
+    mutationFn: logInUser,
+    networkMode: "always",
+    onSuccess: (data) => {
+      /** If user's credentials are correct **/
+      if (data.status == 200) {
+        localStorage.removeItem("access");
+        localStorage.removeItem("refresh");
+        localStorage.setItem("access", data.data["access"]);
+        localStorage.setItem("refresh", data.data["refresh"]);
+        // navigate("/account/activate");
+
+        // Update user, set keepLoggedIn
+        update_keep_logged_in({
+          value: keepLoggedIn,
+          token: data.data["access"],
+        });
+
+        // query user's profile, if found, redirect to diary page else redirect to profile page
+        // Query user Profile
+        queryClient.refetchQueries({queryKey: ["profile"]})
+        console.log(profile);
+
+      } else if (data.status == 401) {
+        /** If user's credentials are not correct **/
+        setPasswordNotCorrect(true);
+      } else if (data.status == 400) {
+        /** If user does not provide one or both fields **/
+        Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
+          errorMessages.forEach((errorMessage) => {
+            console.log(`${fieldName}: ${errorMessage}`); //Make toast
+          });
+        });
+      }
+    },
+    onError: (err) => console.error(err.message),
+  });
+
   function handleFormSubmit(e) {
     e.preventDefault();
-    //Log user in or not
-
-    //Assume password is incorrect
-    // eslint-disable-next-line no-constant-condition
-    if (false) setPasswordIsCorrect(true);
+    const formData = new FormData(e.target);
+    mutate(formData);
   }
   function handleUsernameChange(e) {
     setUsername(e.target.value);
@@ -78,7 +142,7 @@ function LoginForm() {
           focused={passwordIsFocus}
           isValidPassword={password.length > 0}
           errorText={
-            !passwordIsCorrect && (
+            passwordNotCorrect && (
               <p className="text-error text-xs">
                 Incorrect username or password. Try again
               </p>
@@ -149,7 +213,7 @@ function LoginForm() {
       </div>
       <div className="mt-6 grid gap-4 h-[84px]">
         <Button
-          handleClick={handleFormSubmit}
+          type={"submit"}
           isValid={isInputValid}
           width="w-full"
           bgColor={`transition duration-300 ${
