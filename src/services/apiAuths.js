@@ -81,18 +81,16 @@ export async function updateKeepLoggedIn(payload){
 export async function getUserProfile(){
     const token = localStorage.getItem("access")
     try {
-        const response = await fetch(`${BASE_URL}/api/v1/profile`, {
+        const response = await fetch(`${BASE_URL}/api/v1/profile/`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             }
         });
-
         const jsonData = await response.json()
         return { data: jsonData, status: response.status }
 
     } catch (error) {
-        console.error('Error submitting form data:', error);
+        console.log('Error fetching profile:', error);
     }
 }

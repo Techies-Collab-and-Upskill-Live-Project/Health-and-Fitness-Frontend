@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "../Button";
 import { InputField } from "../input-fields/InputField";
 import { Link, useNavigate } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import {
   getUserProfile,
   logInUser,
@@ -19,17 +19,7 @@ function LoginForm() {
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
 
   const isInputValid = username.length > 0 && password.length > 0;
-
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  // Query user Profile
-  const { data: profile } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getUserProfile,
-    networkMode: "always",
-    enabled: !!localStorage.getItem("access")
-  });
 
   // KeepLoggedIn Mutation function
   const { mutate: update_keep_logged_in } = useMutation({
@@ -43,17 +33,16 @@ function LoginForm() {
     },
   });
 
-  const { isLoading: isSubmiting, mutate } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: logInUser,
     networkMode: "always",
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       /** If user's credentials are correct **/
       if (data.status == 200) {
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
         localStorage.setItem("access", data.data["access"]);
         localStorage.setItem("refresh", data.data["refresh"]);
-        // navigate("/account/activate");
 
         // Update user, set keepLoggedIn
         update_keep_logged_in({
@@ -63,9 +52,14 @@ function LoginForm() {
 
         // query user's profile, if found, redirect to diary page else redirect to profile page
         // Query user Profile
-        queryClient.refetchQueries({queryKey: ["profile"]})
-        console.log(profile);
+        const profile = await getUserProfile();
 
+        if (profile.status === 404) {
+          navigate("/profile");
+        } else if (profile.status === 200) {
+          console.log("User has profile!!");
+          // redirect to diary page
+        }
       } else if (data.status == 401) {
         /** If user's credentials are not correct **/
         setPasswordNotCorrect(true);
