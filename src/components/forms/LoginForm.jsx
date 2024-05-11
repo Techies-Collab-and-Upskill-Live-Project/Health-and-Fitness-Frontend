@@ -57,7 +57,7 @@ function LoginForm() {
         if (profile.status === 404) {
           navigate("/profile");
         } else if (profile.status === 200) {
-          console.log("User has profile!!");
+          console.log("User has profile!!", profile.data);
           // redirect to diary page
         }
       } else if (data.status == 401) {
