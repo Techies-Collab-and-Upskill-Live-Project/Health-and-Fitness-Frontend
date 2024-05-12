@@ -6,7 +6,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import InitialScreen from "./pages/onBoarding/InitialScreen";
 import SignUp from "./pages/signup/SignUp";
 import Login from "./pages/login/Login";
-import ProfileScreenMain from "./pages/profile/ProfileScreenMain";
 //import ProfileScreen from "./pages/profile/ProfileScreen";
 import ResetPassword from "./pages/reset-password/ResetPassword";
 import PasswordResetSuccess from "./pages/passwordRestSuccess/PasswordResetSuccess";
