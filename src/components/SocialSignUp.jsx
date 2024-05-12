@@ -4,7 +4,7 @@ import { Button } from "./Button";
 export function SocialSignUp() {
   return (
     <div className="h-11 w-full grid gap-3 grid-cols-3">
-      <Link>
+      <Link to={import.meta.env.VITE_GOOGLE_URL}>
         <Button
           width="w-full"
           height="h-11"
@@ -26,9 +26,9 @@ export function SocialSignUp() {
           <img className="m-auto" src={"/facebook.svg"} alt="Facebook Icon" />
         </Button>
       </Link>
-      <Link>
+      <Link to="http://localhost:8000/api/v1/auth/twitter-signup">
         <Button
-          width="w-full"
+            width="w-full"
           height="h-11"
           shadowBox="shadow-[0px_1px_2px_0px_#1018280d]"
           border="border-[1px] border-[#D0D5DD]"
