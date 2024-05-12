@@ -1,11 +1,15 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-constant-condition */
-import { useRef, useState } from "react";
-import AppWrapper from "../../components/AppWrapper";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { NavBar } from "../../components/NavBar";
-import EmailField from "../../components/EmailField";
 import { Button } from "../../components/Button";
-import PasswordField from "../../components/PasswordField";
+import AppWrapper from "../../components/AppWrapper";
+import EmailField from "../../components/input-fields/EmailField";
+import PasswordField from "../../components/input-fields/PasswordField";
+import HorizontalDash from "../../components/HorizontalDash";
+import OTPInput from "../../components/input-fields/OTPInput";
 
 export default function ResetPassword() {
   const [step, setStep] = useState(0);
@@ -18,6 +22,8 @@ export default function ResetPassword() {
   const [OTP, setOTP] = useState([]);
 
   const inputValid = step === 0 ? isValidEmail : isValidPassword;
+
+  const navigate = useNavigate();
 
   function handleSubmitPin(pin) {
     //Check if OTP is correct then...
@@ -39,8 +45,10 @@ export default function ResetPassword() {
 
   function handleSubmitPassword(e) {
     e?.preventDefault();
+
     //Post password to the API for update
     // and move to the passwordChangedSuccess
+    navigate("/reset-password-success");
   }
 
   function handleBtnClick() {
@@ -52,23 +60,15 @@ export default function ResetPassword() {
       handleSubmitPassword();
     }
   }
+
   return (
     <AppWrapper>
       <NavBar>Forgotten your Password?</NavBar>
-      <div className="mt-6 flex h-full justify-center gap-1">
-        <div className="bg-success w-10 h-1 rounded-[100px_0px_0px_100px]"></div>
-        <div
-          className={`bg-${step >= 1 ? "success" : "grey-1"} w-10 h-1`}
-        ></div>
-        <div
-          className={`bg-${step === 2 ? "success" : "grey-1"} w-10 h-1`}
-        ></div>
-      </div>
-
+      <HorizontalDash step={step} />
       <p
         className={`${
           step === 2 && "text-center font-semibold h-6"
-        } text-black mt-6 h-[88px] text-grey-6 text-base font-medium`}
+        }  mt-6 h-[88px] text-grey-6 text-base font-medium`}
       >
         {step === 0
           ? "To reset your password, provide your registered email address."
@@ -112,88 +112,8 @@ export default function ResetPassword() {
         }`}
         handleClick={handleBtnClick}
       >
-        Continue
+        {step === 2 ? "Save password" : "Continue"}
       </Button>
     </AppWrapper>
-  );
-}
-
-function OTPInput({
-  length = 4,
-  onComplete,
-  OTPError,
-  OTP,
-  setOTP,
-  OTPBoxColor,
-}) {
-  const [activeBox, setActiveBox] = useState(1);
-
-  const inputRef = useRef([]);
-
-  function handleTextChange(input, index) {
-    if (isNaN(input)) return;
-
-    if (index > 0 && inputRef.current[index - 1]?.value === "") {
-      inputRef.current[index - 1].focus();
-      return;
-    }
-
-    const newPin = [...OTP];
-    newPin[index] = isNaN(input) ? "" : input;
-    setOTP(newPin);
-
-    if (input.length === 1 && index < length - 1) {
-      inputRef.current[index + 1]?.focus();
-      setActiveBox(index + 1);
-    }
-
-    if (input.length === 0 && index > 0) {
-      inputRef.current[index - 1].focus();
-      setActiveBox(index - 1);
-    }
-
-    if (newPin.every((digit) => digit !== "")) {
-      onComplete(newPin.join(""));
-    }
-  }
-
-  return (
-    <>
-      <div className="flex gap-3 h-11 justify-center">
-        {Array.from({ length }, (_, index) => (
-          <input
-            autoFocus={index === 0}
-            key={index}
-            type="text"
-            inputMode="numeric"
-            maxLength={1}
-            value={OTP[index] || ""}
-            onFocus={() => setActiveBox(index)}
-            onChange={(e) => handleTextChange(e.target.value, index)}
-            ref={(ref) => (inputRef.current[index] = ref)}
-            className={`
-          text-black w-[42px] text-center outline-white
-           focus:outline-1 focus:outline-offset-1
-           focus:outline-none transition ${
-             activeBox === index
-               ? "focus:outline-primary-light"
-               : "focus:outline-grey-4"
-           }
-           ${OTPError}
-           focus:border-0 rounded border border-grey-4
-            px-[10px] py-[18px]`}
-          />
-        ))}
-      </div>
-      {OTPBoxColor.length > 0 && (
-        <p className="p-2 text-xs text-center text-error">
-          Incorrect or expired code. Try again
-        </p>
-      )}
-      <div className="mt-8 flex justify-between font-montserrat font-medium text-sm">
-        <p className="text-primary-8 cursor-pointer">Resend code</p>
-        <p className="text-grey-6">00 s</p>
-      </div>
-    </>
   );
 }

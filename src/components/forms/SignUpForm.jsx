@@ -1,8 +1,13 @@
 import { useState } from "react";
-import { InputField } from "./InputField";
-import { Button } from "./Button";
-import EmailField from "./EmailField";
-import PasswordField from "./PasswordField";
+
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+
+import { registerUser } from "../../services/apiAuths";
+import { InputField } from "../input-fields/InputField";
+import { Button } from "../Button";
+import EmailField from "../input-fields/EmailField";
+import PasswordField from "../input-fields/PasswordField";
 
 export function SignUpForm() {
   const [fname, setFName] = useState("");
@@ -20,6 +25,26 @@ export function SignUpForm() {
   const isValid =
     isValidEmail && isValidFName && isValidUName && isValidPassword;
 
+  const navigate = useNavigate();
+
+  const { isLoading: isSubmiting, mutate } = useMutation({
+    mutationFn: registerUser,
+    networkMode: "always",
+    onSuccess: (data) => {
+      if (data.status == 201) {
+        localStorage.setItem("email", data["email"]);
+        navigate("/account/activate");
+      } else {
+        Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
+          errorMessages.forEach((errorMessage) => {
+            console.log(`${fieldName}: ${errorMessage}`); //Make toast
+          });
+        });
+      }
+    },
+    onError: (err) => console.error(err.message),
+  });
+
   function handleFNameChange(e) {
     setFName(e.target.value);
   }
@@ -30,14 +55,15 @@ export function SignUpForm() {
 
   function handleFormSubmit(e) {
     e.preventDefault();
-    // Send data to the backend
+    const formData = new FormData(e.target);
+    mutate(formData);
   }
 
   return (
     <form onSubmit={(e) => handleFormSubmit(e)} className="mt-6 w-full">
       <div className="grid auto-rows-max gap-4">
         <InputField
-          name="fname"
+          name="fullname"
           label="Full name"
           placeholder="Enter full name"
           title="Enter a valid full name (letters, spaces, hyphens, and apostrophes only)"
@@ -122,7 +148,8 @@ export function SignUpForm() {
       </div>
       <div className="mt-6 grid gap-4 h-[84px]">
         <Button
-          isValid={isValid}
+          type={"submit"}
+          isValid={isValid || !isSubmiting}
           width="w-full"
           bgColor={`transition duration-300 ${
             isValid ? "bg-primary-9" : "bg-grey-1"

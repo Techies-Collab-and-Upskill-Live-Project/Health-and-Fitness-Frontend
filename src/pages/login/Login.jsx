@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { SocialSignUp } from "../../components/SocialSignUp";
 import { WelcomeMessage } from "../../components/WelcomeMessage";
 import { NavBar } from "../../components/NavBar";
-import LoginForm from "../../components/LoginForm";
+import LoginForm from "../../components/forms/LoginForm";
 import AppWrapper from "../../components/AppWrapper";
 
 export default function Login() {
@@ -17,7 +17,6 @@ export default function Login() {
         <p className="text-grey-5 font-medium text-[13px]">
           Don&apos;t have an account?
           <Link to="/sign-up" className="text-primary-9">
-            {" "}
             Sign up
           </Link>
         </p>

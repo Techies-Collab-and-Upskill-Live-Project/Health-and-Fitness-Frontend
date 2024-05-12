@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button } from "../../components/Button";
 import { useNavigate } from "react-router-dom";
+
+import { Button } from "./Button";
 
 const images = [
   { id: 0, name: "Group 26086143" },
@@ -8,7 +9,7 @@ const images = [
   { id: 2, name: "Group 26086144" },
 ];
 
-export default function OnBoarding() {
+function OnBoarding() {
   const [currentID, setCurrentID] = useState(0);
   const navigate = useNavigate();
 
@@ -27,8 +28,8 @@ export default function OnBoarding() {
 
   return (
     <div
-      className="px-4 pt-4 pb-7 grid gap-3.5 grid-rows-[1.5fr_1fr] 
-    bg-primary-1 my-0 mx-auto max-w-screen-sm w-screen h-[100dvh]"
+      className="h-dvh overflow-auto px-4 pt-4 pb-7 grid gap-3.5 grid-rows-[1.5fr_1fr] 
+    bg-primary-1 my-0 mx-auto max-w-screen-sm w-screen"
     >
       <div className="grid content-between mb-4">
         <img src="/Logo plain background.svg" alt="FudHouse logo" />
@@ -108,3 +109,5 @@ export default function OnBoarding() {
     </div>
   );
 }
+
+export default OnBoarding;

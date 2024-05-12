@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ProfileGenderScreen from "./ProfileGenderScreen";
 import ProfileNutritionalGoal from "./ProfileNutritionalGoal";
 import ProfileDOBScreen from "./ProfileDOBScreen";

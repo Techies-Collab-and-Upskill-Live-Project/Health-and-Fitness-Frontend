@@ -13,7 +13,9 @@ export default function EmailField({
 
   function handleEmailChange(e) {
     setEmail(e.target.value);
-    setTempEmail(e.target.value);
+    if (setTempEmail != null) {
+      setTempEmail(e.target.value);
+    }
   }
 
   return (
