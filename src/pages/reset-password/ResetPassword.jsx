@@ -10,6 +10,7 @@ import EmailField from "../../components/input-fields/EmailField";
 import PasswordField from "../../components/input-fields/PasswordField";
 import HorizontalDash from "../../components/HorizontalDash";
 import OTPInput from "../../components/input-fields/OTPInput";
+import { getOTP, resetPassword, verifyOTP } from "../../services/apiAuths";
 
 export default function ResetPassword() {
   const [step, setStep] = useState(0);
@@ -20,35 +21,55 @@ export default function ResetPassword() {
   const [passwordIsFocus, setPasswordIsFocus] = useState(false);
   const [OTPBoxColor, setOTPBoxColor] = useState("");
   const [OTP, setOTP] = useState([]);
+  const [userID, setUserID] = useState(null);
 
   const inputValid = step === 0 ? isValidEmail : isValidPassword;
 
   const navigate = useNavigate();
 
-  function handleSubmitPin(pin) {
+  async function handleSubmitPin(pin) {
     //Check if OTP is correct then...
     if (pin.length === 4) {
-      //Assume the code is correct
-      if (true) {
+      const jsonData = {
+        otp: pin,
+        user_id: userID,
+      };
+
+      const data = await verifyOTP(jsonData);
+
+      if (data.status === 200) {
         setStep((step) => step + 1);
-      } else {
+        setOTP([]);
+      } else if (data.status === 400) {
         setOTPBoxColor("border-error focus:outline-error");
       }
     }
   }
 
-  function handleSubmitEmail(e) {
+  async function handleSubmitEmail(e) {
     e?.preventDefault();
-    // Send email for verification
-    setStep((step) => step + 1);
+    const data = await getOTP(email);
+    if (data.status === 404) {
+      console.error("No account with the email is found!!!");
+      //Toast
+    } else if (data.status === 200) {
+      setUserID(data.data.user_id);
+      setStep((step) => step + 1);
+      setEmail("");
+    }
   }
 
-  function handleSubmitPassword(e) {
+  async function handleSubmitPassword(e) {
     e?.preventDefault();
-
-    //Post password to the API for update
-    // and move to the passwordChangedSuccess
-    navigate("/reset-password-success");
+    const jsonData = { new_password: password };
+    const data = await resetPassword(jsonData, userID);
+    if (data.status === 200) {
+      navigate("/reset-password-success");
+      setPassword("");
+    } else {
+      console.error(data.data);
+      //Toast
+    }
   }
 
   function handleBtnClick() {
@@ -63,7 +84,17 @@ export default function ResetPassword() {
 
   return (
     <AppWrapper>
-      <NavBar>Forgotten your Password?</NavBar>
+      <NavBar
+        navigationFn={() => {
+          if (step === 0) {
+            return null;
+          } else {
+            setStep((step) => step - 1);
+          }
+        }}
+      >
+        Forgotten your Password?
+      </NavBar>
       <HorizontalDash step={step} />
       <p
         className={`${
@@ -91,6 +122,7 @@ export default function ResetPassword() {
           OTP={OTP}
           setOTP={setOTP}
           OTPBoxColor={OTPBoxColor}
+          onResendCode={handleSubmitEmail}
         />
       ) : (
         <form onSubmit={handleSubmitPassword}>
@@ -103,17 +135,19 @@ export default function ResetPassword() {
           />
         </form>
       )}
-      <Button
-        mt={`${passwordIsFocus ? "mt-[222px]" : "mt-[318px]"}`}
-        isValid={inputValid}
-        width="w-full"
-        bgColor={`transition duration-300 ${
-          inputValid ? "bg-primary-9" : "bg-grey-1"
-        }`}
-        handleClick={handleBtnClick}
-      >
-        {step === 2 ? "Save password" : "Continue"}
-      </Button>
+      {step !== 1 && (
+        <Button
+          mt={`${passwordIsFocus ? "mt-[222px]" : "mt-[318px]"}`}
+          isValid={inputValid}
+          width="w-full"
+          bgColor={`transition duration-300 ${
+            inputValid ? "bg-primary-9" : "bg-grey-1"
+          }`}
+          handleClick={handleBtnClick}
+        >
+          {step === 2 ? "Save password" : "Continue"}
+        </Button>
+      )}
     </AppWrapper>
   );
 }

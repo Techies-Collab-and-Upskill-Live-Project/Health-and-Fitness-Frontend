@@ -8,6 +8,7 @@ function OTPInput({
   OTP,
   setOTP,
   OTPBoxColor,
+  onResendCode,
 }) {
   const [activeBox, setActiveBox] = useState(1);
 
@@ -74,7 +75,12 @@ function OTPInput({
         </p>
       )}
       <div className="mt-2 flex justify-between font-montserrat font-medium text-sm">
-        <p className="text-primary-8 cursor-pointer">Resend code</p>
+        <p
+          className="text-primary-8 cursor-pointer"
+          onClick={() => onResendCode}
+        >
+          Resend code
+        </p>
         <p className="text-grey-6">00 s</p>
       </div>
     </>

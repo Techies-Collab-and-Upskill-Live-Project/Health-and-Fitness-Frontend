@@ -6,9 +6,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import InitialScreen from "./pages/onBoarding/InitialScreen";
 import SignUp from "./pages/signup/SignUp";
 import Login from "./pages/login/Login";
-//import ProfileScreen from "./pages/profile/ProfileScreen";
+import ProfileScreen from "./pages/profile/ProfileScreenMain";
 import ResetPassword from "./pages/reset-password/ResetPassword";
-import PasswordResetSuccess from "./pages/passwordRestSuccess/PasswordResetSuccess";
+import PasswordResetSuccess from "./pages/passwordResetSuccess/PasswordResetSuccess";
 import WelcomeScreen from "./pages/onBoarding/WelcomeScreen";
 import ActivateAccount from "./pages/accountActivation/ActivateAccount";
 import ActivateAccountSuccess from "./pages/ActivationSuccess/ActivationSuccess";
@@ -31,7 +31,7 @@ function App() {
           <Route path="/on-boarding" element={<WelcomeScreen />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/log-in" element={<Login />} />
-          <Route path="/profile" element={<ProfileScreenMain />} />
+          <Route path="/profile" element={<ProfileScreen />} />
           {/* <Route path="/profile" element={<ProfileScreen />} /> */}
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route

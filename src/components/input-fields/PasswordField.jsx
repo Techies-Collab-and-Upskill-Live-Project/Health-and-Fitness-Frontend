@@ -11,7 +11,6 @@ function PasswordField({
   const [password, setPassword] = useState("");
   const passwordRegEx =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
-  const [passwordIsFocus, setPasswordIsFocus] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   function handlePasswordChange(e) {
@@ -35,8 +34,6 @@ function PasswordField({
       title="Enter a strong password (at least 8 characters including uppercase, lowercase, digits, and special characters)"
       onChange={handlePasswordChange}
       value={password}
-      onFocus={setPasswordIsFocus}
-      focused={passwordIsFocus}
       onKeyUp={() => {
         passwordRegEx.test(password)
           ? setIsValidPassword(true)

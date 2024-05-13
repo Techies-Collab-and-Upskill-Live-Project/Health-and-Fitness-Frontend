@@ -1,4 +1,6 @@
-export const BASE_URL = "http://localhost:8000"
+import { decrypt } from "../utils/helpers";
+
+export const BASE_URL = import.meta.env.VITE_BASE_URL
 
 export async function registerUser(formData) {
     const jsonFormData = {};
@@ -59,8 +61,8 @@ export async function logInUser(formData) {
 }
 
 
-export async function updateKeepLoggedIn(payload){
-    const jsonFormData = {"keep_logged_in": payload.value};
+export async function updateKeepLoggedIn(payload) {
+    const jsonFormData = { "keep_logged_in": payload.value };
     const jsonString = JSON.stringify(jsonFormData);
 
     try {
@@ -78,8 +80,8 @@ export async function updateKeepLoggedIn(payload){
     }
 }
 
-export async function getUserProfile(){
-    const token = localStorage.getItem("access")
+export async function getUserProfile() {
+    const token = decrypt(localStorage.getItem("access"))
     try {
         const response = await fetch(`${BASE_URL}/api/v1/profile/`, {
             method: 'GET',
@@ -92,5 +94,71 @@ export async function getUserProfile(){
 
     } catch (error) {
         console.log('Error fetching profile:', error);
+    }
+}
+
+export async function getOTP(email) {
+    try {
+        const response = await fetch(`${BASE_URL}/api/v1/auth/users/otp/?email=${email}`, {
+            method: 'GET'
+        });
+        const jsonData = await response.json()
+        return { data: jsonData, status: response.status }
+
+    } catch (error) {
+        console.log('Error requesting OTP:', error);
+    }
+}
+
+export async function getUserID() {
+    const token = decrypt(localStorage.getItem("access"))
+    try {
+        const response = await fetch(`${BASE_URL}/auth/users/me`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const jsonData = await response.json()
+        return { data: jsonData, status: response.status }
+
+    } catch (error) {
+        console.log('Error fetching user details:', error);
+    }
+}
+
+export async function verifyOTP(jsonData) {
+    const jsonString = JSON.stringify(jsonData);
+    try {
+        const response = await fetch(`${BASE_URL}/api/v1/auth/users/otp/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonString
+        });
+        const resData = await response.json()
+        return { data: resData, status: response.status }
+
+    } catch (error) {
+        console.log('Error verifying user"s OTP:', error);
+    }
+}
+
+export async function resetPassword(jsonData, userID) {
+    const jsonString = JSON.stringify(jsonData);
+    try {
+        const response = await fetch(`${BASE_URL}/api/v1/auth/users/${userID}/set_password/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonString
+        });
+        const resData = await response.json()
+        return { data: resData, status: response.status }
+
+    } catch (error) {
+        console.log('Error Setting new password:', error);
     }
 }

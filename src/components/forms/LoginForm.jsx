@@ -8,6 +8,7 @@ import {
   logInUser,
   updateKeepLoggedIn,
 } from "../../services/apiAuths";
+import { encrypt } from "../../utils/helpers";
 
 function LoginForm() {
   const [passwordNotCorrect, setPasswordNotCorrect] = useState(false);
@@ -41,8 +42,8 @@ function LoginForm() {
       if (data.status == 200) {
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
-        localStorage.setItem("access", data.data["access"]);
-        localStorage.setItem("refresh", data.data["refresh"]);
+        localStorage.setItem("access", encrypt(data.data["access"]));
+        localStorage.setItem("refresh", encrypt(data.data["refresh"]));
 
         // Update user, set keepLoggedIn
         update_keep_logged_in({
