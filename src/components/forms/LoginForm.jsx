@@ -26,9 +26,9 @@ function LoginForm() {
   const { mutate: update_keep_logged_in } = useMutation({
     mutationFn: updateKeepLoggedIn,
     networkMode: "always",
-    onSuccess: () => {
-      console.log("User data patched successfully");
-    },
+    // onSuccess: () => {
+    //   console.log("User data patched successfully");
+    // },
     onError: (error) => {
       console.error("Error patching user data:", error);
     },

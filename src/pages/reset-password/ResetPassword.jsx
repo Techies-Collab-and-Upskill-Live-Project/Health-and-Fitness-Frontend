@@ -85,13 +85,13 @@ export default function ResetPassword() {
   return (
     <AppWrapper>
       <NavBar
-        navigationFn={() => {
-          if (step === 0) {
-            return null;
-          } else {
-            setStep((step) => step - 1);
-          }
-        }}
+        navigationFn={
+          step !== 0
+            ? () => {
+                setStep((step) => step - 1);
+              }
+            : null
+        }
       >
         Forgotten your Password?
       </NavBar>

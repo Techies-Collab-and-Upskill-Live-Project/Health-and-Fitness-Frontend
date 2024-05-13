@@ -41,8 +41,8 @@ export function InputField({
           autoComplete="off"
           value={value}
           onChange={onChange}
-          onFocus={() => onFocus(true)}
-          onBlur={() => onFocus(false)}
+          onFocus={() => (onFocus ? onFocus(true) : null)}
+          onBlur={() => (onFocus ? onFocus(false) : null)}
           onKeyUp={onKeyUp}
         />
       </label>

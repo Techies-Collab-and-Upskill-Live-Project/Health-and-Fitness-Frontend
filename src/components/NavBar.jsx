@@ -5,7 +5,7 @@ export function NavBar({ children, type = "regular", navigationFn = null }) {
   const navigate = useNavigate();
 
   function handleNavigateToHome() {
-    if (navigationFn) {
+    if (navigationFn !== null) {
       navigationFn();
     } else {
       navigate(-1);
