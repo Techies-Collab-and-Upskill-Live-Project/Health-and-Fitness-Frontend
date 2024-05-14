@@ -9,6 +9,7 @@ import {
   updateKeepLoggedIn,
 } from "../../services/apiAuths";
 import { encrypt } from "../../utils/helpers";
+import toast from "react-hot-toast";
 
 function LoginForm() {
   const [passwordNotCorrect, setPasswordNotCorrect] = useState(false);
@@ -68,12 +69,12 @@ function LoginForm() {
         /** If user does not provide one or both fields **/
         Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
           errorMessages.forEach((errorMessage) => {
-            console.log(`${fieldName}: ${errorMessage}`); //Make toast
+            toast.error(`${fieldName}: ${errorMessage}`); //Make toast
           });
         });
       }
     },
-    onError: (err) => console.error(err.message),
+    onError: (err) => toast.error(err.message),
   });
 
   function handleFormSubmit(e) {

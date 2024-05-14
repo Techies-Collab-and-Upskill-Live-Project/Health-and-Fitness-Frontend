@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-constant-condition */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { NavBar } from "../../components/NavBar";
@@ -11,6 +11,7 @@ import PasswordField from "../../components/input-fields/PasswordField";
 import HorizontalDash from "../../components/HorizontalDash";
 import OTPInput from "../../components/input-fields/OTPInput";
 import { getOTP, resetPassword, verifyOTP } from "../../services/apiAuths";
+import toast from "react-hot-toast";
 
 export default function ResetPassword() {
   const [step, setStep] = useState(0);
@@ -23,8 +24,17 @@ export default function ResetPassword() {
   const [OTP, setOTP] = useState([]);
   const [userID, setUserID] = useState(null);
 
-  const inputValid = step === 0 ? isValidEmail : isValidPassword;
+  const [inputValid, setIsInputValid] = useState(false);
 
+  useEffect(() => {
+      if (step === 0) {
+        setIsInputValid(isValidEmail);
+      } else if (step === 2) {
+        setIsInputValid(isValidPassword);
+      } else {
+        setIsInputValid(false);
+      }
+  }, [isValidEmail, isValidPassword, step]);
   const navigate = useNavigate();
 
   async function handleSubmitPin(pin) {
@@ -50,8 +60,7 @@ export default function ResetPassword() {
     e?.preventDefault();
     const data = await getOTP(email);
     if (data.status === 404) {
-      console.error("No account with the email is found!!!");
-      //Toast
+      toast.error("No active account with the email is found");
     } else if (data.status === 200) {
       setUserID(data.data.user_id);
       setStep((step) => step + 1);
@@ -67,13 +76,13 @@ export default function ResetPassword() {
       navigate("/reset-password-success");
       setPassword("");
     } else {
-      console.error(data.data);
-      //Toast
+      toast.error(data.data);
     }
   }
 
   function handleBtnClick() {
     if (step === 0) {
+      setIsInputValid(false);
       handleSubmitEmail();
     } else if (step === 1) {
       handleSubmitPin(OTP.join(""));
@@ -89,6 +98,7 @@ export default function ResetPassword() {
           step !== 0
             ? () => {
                 setStep((step) => step - 1);
+                setIsValidEmail(false)
               }
             : null
         }

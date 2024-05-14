@@ -56,15 +56,15 @@ export function InputField({
           />
           <PasswordRequirement
             condition={/[A-Z]/.test(value)}
-            text={<span> Must contain 1 uppercase letter(A-Z)</span>}
+            text={<span> Must contain at least 1 uppercase letter(A-Z)</span>}
           />
           <PasswordRequirement
             condition={/[a-z]/.test(value)}
-            text={<span> Must contain 1 lowercase letter(a-z)</span>}
+            text={<span> Must contain at least 1 lowercase letter(a-z)</span>}
           />
           <PasswordRequirement
             condition={/[!@#$%&*]/.test(value)}
-            text={<span> Must contain symbol[!@#$%&*]</span>}
+            text={<span> Must contain at least 1 symbol[!@#$%&*]</span>}
           />
           <PasswordRequirement
             condition={/\d/.test(value)}

@@ -1,17 +1,28 @@
+import { Suspense, lazy, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Spinner from "./components/Spinner";
+import { Toaster } from "react-hot-toast";
 
-import InitialScreen from "./pages/onBoarding/InitialScreen";
-import SignUp from "./pages/signup/SignUp";
-import Login from "./pages/login/Login";
-import ProfileScreen from "./pages/profile/ProfileScreenMain";
-import ResetPassword from "./pages/reset-password/ResetPassword";
-import PasswordResetSuccess from "./pages/passwordResetSuccess/PasswordResetSuccess";
-import WelcomeScreen from "./pages/onBoarding/WelcomeScreen";
-import ActivateAccount from "./pages/accountActivation/ActivateAccount";
-import ActivateAccountSuccess from "./pages/ActivationSuccess/ActivationSuccess";
+const SplashScreen = lazy(() => import("./components/SplashScreen"));
+const SignUp = lazy(() => import("./pages/signup/SignUp"));
+const Login = lazy(() => import("./pages/login/Login"));
+const ProfileScreen = lazy(() => import("./pages/profile/ProfileScreenMain"));
+const ResetPassword = lazy(() =>
+  import("./pages/reset-password/ResetPassword")
+);
+const PasswordResetSuccess = lazy(() =>
+  import("./pages/passwordResetSuccess/PasswordResetSuccess")
+);
+const WelcomeScreen = lazy(() => import("./pages/onBoarding/WelcomeScreen"));
+const ActivateAccount = lazy(() =>
+  import("./pages/accountActivation/ActivateAccount")
+);
+const ActivateAccountSuccess = lazy(() =>
+  import("./pages/ActivationSuccess/ActivationSuccess")
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,26 +33,111 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // Adjust the delay time in milliseconds (e.g., 2000 for 2 seconds)
+
+    return () => clearTimeout(); // Cleanup to avoid memory leaks
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
       <Router>
         <Routes>
-          <Route path="/" element={<InitialScreen />} />
-          <Route path="/on-boarding" element={<WelcomeScreen />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/log-in" element={<Login />} />
-          <Route path="/profile" element={<ProfileScreen />} />
-          {/* <Route path="/profile" element={<ProfileScreen />} /> */}
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route
+            path="/"
+            element={
+              !isLoading ? (
+                <Suspense fallback={<SplashScreen />}>
+                  {" "}
+                  {<WelcomeScreen />}
+                </Suspense>
+              ) : (
+                <SplashScreen />
+              )
+            }
+          ></Route>
+          <Route
+            path="/sign-up"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <SignUp />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/log-in"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <Login />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <ProfileScreen />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <ResetPassword />
+              </Suspense>
+            }
+          />
           <Route
             path="/reset-password-success"
-            element={<PasswordResetSuccess />}
+            element={
+              <Suspense fallback={<Spinner />}>
+                <PasswordResetSuccess />
+              </Suspense>
+            }
           />
-          <Route path="/account/activate" element={<ActivateAccount />} />
-          <Route path="/account/activate/success" element={<ActivateAccountSuccess />} />
+          <Route
+            path="/account/activate"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <ActivateAccount />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/account/activate/success"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <ActivateAccountSuccess />
+              </Suspense>
+            }
+          />
         </Routes>
       </Router>
+      <Toaster
+        position="top-center"
+        gutter={12}
+        containerStyle={{ margin: "8px" }}
+        toastOptions={{
+          success: {
+            duration: 3000,
+          },
+          error: {
+            duration: 5000,
+          },
+          style: {
+            fontSize: "16px",
+            maxWidth: "500px",
+            padding: "16px 24px",
+            backgroundColor: "#E5F6D3",
+            color: "#3C3B49",
+          },
+        }}
+      />
     </QueryClientProvider>
   );
 }
