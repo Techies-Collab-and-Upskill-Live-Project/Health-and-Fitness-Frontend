@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 import { registerUser } from "../../services/apiAuths";
 import { InputField } from "../input-fields/InputField";
@@ -37,12 +38,12 @@ export function SignUpForm() {
       } else {
         Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
           errorMessages.forEach((errorMessage) => {
-            console.log(`${fieldName}: ${errorMessage}`); //Make toast
+            toast.error(`${fieldName}: ${errorMessage}`); //Make toast
           });
         });
       }
     },
-    onError: (err) => console.error(err.message),
+    onError: (err) => toast.error(err.message),
   });
 
   function handleFNameChange(e) {
@@ -149,7 +150,7 @@ export function SignUpForm() {
       <div className="mt-6 grid gap-4 h-[84px]">
         <Button
           type={"submit"}
-          isValid={isValid || !isSubmiting}
+          isValid={isValid && !isSubmiting}
           width="w-full"
           bgColor={`transition duration-300 ${
             isValid ? "bg-primary-9" : "bg-grey-1"

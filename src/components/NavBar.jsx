@@ -1,11 +1,15 @@
 import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
-export function NavBar({ children, type = "regular" }) {
+export function NavBar({ children, type = "regular", navigationFn = null }) {
   const navigate = useNavigate();
 
   function handleNavigateToHome() {
-    navigate("/on-boarding");
+    if (navigationFn !== null) {
+      navigationFn();
+    } else {
+      navigate(-1);
+    }
   }
   return (
     <div
@@ -29,7 +33,11 @@ export function NavBar({ children, type = "regular" }) {
           />
         </svg>
       )}
-      <h4 className={`text-xl  ${type === "text" && "text-center"} font-montserrat w-full font-semibold text-grey-6`}>
+      <h4
+        className={`text-xl  ${
+          type === "text" && "text-center"
+        } font-montserrat w-full font-semibold text-grey-6`}
+      >
         {children}
       </h4>
     </div>

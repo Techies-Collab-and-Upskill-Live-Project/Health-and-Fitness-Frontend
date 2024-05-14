@@ -14,10 +14,10 @@ export function Button({
   return (
     <button
       className={`${
-        isValid ? `${bgColor} cursor-pointer` : `${bgColor} cursor-auto`
+        isValid ? `${bgColor} cursor-pointer active:scale-97` : `${bgColor} cursor-auto`
       } ${width} ${height} rounded-lg
   font-4 text-white-2 text-center  
-  font-montserrat font-medium active:scale-95
+  font-montserrat font-medium
    ${mt} ${bgColor} ${border} ${shadowBox}`}
       onClick={handleClick}
       disabled={!isValid}

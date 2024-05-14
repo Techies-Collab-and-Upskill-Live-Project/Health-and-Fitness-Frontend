@@ -15,7 +15,7 @@ export default function SignUp() {
       <div className="full h-20 grid gap-4 mt-6 justify-items-center">
         <SocialSignUp />
         <p className="text-grey-5 font-medium text-[13px]">
-          Already have an account?
+          <span>Already have an account? </span>
           <Link to="/log-in" className="text-primary-9">
             Log in
           </Link>

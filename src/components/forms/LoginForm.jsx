@@ -8,6 +8,8 @@ import {
   logInUser,
   updateKeepLoggedIn,
 } from "../../services/apiAuths";
+import { encrypt } from "../../utils/helpers";
+import toast from "react-hot-toast";
 
 function LoginForm() {
   const [passwordNotCorrect, setPasswordNotCorrect] = useState(false);
@@ -25,9 +27,9 @@ function LoginForm() {
   const { mutate: update_keep_logged_in } = useMutation({
     mutationFn: updateKeepLoggedIn,
     networkMode: "always",
-    onSuccess: () => {
-      console.log("User data patched successfully");
-    },
+    // onSuccess: () => {
+    //   console.log("User data patched successfully");
+    // },
     onError: (error) => {
       console.error("Error patching user data:", error);
     },
@@ -41,8 +43,8 @@ function LoginForm() {
       if (data.status == 200) {
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
-        localStorage.setItem("access", data.data["access"]);
-        localStorage.setItem("refresh", data.data["refresh"]);
+        localStorage.setItem("access", encrypt(data.data["access"]));
+        localStorage.setItem("refresh", encrypt(data.data["refresh"]));
 
         // Update user, set keepLoggedIn
         update_keep_logged_in({
@@ -67,12 +69,12 @@ function LoginForm() {
         /** If user does not provide one or both fields **/
         Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
           errorMessages.forEach((errorMessage) => {
-            console.log(`${fieldName}: ${errorMessage}`); //Make toast
+            toast.error(`${fieldName}: ${errorMessage}`); //Make toast
           });
         });
       }
     },
-    onError: (err) => console.error(err.message),
+    onError: (err) => toast.error(err.message),
   });
 
   function handleFormSubmit(e) {

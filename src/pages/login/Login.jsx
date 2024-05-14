@@ -15,7 +15,7 @@ export default function Login() {
       <div className="full h-20 grid gap-4 mt-6 justify-items-center">
         <SocialSignUp />
         <p className="text-grey-5 font-medium text-[13px]">
-          Don&apos;t have an account?
+          <span>Don&apos;t have an account? </span>
           <Link to="/sign-up" className="text-primary-9">
             Sign up
           </Link>
