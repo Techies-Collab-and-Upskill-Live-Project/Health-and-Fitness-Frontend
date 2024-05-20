@@ -66,6 +66,9 @@ export default {
           3: '#F5F5F5',
           4: '#FFFFFF'
         },
+        accent: {
+          4: '#FF9784',
+        },
         error: '#E0010F',
         success: '#2FD305',
         warning: '#FED51F',

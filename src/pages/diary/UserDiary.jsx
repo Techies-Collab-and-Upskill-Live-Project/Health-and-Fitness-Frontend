@@ -1,10 +1,12 @@
-import AppWrapper from "../../components/AppWrapper";
-import { CircularProgress } from "../../components/CircularProgressBar";
+import CalorieLog from "./CalorieLog";
 
 export default function Diary() {
   return (
-    <AppWrapper>
-      <CircularProgress progress={30} />
-    </AppWrapper>
+    <div
+      className="overflow-auto h-dvh my-0 mx-auto font-montserrat
+        max-w-screen-sm w-full bg-white-3"
+    >
+      <CalorieLog />
+    </div>
   );
 }
