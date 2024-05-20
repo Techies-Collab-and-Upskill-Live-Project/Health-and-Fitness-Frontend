@@ -1,16 +1,10 @@
-export function Pentagon () {
-    return (
-      <div className="relative w-full h-0 pb-full">
-        <svg 
-          viewBox="0 0 100 100" 
-          preserveAspectRatio="xMidYMid meet"
-          className="absolute top-0 left-0 w-full h-full"
-        >
-          <polygon 
-            points="50,100 0,40 20,0 80,0 100,40" 
-            className="fill-primary-5 text-green-500"
-          />
-        </svg>
-      </div>
-    );
-  }
+export function Pentagon() {
+  return (
+    <svg viewBox="0 20 50 50" className="w-full h-[100px]">
+      <polygon
+        points="25,35 -135,20 185,20"
+        className="fill-primary-9"
+      ></polygon>
+    </svg>
+  );
+}

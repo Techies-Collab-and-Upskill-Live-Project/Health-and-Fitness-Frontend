@@ -18,7 +18,7 @@ export default function CalorieLog() {
     setStep(() => step - 1);
   }
   return (
-    <div className="bg-primary-9 p-4 flex-col flex items-center text-white-3 gap-5">
+    <div className="bg-primary-9 p-4 flex-col flex items-center text-white-3 gap-5 pb-16">
       <PlainLogo />
       <Title />
       <DateNavigation
@@ -39,22 +39,22 @@ export function Title() {
 export function NutritionalRequirements() {
   return (
     <div className="flex justify-between items-center w-full sm:px-20">
-      <TwoColumnGrid bg="bg-primary-6" />
-      <TwoColumnGrid bg="bg-accent-4" />
-      <TwoColumnGrid bg="bg-secondary-6" />
+      <TwoColumnGrid bg="bg-primary-6" name="Carb" value="35g / 380g" />
+      <TwoColumnGrid bg="bg-accent-4" name="Protein" value="35g / 380g" />
+      <TwoColumnGrid bg="bg-secondary-6" name="Fats" value="35g / 380g" />
     </div>
   );
 }
 
-const TwoColumnGrid = ({ bg }) => {
+const TwoColumnGrid = ({ bg, name, value }) => {
   return (
     <div className="h-12 flex gap-3">
       <div className={`bg-white-4 w-2 rounded-lg flex items-baseline`}>
         <div className={`${bg} w-full mt-auto h-1/2 rounded-lg`}></div>
       </div>
       <div className="flex-1 grid grid-rows-2 gap-2">
-        <p className="text-base font-medium">Carb</p>
-        <p className="text-sm">35g / 380g</p>
+        <p className="text-base font-medium">{name}</p>
+        <p className="text-sm">{value}</p>
       </div>
     </div>
   );

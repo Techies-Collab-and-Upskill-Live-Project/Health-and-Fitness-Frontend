@@ -1,4 +1,5 @@
 import CalorieLog from "./CalorieLog";
+import { Pentagon } from "../../components/Pentagon";
 
 export default function Diary() {
   return (
@@ -7,6 +8,7 @@ export default function Diary() {
         max-w-screen-sm w-full bg-white-3"
     >
       <CalorieLog />
+      <Pentagon />
     </div>
   );
 }
