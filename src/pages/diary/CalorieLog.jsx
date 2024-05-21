@@ -18,7 +18,7 @@ export default function CalorieLog() {
     setStep(() => step - 1);
   }
   return (
-    <div className="bg-primary-9 p-4 flex-col flex items-center text-white-3 gap-5 pb-16">
+    <div className="bg-primary-9 p-4 flex-col flex items-center text-white-3 gap-5 pb-12">
       <PlainLogo />
       <Title />
       <DateNavigation
@@ -52,7 +52,7 @@ const TwoColumnGrid = ({ bg, name, value }) => {
       <div className={`bg-white-4 w-2 rounded-lg flex items-baseline`}>
         <div className={`${bg} w-full mt-auto h-1/2 rounded-lg`}></div>
       </div>
-      <div className="flex-1 grid grid-rows-2 gap-2">
+      <div className="grid grid-rows-2 gap-2">
         <p className="text-base font-medium">{name}</p>
         <p className="text-sm">{value}</p>
       </div>
