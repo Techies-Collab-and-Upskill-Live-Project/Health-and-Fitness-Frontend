@@ -1,6 +1,7 @@
 import CalorieLog from "./CalorieLog";
 import { Pentagon } from "../../components/Pentagon";
 import { Pill } from "../../components/Pill";
+import SectionTwo from "./SectionTwo";
 
 export default function Diary() {
   return (
@@ -11,6 +12,7 @@ export default function Diary() {
       <CalorieLog />
       <Pentagon />
       <Pill />
+      <SectionTwo/>
     </div>
   );
 }

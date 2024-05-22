@@ -18,7 +18,9 @@ export default function CalorieLog() {
     setStep(() => step - 1);
   }
   return (
-    <div className="bg-primary-9 p-4 flex-col flex items-center text-white-3 gap-5 pb-12">
+    <div className="
+    bg-primary-9 p-4 flex-col flex items-center
+     text-white-3 gap-3 pb-12 mb-[-1px] mr-[-1px]">
       <PlainLogo />
       <Title />
       <DateNavigation

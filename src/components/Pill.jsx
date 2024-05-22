@@ -1,11 +1,10 @@
 export function Pill() {
-    //shadow-[0px_4px_4px_0px_rgba(0, 0, 0, 0.25)]
   return (
     <div className="flex items-center justify-center w-full h-0 relative">
       <div
         className="
         absolute top-[-90px]
-      text-grey-6 bg-white-3 shadow-xl rounded-[50px] w-[194px] 
+      text-grey-6 bg-white-3 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] rounded-[50px] w-[194px] 
       h-[50px]  flex items-center justify-center
       "
       >
