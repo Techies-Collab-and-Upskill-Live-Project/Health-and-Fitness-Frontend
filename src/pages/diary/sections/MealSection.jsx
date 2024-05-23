@@ -1,10 +1,17 @@
 import { InnerContainer, OuterContainer } from "../Containers";
 
 export default function MealSection() {
+  const empty = false;
   return (
     <OuterContainer title="Meals">
-      <Meal />
-      <Meal />
+      {empty ? (
+        <InnerContainer image_url={"/Empty_Meal.png"} name="Empty Meal" />
+      ) : (
+        <>
+          <Meal />
+          <Meal />
+        </>
+      )}
     </OuterContainer>
   );
 }
