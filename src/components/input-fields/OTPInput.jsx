@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 /* eslint-disable react/prop-types */
 function OTPInput({
@@ -11,8 +11,33 @@ function OTPInput({
   onResendCode,
 }) {
   const [activeBox, setActiveBox] = useState(1);
+  const [countdown, setCountdown] = useState(60);
+  const [resendDisabled, setResendDisabled] = useState(true);
 
   const inputRef = useRef([]);
+
+  useEffect(() => {
+    const countdownInterval = setInterval(() => {
+      if (countdown > 1) {
+        setCountdown((countdown) => countdown - 1);
+      } else {
+        setCountdown(0);
+      }
+
+      if (countdown === 0) {
+        clearInterval(countdownInterval);
+        setResendDisabled(false);
+      }
+    }, 1000);
+
+    return () => clearInterval(countdownInterval);
+  }, [countdown]);
+
+  const handleResendCode = () => {
+    setCountdown(60);
+    setResendDisabled(true);
+    onResendCode();
+  };
 
   function handleTextChange(input, index) {
     if (isNaN(input)) return;
@@ -75,13 +100,16 @@ function OTPInput({
         </p>
       )}
       <div className="mt-2 flex justify-between font-montserrat font-medium text-sm">
-        <p
-          className="text-primary-8 cursor-pointer"
-          onClick={() => onResendCode}
+        <button
+          disabled={resendDisabled}
+          className={` ${
+            resendDisabled ? "text-grey-4 cursor-not-allowed" : "text-primary-8"
+          } cursor-pointer bg-transparent`}
+          onClick={handleResendCode}
         >
           Resend code
-        </p>
-        <p className="text-grey-6">00 s</p>
+        </button>
+        <p className="text-grey-6">{countdown}s</p>
       </div>
     </>
   );

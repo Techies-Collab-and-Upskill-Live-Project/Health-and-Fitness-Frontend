@@ -1,10 +1,10 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import Spinner from "./components/Spinner";
 import { Toaster } from "react-hot-toast";
+
+import Spinner from "./components/Spinner";
 
 const SplashScreen = lazy(() => import("./components/SplashScreen"));
 const SignUp = lazy(() => import("./pages/signup/SignUp"));
@@ -22,6 +22,9 @@ const ActivateAccount = lazy(() =>
 );
 const ActivateAccountSuccess = lazy(() =>
   import("./pages/ActivationSuccess/ActivationSuccess")
+);
+const Diary = lazy(() =>
+  import("./pages/diary/UserDiary")
 );
 
 const queryClient = new QueryClient({
@@ -113,6 +116,14 @@ function App() {
             element={
               <Suspense fallback={<Spinner />}>
                 <ActivateAccountSuccess />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/diaries"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <Diary />
               </Suspense>
             }
           />

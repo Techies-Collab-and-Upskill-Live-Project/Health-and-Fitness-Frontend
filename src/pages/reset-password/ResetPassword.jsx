@@ -27,13 +27,13 @@ export default function ResetPassword() {
   const [inputValid, setIsInputValid] = useState(false);
 
   useEffect(() => {
-      if (step === 0) {
-        setIsInputValid(isValidEmail);
-      } else if (step === 2) {
-        setIsInputValid(isValidPassword);
-      } else {
-        setIsInputValid(false);
-      }
+    if (step === 0) {
+      setIsInputValid(isValidEmail);
+    } else if (step === 2) {
+      setIsInputValid(isValidPassword);
+    } else {
+      setIsInputValid(false);
+    }
   }, [isValidEmail, isValidPassword, step]);
   const navigate = useNavigate();
 
@@ -56,15 +56,20 @@ export default function ResetPassword() {
     }
   }
 
-  async function handleSubmitEmail(e) {
+  function handleSubmitEmail(e) {
     e?.preventDefault();
+    requestOTP();
+  }
+
+  async function requestOTP() {
     const data = await getOTP(email);
     if (data.status === 404) {
       toast.error("No active account with the email is found");
     } else if (data.status === 200) {
-      setUserID(data.data.user_id);
-      setStep((step) => step + 1);
-      setEmail("");
+      if (step === 0) {
+        setUserID(data.data.user_id);
+        setStep((step) => step + 1);
+      }
     }
   }
 
@@ -98,7 +103,7 @@ export default function ResetPassword() {
           step !== 0
             ? () => {
                 setStep((step) => step - 1);
-                setIsValidEmail(false)
+                setIsValidEmail(false);
               }
             : null
         }
@@ -132,7 +137,7 @@ export default function ResetPassword() {
           OTP={OTP}
           setOTP={setOTP}
           OTPBoxColor={OTPBoxColor}
-          onResendCode={handleSubmitEmail}
+          onResendCode={requestOTP}
         />
       ) : (
         <form onSubmit={handleSubmitPassword}>
