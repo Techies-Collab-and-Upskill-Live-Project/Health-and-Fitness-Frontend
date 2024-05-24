@@ -1,4 +1,4 @@
-import { InnerContainer, OuterContainer } from "../Containers";
+import { InnerContainer, OuterContainer } from "../../Containers";
 
 export default function ExerciseSection() {
   const empty = true;
@@ -6,7 +6,11 @@ export default function ExerciseSection() {
   return (
     <OuterContainer title="Exercises">
       {empty ? (
-        <InnerContainer image_url={"/exercise.png"} name="Exercise" />
+        <InnerContainer
+          isEmpty={empty}
+          image_url={"/exercise.png"}
+          name="Exercise"
+        />
       ) : (
         <>
           <Exercise />
@@ -25,7 +29,7 @@ export function Exercise() {
           <span>Walking - 100 kcal</span>{" "}
           <img src="/Flame.svg" alt="Burned calorie" />{" "}
           <span>
-            6657 <span className="text-secondary-5">steps</span>
+            6657 <span className="text-accent-4">steps</span>
           </span>
         </p>
       </div>
