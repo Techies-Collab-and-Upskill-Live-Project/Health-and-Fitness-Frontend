@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { OuterContainer } from "../Containers";
+import { OuterContainer } from "../../Containers";
 
 export default function WaterIntakeSection() {
   return (

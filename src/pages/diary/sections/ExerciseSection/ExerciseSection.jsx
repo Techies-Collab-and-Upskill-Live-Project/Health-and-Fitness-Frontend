@@ -1,4 +1,4 @@
-import { InnerContainer, OuterContainer } from "../Containers";
+import { InnerContainer, OuterContainer } from "../../Containers";
 
 export default function ExerciseSection() {
   const empty = true;
