@@ -5,7 +5,11 @@ export default function MealSection() {
   return (
     <OuterContainer title="Meals">
       {empty ? (
-        <InnerContainer image_url={"/Empty_Meal.png"} name="Empty Meal" />
+        <InnerContainer
+          isEmpty={empty}
+          image_url={"/Empty_Meal.png"}
+          name="Empty Meal"
+        />
       ) : (
         <>
           <Meal />

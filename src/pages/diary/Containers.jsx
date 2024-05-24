@@ -24,7 +24,7 @@ export function OuterContainer({ title, children }) {
   );
 }
 
-export function InnerContainer({ image_url, name, children }) {
+export function InnerContainer({ isEmpty, image_url, name, children }) {
   return (
     <div
       className="flex justify-between w-full h-[77px]
@@ -39,7 +39,7 @@ export function InnerContainer({ image_url, name, children }) {
         className="
           h-full pt-2 pr-[10px]"
       >
-        <img src="/Hamburger.svg" alt="Edit button" />
+        {!isEmpty && <img src="/Hamburger.svg" alt="Edit button" />}
       </div>
     </div>
   );
