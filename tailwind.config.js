@@ -67,6 +67,7 @@ export default {
           4: '#FFFFFF'
         },
         accent: {
+          1: '#FFE0DA',
           4: '#FF9784',
           6: '#FF6347',
         },
@@ -118,6 +119,7 @@ export default {
       },
       screens: {
         'xs': { 'raw': '(max-width: 350px)' },
+        'overlayScreen': { 'raw': '(max-width: 450px)' },
       }
     },
     plugins: [],

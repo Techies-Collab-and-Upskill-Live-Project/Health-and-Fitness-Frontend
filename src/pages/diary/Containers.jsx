@@ -39,7 +39,7 @@ export function InnerContainer({ isEmpty, image_url, name, handleHamburgerClick,
         className="
           h-full pt-2 pr-[10px]"
       >
-        {!isEmpty && <img onClick={handleHamburgerClick} src="/Hamburger.svg" alt="Edit button" />}
+        {!isEmpty && <img className="cursor-pointer" onClick={handleHamburgerClick} src="/Hamburger.svg" alt="Edit button" />}
       </div>
     </div>
   );
