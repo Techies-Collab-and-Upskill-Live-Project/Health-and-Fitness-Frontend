@@ -24,7 +24,11 @@ export function WaterIntake() {
         >
           0L
         </p>
-        <img src="/Hamburger.svg" alt="Edit button" />
+        <img
+          className="cursor-pointer"
+          src="/Hamburger.svg"
+          alt="Edit button"
+        />
       </div>
       {empty ? (
         <div className="w-full flex flex-wrap justify-between items-center">

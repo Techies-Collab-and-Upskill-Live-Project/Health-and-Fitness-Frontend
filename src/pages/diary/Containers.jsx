@@ -27,7 +27,7 @@ export function OuterContainer({ title, children }) {
 export function InnerContainer({ isEmpty, image_url, name, handleHamburgerClick, children }) {
   return (
     <div
-      className="flex justify-between w-full h-[77px]
+      className="flex justify-between w-full min-h-[77px]
        rounded border-grey-1 border p-1
        "
     >
@@ -39,7 +39,7 @@ export function InnerContainer({ isEmpty, image_url, name, handleHamburgerClick,
         className="
           h-full pt-2 pr-[10px]"
       >
-        {!isEmpty && <img onClick={handleHamburgerClick} src="/Hamburger.svg" alt="Edit button" />}
+        {!isEmpty && <img className="cursor-pointer" onClick={handleHamburgerClick} src="/Hamburger.svg" alt="Edit button" />}
       </div>
     </div>
   );
