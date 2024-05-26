@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
 import { InnerContainer, OuterContainer } from "../../Containers";
-import { DiaryContext } from "../../../../hooks/DiaryContext";
+import { DiaryContext } from "../../../../contexts/DiaryContext";
 import ScreenOverlay from "../../../../components/ScreenOverlay";
 
 export default function MealSection() {

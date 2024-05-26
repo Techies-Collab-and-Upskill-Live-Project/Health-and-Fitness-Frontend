@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { DiaryContext } from "../../hooks/DiaryContext";
+import { DiaryContext } from "../../contexts/DiaryContext";
 
 import { FooterItem } from "../../components/FooterItem";
 import {

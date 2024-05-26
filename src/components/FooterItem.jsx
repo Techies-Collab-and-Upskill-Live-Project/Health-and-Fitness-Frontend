@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useContext } from "react";
-import { DiaryContext } from "../hooks/DiaryContext";
+import { DiaryContext } from "../contexts/DiaryContext";
 
 export function FooterItem({ id, navLink, icon, text }) {
   const { activeID, handleFooterClick } = useContext(DiaryContext);
@@ -19,7 +19,9 @@ export function FooterItem({ id, navLink, icon, text }) {
           ${activeID === id ? "bg-primary-6" : ""} 
           h-1 w-full `}
       ></div>
-      <div className="pt-1 w-full flex items-center justify-center h-6">{icon}</div>
+      <div className="pt-1 w-full flex items-center justify-center h-6">
+        {icon}
+      </div>
       <p>{text}</p>
     </div>
   );

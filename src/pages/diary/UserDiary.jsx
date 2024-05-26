@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import { DiaryProvider } from "../../hooks/DiaryContext";
+import { DiaryProvider } from "../../contexts/DiaryContext";
 
 import CalorieLog from "./CalorieLog";
 import SectionTwo from "./SectionTwo";
