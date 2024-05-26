@@ -120,7 +120,10 @@ export default {
       screens: {
         'xs': { 'raw': '(max-width: 350px)' },
         'overlayScreen': { 'raw': '(max-width: 450px)' },
-      }
+      },
+      height: {
+        'custom-dvh': 'calc(100dvh - 52px)',
+      },
     },
     plugins: [],
   }

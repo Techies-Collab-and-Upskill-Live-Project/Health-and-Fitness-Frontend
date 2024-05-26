@@ -27,7 +27,7 @@ export function OuterContainer({ title, children }) {
 export function InnerContainer({ isEmpty, image_url, name, handleHamburgerClick, children }) {
   return (
     <div
-      className="flex justify-between w-full h-[77px]
+      className="flex justify-between w-full min-h-[77px]
        rounded border-grey-1 border p-1
        "
     >
