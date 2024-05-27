@@ -2,8 +2,6 @@
 import { AddBtn } from "../../components/AddBtn";
 
 export function OuterContainer({ title, handleClick, children }) {
- 
-  
   return (
     <div
       className="text-base font-montserrat w-full flex flex-col
@@ -14,9 +12,10 @@ export function OuterContainer({ title, handleClick, children }) {
       font-semibold w-full"
       >
         <p>{title}</p>
-        <div 
-        onClick={handleClick}
-         className="flex justify-between items-center gap-2">
+        <div
+          onClick={handleClick}
+          className="cursor-pointer flex justify-between items-center gap-2"
+        >
           <p className="text-[13px]">Add</p>
           <AddBtn />
         </div>
@@ -28,7 +27,13 @@ export function OuterContainer({ title, handleClick, children }) {
   );
 }
 
-export function InnerContainer({ isEmpty, image_url, name, handleHamburgerClick, children }) {
+export function InnerContainer({
+  isEmpty,
+  image_url,
+  name,
+  handleHamburgerClick,
+  children,
+}) {
   return (
     <div
       className="flex justify-between w-full min-h-[77px]
@@ -43,7 +48,14 @@ export function InnerContainer({ isEmpty, image_url, name, handleHamburgerClick,
         className="
           h-full pt-2 pr-[10px]"
       >
-        {!isEmpty && <img className="cursor-pointer" onClick={handleHamburgerClick} src="/Hamburger.svg" alt="Edit button" />}
+        {!isEmpty && (
+          <img
+            className="cursor-pointer"
+            onClick={handleHamburgerClick}
+            src="/Hamburger.svg"
+            alt="Edit button"
+          />
+        )}
       </div>
     </div>
   );
