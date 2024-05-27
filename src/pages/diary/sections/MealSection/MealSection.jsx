@@ -3,12 +3,17 @@ import { useContext, useState } from "react";
 import { InnerContainer, OuterContainer } from "../../Containers";
 import { DiaryContext } from "../../../../contexts/DiaryContext";
 import ScreenOverlay from "../../../../components/ScreenOverlay";
+import { useNavigate } from "react-router-dom";
 
 export default function MealSection() {
   const empty = false;
+  const navigate = useNavigate();
+  function onAddMeal() {
+    navigate("/diaries/add-meal");
+  }
 
   return (
-    <OuterContainer title="Meals">
+    <OuterContainer title="Meals" handleClick={onAddMeal}>
       {empty ? (
         <InnerContainer
           isEmpty={empty}

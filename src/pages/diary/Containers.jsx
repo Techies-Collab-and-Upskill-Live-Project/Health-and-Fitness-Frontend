@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
 import { AddBtn } from "../../components/AddBtn";
 
-export function OuterContainer({ title, children }) {
+export function OuterContainer({ title, handleClick, children }) {
+ 
+  
   return (
     <div
       className="text-base font-montserrat w-full flex flex-col
@@ -12,7 +14,9 @@ export function OuterContainer({ title, children }) {
       font-semibold w-full"
       >
         <p>{title}</p>
-        <div className="flex justify-between items-center  gap-2">
+        <div 
+        onClick={handleClick}
+         className="flex justify-between items-center gap-2">
           <p className="text-[13px]">Add</p>
           <AddBtn />
         </div>
