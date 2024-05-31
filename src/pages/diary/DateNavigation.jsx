@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 export function DateNavigation({ formattedDate, onDecStep, onIncStep }) {
   return (
     <div className="flex items-center gap-5">

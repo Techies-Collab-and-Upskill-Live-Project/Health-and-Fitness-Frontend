@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 
 import Spinner from "./components/Spinner";
-import AddMeal from "./pages/diary/sections/Add Meal/AddMEal";
+import AddMeal from "./pages/diary/sections/AddMeal/AddMeal";
 
 const SplashScreen = lazy(() => import("./components/SplashScreen"));
 const SignUp = lazy(() => import("./pages/signup/SignUp"));
