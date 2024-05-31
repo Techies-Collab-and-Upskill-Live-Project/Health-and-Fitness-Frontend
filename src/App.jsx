@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 
 import Spinner from "./components/Spinner";
+import AddMeal from "./pages/diary/sections/AddMeal/AddMeal";
 
 const SplashScreen = lazy(() => import("./components/SplashScreen"));
 const SignUp = lazy(() => import("./pages/signup/SignUp"));
@@ -23,9 +24,7 @@ const ActivateAccount = lazy(() =>
 const ActivateAccountSuccess = lazy(() =>
   import("./pages/ActivationSuccess/ActivationSuccess")
 );
-const Diary = lazy(() =>
-  import("./pages/diary/UserDiary")
-);
+const Diary = lazy(() => import("./pages/diary/UserDiary"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -124,6 +123,14 @@ function App() {
             element={
               <Suspense fallback={<Spinner />}>
                 <Diary />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/diaries/add-meal"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <AddMeal />
               </Suspense>
             }
           />

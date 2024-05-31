@@ -8,6 +8,7 @@ export function DiaryProvider({ children }) {
   const [currentId, setCurrentId] = useState(false);
   const [isDeleteMeal, setIsDeleteMeal] = useState(false);
   const [activeID, setActiveID] = useState(null);
+  const [showMealForm, setShowMealForm] = useState(false);
   const navigate = useNavigate();
 
   function handleFooterClick(navLink, id) {
@@ -25,6 +26,8 @@ export function DiaryProvider({ children }) {
         activeID,
         setActiveID,
         handleFooterClick,
+        showMealForm,
+        setShowMealForm,
       }}
     >
       {children}
