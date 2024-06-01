@@ -90,7 +90,7 @@ function EditFact({title, onCancel}){
    <Modal handleCancel={onCancel} title={title} action="Save" bg="bg-primary-1" actionColor="primary-9">
 <div className="flex flex-col justify-around">
   <div className="flex items-center justify-start">
-  <input type="text" className="focus:outline-none min-w-11
+  <input type="number" className="focus:outline-none min-w-11
     border-b border-grey-6 outline-none" />
    <p className="font-semibold text-2xl">{title === "Energy"? "kcal" : "g"}</p>
   </div>
