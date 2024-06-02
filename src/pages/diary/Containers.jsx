@@ -7,19 +7,23 @@ export function OuterContainer({ title, handleClick, children }) {
       className="text-base font-montserrat w-full flex flex-col
        justify-between text-grey-6  gap-2"
     >
-      <div
-        className="flex justify-between items-center 
-      font-semibold w-full"
-      >
-        <p>{title}</p>
+      {title === "Water intake" ? (
+        <p className="font-semibold">{title}</p>
+      ) : (
         <div
-          onClick={handleClick}
-          className="cursor-pointer flex justify-between items-center gap-2"
+          className="flex justify-between items-center 
+      font-semibold w-full"
         >
-          <p className="text-[13px]">Add</p>
-          <AddBtn />
+          <p>{title}</p>
+          <div
+            onClick={handleClick}
+            className="cursor-pointer flex justify-between items-center gap-2"
+          >
+            <p className="text-[13px]">Add</p>
+            <AddBtn />
+          </div>
         </div>
-      </div>
+      )}
       <div className="w-full flex flex-col justify-between items-center gap-2">
         {children}
       </div>

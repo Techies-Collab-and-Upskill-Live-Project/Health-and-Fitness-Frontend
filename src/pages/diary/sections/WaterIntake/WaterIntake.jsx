@@ -3,6 +3,7 @@ import { useState } from "react";
 import { OuterContainer } from "../../Containers";
 import ScreenOverlay from "../../../../components/ScreenOverlay";
 import SmallModal from "../../../../components/SmallModal";
+import { useNavigate } from "react-router-dom";
 
 export default function WaterIntakeSection() {
   return (
@@ -13,10 +14,15 @@ export default function WaterIntakeSection() {
 }
 
 export function WaterIntake() {
+  const navigate = useNavigate();
   const [getSettings, setGetSettings] = useState(false);
 
   function handleClick() {
     setGetSettings((value) => !value);
+  }
+
+  function handleGetSettings() {
+    navigate("/diary/water-setting");
   }
 
   return (
@@ -41,7 +47,7 @@ export function WaterIntake() {
       </div>
       {getSettings && (
         <ScreenOverlay>
-          <SmallModal textColor="text-grey-6">
+          <SmallModal handleClick={handleGetSettings} textColor="text-grey-6">
             <svg
               width="22"
               height="24"

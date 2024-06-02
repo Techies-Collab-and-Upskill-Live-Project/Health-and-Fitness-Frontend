@@ -10,7 +10,7 @@ export default function MealSection() {
   const empty = false;
   const navigate = useNavigate();
   function onAddMeal() {
-    navigate("/diaries/add-meal");
+    navigate("/diary/add-meal");
   }
 
   return (
