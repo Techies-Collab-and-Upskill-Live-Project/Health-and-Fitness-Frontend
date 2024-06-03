@@ -1,6 +1,7 @@
 import { DiaryProvider } from "../../../../contexts/DiaryContext";
 import { MainWrapper } from "../../MainWrapper";
 import TopNavBar from "../../TopNavBar";
+import DraggableProgressBar from "./DraggableProgressBar";
 
 export default function Settings() {
   return (
@@ -46,7 +47,7 @@ function WaterGoal() {
         >
           2 Litres
         </p>
-        <p className="text-grey-5">Progress bar</p>
+        <DraggableProgressBar />
       </div>
     </div>
   );
