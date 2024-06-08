@@ -5,6 +5,7 @@ import { DiaryContext } from "../../../../contexts/DiaryContext";
 import ScreenOverlay from "../../../../components/ScreenOverlay";
 import { useNavigate } from "react-router-dom";
 import SmallModal from "../../../../components/SmallModal";
+import SwipeableDiv from "../../../../components/SwipeableDiv";
 
 export default function MealSection() {
   const empty = false;
@@ -23,8 +24,12 @@ export default function MealSection() {
         />
       ) : (
         <>
-          <Meal id={1} />
-          <Meal id={2} />
+          <SwipeableDiv>
+            <Meal id={1} />
+          </SwipeableDiv>
+          <SwipeableDiv>
+            <Meal id={2} />
+          </SwipeableDiv>
         </>
       )}
     </OuterContainer>

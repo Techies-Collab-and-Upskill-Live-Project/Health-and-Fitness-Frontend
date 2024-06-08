@@ -119,13 +119,17 @@ function Advice() {
           </p>
           <p className="w-full flex items-start">
             <span className="w-0.5 h-0.5 rounded-full m-2 bg-grey-4"></span>{" "}
-            Before, during and after exercise If you feel thirsty.
+            Before, during and after exercise
+          </p>
+          <p className="w-full flex items-start">
+            <span className="w-0.5 h-0.5 rounded-full m-2 bg-grey-4"></span> If
+            you feel thirsty.
           </p>
         </p>
       </div>
       <p className="font-normal text-grey-4 text-[11px] leading-[17px]">
         *Recommendations from{" "}
-        <span className="text-grey-6 leading-[18px]">Mayo clinic</span>
+        <span className="text-grey-9 font-bold leading-[18px]">Mayo clinic</span>
       </p>
     </div>
   );
