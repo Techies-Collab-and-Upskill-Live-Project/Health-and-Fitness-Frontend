@@ -10,6 +10,8 @@ export function DiaryProvider({ children }) {
   const [activeID, setActiveID] = useState(null);
   const [showMealForm, setShowMealForm] = useState(false);
   const [factID, setFactId] = useState(null);
+  const [isSearchMeal, setIsSearchMeal] = useState(false);
+  const [meal, setMeal] = useState("");
 
   const navigate = useNavigate();
 
@@ -31,7 +33,11 @@ export function DiaryProvider({ children }) {
         showMealForm,
         setShowMealForm,
         setFactId,
-        factID
+        factID,
+        isSearchMeal,
+        setIsSearchMeal,
+        meal,
+        setMeal,
       }}
     >
       {children}
