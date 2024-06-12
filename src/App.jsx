@@ -31,9 +31,9 @@ const Diary = lazy(() => import("./pages/diary/UserDiary"));
 const WaterSettings = lazy(() =>
   import("./pages/diary/sections/WaterSettings/WaterSettings")
 );
-// const AddExercise = lazy(() =>
-//   import("./pages/diary/sections/Exercise/AddExercise")
-// );
+const AddExercise = lazy(() =>
+  import("./pages/diary/sections/AddExercise/AddExercise")
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -151,14 +151,14 @@ function App() {
               </Suspense>
             }
           />
-          {/* <Route
+          <Route
             path="/diary/add-exercise"
             element={
               <Suspense fallback={<Spinner />}>
                 <AddExercise />
               </Suspense>
             }
-          /> */}
+          />
         </Routes>
       </Router>
       <Toaster

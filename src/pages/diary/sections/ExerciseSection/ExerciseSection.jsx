@@ -1,10 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import { InnerContainer, OuterContainer } from "../../Containers";
 
 export default function ExerciseSection() {
+  const navigate = useNavigate();
   const empty = false;
 
   return (
-    <OuterContainer title="Exercises">
+    <OuterContainer
+      handleClick={() => {
+        navigate("/diary/add-exercise");
+      }}
+      title="Exercises"
+    >
       {empty ? (
         <InnerContainer
           isEmpty={empty}
