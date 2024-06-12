@@ -94,7 +94,7 @@ function Advice() {
     bg-white-4 text-[#717171] font-normal text-[13px] 
     leading-5 border px-2 py-4 gap-4 border-grey-1 rounded"
       >
-        <p className="w-full">
+        <div className="w-full">
           <span>Your fluid intake is probably adequate if:</span>
           <p className="w-full flex items-start">
             <span className="w-0.5 h-0.5 rounded-full m-2 bg-grey-4"></span>
@@ -104,12 +104,12 @@ function Advice() {
             <span className="w-0.5 h-0.5 rounded-full m-2 bg-grey-4"></span>{" "}
             About Your urine is colourless or light yellow
           </p>
-        </p>
+        </div>
         <p className="w-full flex flex-wrap">
           Your doctor or dietitian can help you determine the amount of water
           that&apos;s right for you every day.
         </p>
-        <p className="w-full flex flex-wrap">
+        <div className="w-full flex flex-wrap">
           To prevent dehydration and make sure your body has the fluids it
           needs, make water your beverage of choice. It&apos;s a good idea to
           drink a glass of water:
@@ -125,7 +125,7 @@ function Advice() {
             <span className="w-0.5 h-0.5 rounded-full m-2 bg-grey-4"></span> If
             you feel thirsty.
           </p>
-        </p>
+        </div>
       </div>
       <p className="font-normal text-grey-4 text-[11px] leading-[17px]">
         *Recommendations from{" "}

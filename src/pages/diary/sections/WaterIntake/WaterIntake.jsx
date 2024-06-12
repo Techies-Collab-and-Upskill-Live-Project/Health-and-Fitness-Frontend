@@ -83,7 +83,7 @@ export function WaterIntake() {
         {Array.from({ length: 2 }, (_, index) => (
           <WaterIntakeBox icon={"/cup.svg"} key={index} />
         ))}
-        <WaterIntakeBox icon={"/PlusBtn.svg"} />
+        <WaterIntakeBox style="cursor-pointer" icon={"/PlusBtn.svg"} />
 
         {Array.from({ length: 4 }, (_, index) => (
           <WaterIntakeBox key={index} />
@@ -93,13 +93,13 @@ export function WaterIntake() {
   );
 }
 
-function WaterIntakeBox({ icon = null }) {
+function WaterIntakeBox({ style, icon = null }) {
   return (
     <div
       className="rounded bg-tomato-1 w-12 
   h-[58px] flex items-center justify-center"
     >
-      {icon ? <img src={`${icon}`} alt={`${icon}`} /> : null}
+      {icon ? <img src={`${icon}`} alt={`${icon}`} className={style} /> : null}
     </div>
   );
 }

@@ -23,13 +23,13 @@ const SwipeableDiv = ({ children }) => {
       className="relative w-full h-20 border border-grey-1 overflow-hidden"
     >
       <div
-        className={`absolute inset-0 transition-transform cursor-pointer duration-300 ${
+        className={`absolute inset-0 transition-transform duration-300 ${
           isSwiped ? "transform -translate-x-8" : ""
         }`}
       >
         {children}
         <div
-          className={`absolute top-0 right-[-50px] w-8 h-full flex items-center justify-center ${
+          className={`absolute top-0 right-[-32px] w-8 h-full flex items-center justify-center ${
             isSwiped ? "block" : "hidden"
           }`}
         >

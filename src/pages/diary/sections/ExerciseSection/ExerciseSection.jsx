@@ -1,7 +1,7 @@
 import { InnerContainer, OuterContainer } from "../../Containers";
 
 export default function ExerciseSection() {
-  const empty = true;
+  const empty = false;
 
   return (
     <OuterContainer title="Exercises">
