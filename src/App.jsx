@@ -5,7 +5,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 
 import Spinner from "./components/Spinner";
-import AddMeal from "./pages/diary/sections/AddMeal/AddMeal";
 
 const SplashScreen = lazy(() => import("./components/SplashScreen"));
 const SignUp = lazy(() => import("./pages/signup/SignUp"));
@@ -24,7 +23,17 @@ const ActivateAccount = lazy(() =>
 const ActivateAccountSuccess = lazy(() =>
   import("./pages/ActivationSuccess/ActivationSuccess")
 );
+
+const AddMeal = lazy(() => import("./pages/diary/sections/AddMeal/AddMeal"));
+
 const Diary = lazy(() => import("./pages/diary/UserDiary"));
+
+const WaterSettings = lazy(() =>
+  import("./pages/diary/sections/WaterSettings/WaterSettings")
+);
+const AddExercise = lazy(() =>
+  import("./pages/diary/sections/AddExercise/AddExercise")
+);
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -119,7 +128,7 @@ function App() {
             }
           />
           <Route
-            path="/diaries"
+            path="/diary"
             element={
               <Suspense fallback={<Spinner />}>
                 <Diary />
@@ -127,10 +136,26 @@ function App() {
             }
           />
           <Route
-            path="/diaries/add-meal"
+            path="/diary/add-meal"
             element={
               <Suspense fallback={<Spinner />}>
                 <AddMeal />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/diary/water-setting"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <WaterSettings />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/diary/add-exercise"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <AddExercise />
               </Suspense>
             }
           />

@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useContext } from "react";
+import { DiaryContext } from "../../../contexts/DiaryContext";
 
 export function SearchMeal() {
-  const [meal, setMeal] = useState("");
+  const { setIsSearchMeal, isSearchMeal, meal, setMeal } =
+    useContext(DiaryContext);
 
   function handleChange(e) {
     e.preventDefault();
+    setIsSearchMeal(true);
     setMeal(e.target.value);
   }
   return (
@@ -35,15 +38,32 @@ export function SearchMeal() {
             </clipPath>
           </defs>
         </svg>
+        {isSearchMeal && (
+          <svg
+            onClick={() => setMeal("")}
+            className="absolute right-4 flex items-center justify-center bottom-[15px]"
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12.3914 13.2754C12.6355 13.5195 13.0312 13.5195 13.2753 13.2754C13.5194 13.0313 13.5194 12.6356 13.2753 12.3915L7.88387 7.00009L13.2753 1.60869C13.5194 1.36461 13.5194 0.968884 13.2753 0.724806C13.0312 0.480729 12.6355 0.480729 12.3914 0.724806L6.99999 6.11621L1.60861 0.724829C1.36453 0.480751 0.968805 0.480751 0.724728 0.724829C0.48065 0.968906 0.48065 1.36463 0.724728 1.60871L6.11611 7.00009L0.724726 12.3915C0.480648 12.6355 0.480648 13.0313 0.724726 13.2754C0.968802 13.5194 1.36453 13.5194 1.60861 13.2754L6.99999 7.88397L12.3914 13.2754Z"
+              fill="#63626E"
+            />
+          </svg>
+        )}
 
         <input
           required
           className={`block h-12 opacity-0.5 pt-4 pb-3 pl-10 
             w-full bg-transparent outline-1 outline-grey-5 border
-             rounded-lg focus:outline-none focus:border-grey-8
+             rounded-lg focus:outline-none focus:border-primary-light
             placeholder:text-base placeholder:text-grey-4 placeholder:font-normal
           placeholder:font-montserrat border-grey-4`}
           placeholder="search meal"
+          autoFocus={isSearchMeal}
           autoComplete="off"
           value={meal}
           onChange={handleChange}

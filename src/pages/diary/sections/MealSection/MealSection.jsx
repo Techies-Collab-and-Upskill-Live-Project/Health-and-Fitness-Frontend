@@ -4,12 +4,14 @@ import { InnerContainer, OuterContainer } from "../../Containers";
 import { DiaryContext } from "../../../../contexts/DiaryContext";
 import ScreenOverlay from "../../../../components/ScreenOverlay";
 import { useNavigate } from "react-router-dom";
+import SmallModal from "../../../../components/SmallModal";
+import SwipeableDiv from "../../../../components/SwipeableDiv";
 
 export default function MealSection() {
   const empty = false;
   const navigate = useNavigate();
   function onAddMeal() {
-    navigate("/diaries/add-meal");
+    navigate("/diary/add-meal");
   }
 
   return (
@@ -22,8 +24,12 @@ export default function MealSection() {
         />
       ) : (
         <>
-          <Meal id={1} />
-          <Meal id={2} />
+          <SwipeableDiv>
+            <Meal id={1} />
+          </SwipeableDiv>
+          <SwipeableDiv>
+            <Meal id={2} />
+          </SwipeableDiv>
         </>
       )}
     </OuterContainer>
@@ -54,10 +60,17 @@ export function Meal({ id }) {
 
 function DeleteMealBtn() {
   const [isConfirmDelete, setIsConfirmDelete] = useState(false);
+  const { setCurrentId } = useContext(DiaryContext);
+
+  function onCancel() {
+    setCurrentId(null);
+  }
+
   return (
     <>
       {isConfirmDelete ? (
         <Modal
+          handleCancel={onCancel}
           title={"Delete Meal?"}
           bg={"bg-accent-1"}
           action={"Delete"}
@@ -68,28 +81,31 @@ function DeleteMealBtn() {
           </p>
         </Modal>
       ) : (
-        <div
-          onClick={() => setIsConfirmDelete((initValue) => !initValue)}
-          className="
-      absolute w-40 h-16 rounded p-4 flex 
-      items-center cursor-pointer gap-3
-    bg-white-4 text-accent-6 bottom-[18%] right-[9%]"
+        <SmallModal
+          handleClick={() => setIsConfirmDelete((initValue) => !initValue)}
+          textColor={"text-accent-6"}
         >
           <img src="/Trash.svg" alt="Delete Meal" />
           Delete
-        </div>
+        </SmallModal>
       )}
     </>
   );
 }
 
-export function Modal({ title, bg, action, actionColor, children }) {
-  const { setCurrentId } = useContext(DiaryContext);
+export function Modal({
+  title,
+  bg,
+  action,
+  actionColor,
+  handleCancel,
+  children,
+}) {
   return (
     <div
       className="
   absolute max-w-[280px] min-h-[144px] rounded flex flex-col
- gap-3 text-grey-6 font-montserrat 
+ gap-3 text-grey-6 font-montserrat min-w-11 
   text-base bg-white-4 right-[25%] left-[25%] 
   overlayScreen:right-[15%] overlayScreen:left-[15%] top-[40%]"
     >
@@ -103,10 +119,7 @@ export function Modal({ title, bg, action, actionColor, children }) {
       <div className="gap-4 pt-0 p-4 flex flex-col w-full h-full">
         {children}
         <div className="w-full flex justify-end gap-[14px]">
-          <button
-            onClick={() => setCurrentId(null)}
-            className="font-inter font-normal"
-          >
+          <button onClick={handleCancel} className="font-inter font-normal">
             Cancel
           </button>
           <button className={`text-${actionColor} font-semibold`}>

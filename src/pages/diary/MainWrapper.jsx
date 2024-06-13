@@ -11,7 +11,7 @@ import {
 
 /* eslint-disable react/prop-types */
 export function MainWrapper({ id, children }) {
-  const { setActiveID, activeID } = useContext(DiaryContext);
+  const { setActiveID, activeID, isSearchMeal } = useContext(DiaryContext);
 
   useEffect(() => {
     setActiveID(id);
@@ -20,9 +20,9 @@ export function MainWrapper({ id, children }) {
   return (
     <div
       id="wrapper"
-      className="items-center justify-center overflow-auto
+      className={`items-center justify-center overflow-auto
          h-custom-dvh my-0 mx-auto font-montserrat
-    max-w-screen-sm w-full bg-white-3"
+    max-w-screen-sm w-full bg-white-3 ${isSearchMeal ? "overflow-hidden" : ""}`}
     >
       {children}
       <footer

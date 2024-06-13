@@ -1,6 +1,24 @@
+import { useState } from "react";
+import { Modal } from "../MealSection/MealSection";
+import ScreenOverlay from "../../../../components/ScreenOverlay";
+
+
 /* eslint-disable react/prop-types */
 export function MealNutrFacts() {
+const [factID, setFactID] = useState(null);
+
+
+function handleClick(id){
+  setFactID(id)
+}
+
+function handleCancel(){
+  setFactID(null)
+}
+
+
   return (
+    <>
     <div
       className="w-full min-h-[216px] flex flex-col justify-around items-center 
       gap-1 text-grey-6 font-montserrat text-base"
@@ -28,18 +46,27 @@ export function MealNutrFacts() {
         className="w-full min-h-[188px] rounded border
          border-grey-1 bg-white-4 py-3 px-2 flex flex-col justify-between"
       >
-        <Fact icon="energy.png" name="Energy" value="69kcal" />
-        <Fact icon="carbs.png" name="Carbs" value="11g" />
-        <Fact icon="protein.png" name="Protein" value="2.5g" />
-        <Fact icon="fats.png" name="Fats" value="1.5g" />
+        <Fact id={1} icon="energy.png" name="Energy" value="69kcal" handleEdit={handleClick} />
+        <Fact id={2} icon="carbs.png" name="Carbs" value="11g" handleEdit={handleClick} />
+        <Fact id={3} icon="protein.png" name="Protein" value="2.5g" handleEdit={handleClick} />
+        <Fact id={4} icon="fats.png" name="Fats" value="1.5g" handleEdit={handleClick} />
       </div>
     </div>
+
+    {
+    factID !== null &&
+     <EditFact onCancel={handleCancel} title={factID === 1? "Energy": factID === 2?
+     "Carbs" : factID === 3? "Protein": "Fat"} />
+     }
+    </>
   );
 }
 
-export function Fact({ icon, name, value }) {
+export function Fact({ id, icon, name, value, handleEdit }) {
   return (
-    <div className="w-full flex justify-between 
+    <div
+    onClick={()=> handleEdit(id)}
+    className="w-full flex justify-between 
     items-center cursor-pointer">
       <div className="flex gap-4 items-center">
         <div
@@ -54,4 +81,25 @@ export function Fact({ icon, name, value }) {
       <p className="text-right">{value}</p>
     </div>
   );
+}
+
+
+function EditFact({title, onCancel}){
+  return(
+ <ScreenOverlay>
+   <Modal handleCancel={onCancel} title={title} action="Save" bg="bg-primary-1" actionColor="primary-9">
+<div className="flex flex-col justify-around">
+  <div className="flex items-center justify-start">
+  <input type="number" className="focus:outline-none min-w-11
+    border-b border-grey-6 outline-none" />
+   <p className="font-semibold text-2xl">{title === "Energy"? "kcal" : "g"}</p>
+  </div>
+  <p className="text-xs font-medium text-grey-4">
+    Enter the {
+      title === "Energy"? "calorie/energy " : title === "Carbs" ? "carb ": 
+       title ==="Protein" ? "protein ": "fat "
+    } content of your meal in {title === "Energy"? "kcal" : "gram"} </p>
+</div>
+  </Modal>
+ </ScreenOverlay>)
 }

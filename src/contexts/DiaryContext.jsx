@@ -6,9 +6,14 @@ export const DiaryContext = createContext();
 
 export function DiaryProvider({ children }) {
   const [currentId, setCurrentId] = useState(false);
+  const [currentExerciseId, setCurrentExerciseId] = useState(false);
   const [isDeleteMeal, setIsDeleteMeal] = useState(false);
   const [activeID, setActiveID] = useState(null);
   const [showMealForm, setShowMealForm] = useState(false);
+  const [factID, setFactId] = useState(null);
+  const [isSearchMeal, setIsSearchMeal] = useState(false);
+  const [meal, setMeal] = useState("");
+
   const navigate = useNavigate();
 
   function handleFooterClick(navLink, id) {
@@ -21,6 +26,8 @@ export function DiaryProvider({ children }) {
       value={{
         currentId,
         setCurrentId,
+        currentExerciseId,
+        setCurrentExerciseId,
         isDeleteMeal,
         setIsDeleteMeal,
         activeID,
@@ -28,6 +35,12 @@ export function DiaryProvider({ children }) {
         handleFooterClick,
         showMealForm,
         setShowMealForm,
+        setFactId,
+        factID,
+        isSearchMeal,
+        setIsSearchMeal,
+        meal,
+        setMeal,
       }}
     >
       {children}
