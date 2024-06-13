@@ -76,7 +76,7 @@ function DeleteMealBtn() {
           action={"Delete"}
           actionColor={"accent-6"}
         >
-          <p className="text-grey-4 font-mediumtext-[11px] leading-[18px]">
+          <p className="text-grey-4 font-medium text-[11px] leading-[18px]">
             Meal will be permanently removed from your meal diary.
           </p>
         </Modal>
