@@ -6,6 +6,7 @@ export const DiaryContext = createContext();
 
 export function DiaryProvider({ children }) {
   const [currentId, setCurrentId] = useState(false);
+  const [currentExerciseId, setCurrentExerciseId] = useState(false);
   const [isDeleteMeal, setIsDeleteMeal] = useState(false);
   const [activeID, setActiveID] = useState(null);
   const [showMealForm, setShowMealForm] = useState(false);
@@ -25,6 +26,8 @@ export function DiaryProvider({ children }) {
       value={{
         currentId,
         setCurrentId,
+        currentExerciseId,
+        setCurrentExerciseId,
         isDeleteMeal,
         setIsDeleteMeal,
         activeID,
