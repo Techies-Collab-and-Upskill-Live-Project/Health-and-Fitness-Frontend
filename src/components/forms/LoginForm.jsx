@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../Button";
 import { InputField } from "../input-fields/InputField";
 import { Link, useNavigate } from "react-router-dom";
@@ -20,7 +20,9 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
 
-  const isInputValid = username.length > 0 && password.length > 0;
+  const [isInputValid, setIsInputValid] = useState(
+    username.length > 0 && password.length > 0
+  );
   const navigate = useNavigate();
 
   // KeepLoggedIn Mutation function
@@ -35,7 +37,7 @@ function LoginForm() {
     },
   });
 
-  const { mutate } = useMutation({
+  const { mutate, status } = useMutation({
     mutationFn: logInUser,
     networkMode: "always",
     onSuccess: async (data) => {
@@ -59,8 +61,7 @@ function LoginForm() {
         if (profile.status === 404) {
           navigate("/profile");
         } else if (profile.status === 200) {
-          console.log("User has profile!!", profile.data);
-          // redirect to diary page
+          navigate("/diary");
         }
       } else if (data.status == 401) {
         /** If user's credentials are not correct **/
@@ -76,6 +77,14 @@ function LoginForm() {
     },
     onError: (err) => toast.error(err.message),
   });
+
+  useEffect(() => {
+    if (status === "pending") {
+      setIsInputValid(false);
+    } else {
+      setIsInputValid(username.length > 0 && password.length > 0);
+    }
+  }, [status, username, password]);
 
   function handleFormSubmit(e) {
     e.preventDefault();
@@ -216,7 +225,15 @@ function LoginForm() {
             isInputValid ? "bg-primary-9" : "bg-grey-1"
           }`}
         >
-          Log In
+          {status === "pending" ? (
+            <img
+              className="w-8 h-8 animate-spin"
+              src="/Loader.png"
+              alt="Logging in"
+            />
+          ) : (
+            "Log In"
+          )}
         </Button>
         <div className="grid gap-3 grid-cols-3 items-center w-full h-[20px]">
           <div className="bg-grey-2 border h-0"></div>

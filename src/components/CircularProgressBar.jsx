@@ -1,5 +1,8 @@
+import { useGetQuery } from "../hooks/useGetQuery";
+import { roundUp } from "../utils/helpers";
+
 /* eslint-disable react/prop-types */
-export function CircularProgress({ progress }) {
+export function CircularProgress() {
   const radius = 85;
   const circumference = 2 * Math.PI * radius;
 
@@ -15,6 +18,9 @@ export function CircularProgress({ progress }) {
     const ellipsisY = 100 + radius * Math.sin(angle);
     return { x: ellipsisX, y: ellipsisY };
   };
+  const data = useGetQuery("calorie");
+  const { calorie } = data;
+  const progress = roundUp((880 / calorie) * 100);
 
   const offset = calculateOffset(progress);
   const ellipsisPosition = calculateEllipsisPosition(progress);
@@ -62,8 +68,8 @@ export function CircularProgress({ progress }) {
       </svg>
       <div className="absolute inset-12 flex flex-col items-center justify-center gap-2">
         <p>Calories log</p>
-        <p className="text-[28px] font-semibold">886</p>
-        <p className="text-base">of 1500 kcal</p>
+        <p className="text-[28px] font-semibold">880</p>
+        <p className="text-base">of {roundUp(calorie)} kcal</p>
       </div>
     </div>
   );
