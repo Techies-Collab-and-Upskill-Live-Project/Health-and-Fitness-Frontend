@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useGetQuery } from "../../../../hooks/useGetQuery";
 
 const DraggableProgressBar = () => {
-  const [value, setValue] = useState(50);
+  
+  const waterIntake = useGetQuery("waterIntake");
+  const [value, setValue] = useState(waterIntake.water_goal / 0.04);
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -12,7 +15,7 @@ const DraggableProgressBar = () => {
       type="range"
       min="0"
       max="100"
-      step="6.25"
+      step="0.04"
       value={value}
       onChange={handleChange}
       className="w-full h-1 bg-grey-1 rounded-lg appearance-none cursor-pointer"
@@ -24,5 +27,3 @@ const DraggableProgressBar = () => {
 };
 
 export default DraggableProgressBar;
-
-// 1 CUP = 6.25% OF THE RANGE

@@ -1,4 +1,5 @@
 import { DiaryProvider } from "../../../../contexts/DiaryContext";
+import { useGetQuery } from "../../../../hooks/useGetQuery";
 import { MainWrapper } from "../../MainWrapper";
 import TopNavBar from "../../TopNavBar";
 import DraggableProgressBar from "./DraggableProgressBar";
@@ -28,6 +29,8 @@ export default function Settings() {
 }
 
 function WaterGoal() {
+  const waterIntake = useGetQuery("waterIntake");
+
   return (
     <div className="w-full">
       <p className="text-black text-base font-semibold min-h-14 flex items-center justify-center w-full">
@@ -39,13 +42,13 @@ function WaterGoal() {
        border-grey-1"
       >
         <p className="w-full text-right font-medium text-xs leading-[18px] text-grey-5">
-          8 Glasses
+          {waterIntake.water_goal / 0.25} Glasses
         </p>
         <p
           className="text-grey-6 font-semibold min-h-20
         text-[28px] leading-[38px]"
         >
-          2 Litres
+          {waterIntake.water_goal} Litres
         </p>
         <DraggableProgressBar />
       </div>
@@ -129,7 +132,9 @@ function Advice() {
       </div>
       <p className="font-normal text-grey-4 text-[11px] leading-[17px]">
         *Recommendations from{" "}
-        <span className="text-grey-9 font-bold leading-[18px]">Mayo clinic</span>
+        <span className="text-grey-9 font-bold leading-[18px]">
+          Mayo clinic
+        </span>
       </p>
     </div>
   );

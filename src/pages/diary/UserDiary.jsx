@@ -8,6 +8,8 @@ import { DiaryProvider } from "../../contexts/DiaryContext";
 import { formatDate, formatToBackendDate } from "../../utils/helpers";
 import { getUserCalorie } from "../../services/apiCalorieLog";
 import { getUserMeal } from "../../services/apiMeal";
+import { getUserExercise } from "../../services/apiExercise";
+import { getUserWaterIntake } from "../../services/apiWaterIntake";
 
 import CalorieLog from "./CalorieLog";
 import SectionTwo from "./SectionTwo";
@@ -16,7 +18,7 @@ import Spinner from "../../components/Spinner";
 import { Pentagon } from "../../components/Pentagon";
 import { Pill } from "../../components/Pill";
 import { MainWrapper } from "./MainWrapper";
-import { getUserExercise } from "../../services/apiExercise";
+
 export default function Diary() {
   const navigate = useNavigate();
 
@@ -36,7 +38,7 @@ export default function Diary() {
   const queryClient = useQueryClient();
   useEffect(() => {
     queryClient.removeQueries({
-      queryKey: ["exercises"],
+      queryKey: ["waterIntake"],
     });
   }, [step, queryClient]);
 
@@ -49,16 +51,27 @@ export default function Diary() {
     queryKey: ["meals"],
     queryFn: () => getUserMeal(formatToBackendDate(date)),
   });
-  
+
   const { isLoading: isFetchingExercise } = useQuery({
     queryKey: ["exercises"],
     queryFn: () => getUserExercise(formatToBackendDate(date)),
   });
 
+  const { isLoading: isFetchingWaterIntake } = useQuery({
+    queryKey: ["waterIntake"],
+    queryFn: () => getUserWaterIntake(formatToBackendDate(date)),
+  });
+
   if (access === null || refresh === null) {
     return null;
   }
-  if (isFetchingCalorie || isFetchingMeal || isFetchingExercise) return <Spinner />;
+  if (
+    isFetchingCalorie ||
+    isFetchingMeal ||
+    isFetchingExercise ||
+    isFetchingWaterIntake
+  )
+    return <Spinner />;
 
   return (
     <DiaryProvider>
