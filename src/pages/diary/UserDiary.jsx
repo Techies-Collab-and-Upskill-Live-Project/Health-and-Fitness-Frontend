@@ -16,6 +16,7 @@ import Spinner from "../../components/Spinner";
 import { Pentagon } from "../../components/Pentagon";
 import { Pill } from "../../components/Pill";
 import { MainWrapper } from "./MainWrapper";
+import { getUserExercise } from "../../services/apiExercise";
 export default function Diary() {
   const navigate = useNavigate();
 
@@ -35,7 +36,7 @@ export default function Diary() {
   const queryClient = useQueryClient();
   useEffect(() => {
     queryClient.removeQueries({
-      queryKey: ["meals"],
+      queryKey: ["exercises"],
     });
   }, [step, queryClient]);
 
@@ -48,11 +49,16 @@ export default function Diary() {
     queryKey: ["meals"],
     queryFn: () => getUserMeal(formatToBackendDate(date)),
   });
+  
+  const { isLoading: isFetchingExercise } = useQuery({
+    queryKey: ["exercises"],
+    queryFn: () => getUserExercise(formatToBackendDate(date)),
+  });
 
   if (access === null || refresh === null) {
     return null;
   }
-  if (isFetchingCalorie || isFetchingMeal) return <Spinner />;
+  if (isFetchingCalorie || isFetchingMeal || isFetchingExercise) return <Spinner />;
 
   return (
     <DiaryProvider>

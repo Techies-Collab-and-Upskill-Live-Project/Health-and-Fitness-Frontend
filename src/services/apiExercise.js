@@ -1,11 +1,11 @@
 import { decrypt } from "../utils/helpers";
 import { BASE_URL } from "./apiAuths";
 
-export async function getUserMeal(date) {
+export async function getUserExercise(date) {
   const token = decrypt(localStorage.getItem("access"));
   try {
     const response = await fetch(
-      `${BASE_URL}/api/v1/food-diaries/meal/?date=${date}`,
+      `${BASE_URL}/api/v1/food-diaries/exercise/?date=${date}`,
       {
         method: "GET",
         headers: {
@@ -17,6 +17,6 @@ export async function getUserMeal(date) {
     const resData = await response.json();
     return { data: resData, status: response.status };
   } catch (error) {
-    console.error("Error fetching user meals", error);
+    console.error("Error fetching user exercises", error);
   }
 }
