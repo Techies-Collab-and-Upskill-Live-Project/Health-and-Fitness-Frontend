@@ -43,3 +43,9 @@ export function formatToBackendDate(date) {
 export function roundUp(value) {
   return Math.ceil(value);
 }
+
+export function reduceObjectsAttr(data, attr) {
+  return data.reduce((accumulator, currentObject) => {
+    return accumulator + roundUp(currentObject[attr]);
+  }, 0);
+}
