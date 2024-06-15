@@ -1,15 +1,23 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
-import { InnerContainer, OuterContainer } from "../../Containers";
-import { DiaryContext } from "../../../../contexts/DiaryContext";
-import ScreenOverlay from "../../../../components/ScreenOverlay";
 import { useNavigate } from "react-router-dom";
+
+import { useGetQuery } from "../../../../hooks/useGetQuery";
+import { DiaryContext } from "../../../../contexts/DiaryContext";
+import { roundUp } from "../../../../utils/helpers";
+
+import { InnerContainer, OuterContainer } from "../../Containers";
+
+import ScreenOverlay from "../../../../components/ScreenOverlay";
 import SmallModal from "../../../../components/SmallModal";
 import SwipeableDiv from "../../../../components/SwipeableDiv";
 
 export default function MealSection() {
   const empty = false;
   const navigate = useNavigate();
+  const mealData = useGetQuery("meals");
+  console.log(mealData);
+
   function onAddMeal() {
     navigate("/diary/add-meal");
   }
@@ -24,30 +32,34 @@ export default function MealSection() {
         />
       ) : (
         <>
-          <SwipeableDiv>
-            <Meal id={1} />
-          </SwipeableDiv>
-          <SwipeableDiv>
-            <Meal id={2} />
-          </SwipeableDiv>
+          {mealData.map((meal) => {
+            return (
+              <SwipeableDiv key={meal.id}>
+                <Meal meal={meal} id={meal.id} />
+              </SwipeableDiv>
+            );
+          })}
         </>
       )}
     </OuterContainer>
   );
 }
 
-export function Meal({ id }) {
+export function Meal({ id, meal }) {
   const { currentId, setCurrentId } = useContext(DiaryContext);
 
   return (
     <InnerContainer
       handleHamburgerClick={() => setCurrentId(id)}
-      image_url={"/PoundedYam.png"}
-      name="Oha and pounded yam"
+      image_url={meal?.image_url ? meal?.image_url : "/mealPlaceholder.png"}
+      name={meal.name}
     >
       <div className="flex flex-col gap-2">
-        <p className="font-semibold">Oha and pounded yam</p>
-        <p>69 kcal. 1 serving (300 ml)</p>
+        <p className="font-semibold">{meal.name}</p>
+        <p>
+          {roundUp(meal.energy)} kcal. {meal.servings} serving (
+          {300 * meal.servings} ml)
+        </p>
       </div>
       {currentId === id && (
         <ScreenOverlay>
