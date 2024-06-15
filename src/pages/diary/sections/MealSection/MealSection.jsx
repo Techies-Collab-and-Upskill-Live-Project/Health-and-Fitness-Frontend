@@ -16,7 +16,6 @@ export default function MealSection() {
   const empty = false;
   const navigate = useNavigate();
   const mealData = useGetQuery("meals");
-  console.log(mealData);
 
   function onAddMeal() {
     navigate("/diary/add-meal");

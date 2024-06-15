@@ -36,7 +36,7 @@ export default function Diary() {
   const queryClient = useQueryClient();
   useEffect(() => {
     queryClient.removeQueries({
-      queryKey: ["meals"],
+      queryKey: ["exercises"],
     });
   }, [step, queryClient]);
 

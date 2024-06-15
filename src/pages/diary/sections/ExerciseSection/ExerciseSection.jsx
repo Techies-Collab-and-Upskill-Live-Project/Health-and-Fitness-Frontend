@@ -1,14 +1,21 @@
 /* eslint-disable react/prop-types */
-import { useNavigate } from "react-router-dom";
-import { InnerContainer, OuterContainer } from "../../Containers";
-import ScreenOverlay from "../../../../components/ScreenOverlay";
-import { Modal } from "../MealSection/MealSection";
-import SmallModal from "../../../../components/SmallModal";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useGetQuery } from "../../../../hooks/useGetQuery";
+import { roundUp } from "../../../../utils/helpers";
+
+import { InnerContainer, OuterContainer } from "../../Containers";
+import { Modal } from "../MealSection/MealSection";
+
+import ScreenOverlay from "../../../../components/ScreenOverlay";
+import SmallModal from "../../../../components/SmallModal";
 
 export default function ExerciseSection() {
+  
   const navigate = useNavigate();
   const empty = false;
+  const exerciseData = useGetQuery("exercises");
 
   return (
     <OuterContainer
@@ -25,15 +32,16 @@ export default function ExerciseSection() {
         />
       ) : (
         <>
-          <Exercise />
-          <Exercise />
+          {exerciseData.map((exercise) => {
+            return <Exercise exercise={exercise} key={exercise.id} />;
+          })}
         </>
       )}
     </OuterContainer>
   );
 }
 
-export function Exercise() {
+export function Exercise({ exercise }) {
   const [showExerciseModal, setShowExerciseModal] = useState(false);
 
   return (
@@ -44,8 +52,14 @@ export function Exercise() {
     >
       <div className="flex flex-col h-[60px] justify-end">
         <p className="flex items-center justify-center gap-2">
-          <span>Walking</span>
-          <img src="/Flame.svg" alt="Burned calorie" /> <span>100 kcal</span>
+          <span>{exercise.name}</span>
+          <img src="/Flame.svg" alt="Burned calorie" />{" "}
+          <span>
+            {roundUp(
+              exercise.time_spent * parseFloat(exercise.energy_per_minute)
+            )}{" "}
+            kcal
+          </span>
         </p>
       </div>
       {showExerciseModal && (
