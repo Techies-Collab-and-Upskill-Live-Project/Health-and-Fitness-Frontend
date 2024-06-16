@@ -1,5 +1,5 @@
 import { decrypt } from "../utils/helpers";
-import { BASE_URL } from "./apiAuths";
+import { BASE_URL, refreshToken } from "./apiAuths";
 
 export async function getUserExercise(date) {
   const token = decrypt(localStorage.getItem("access"));
@@ -15,6 +15,13 @@ export async function getUserExercise(date) {
       }
     );
     const resData = await response.json();
+    if (response.status === 401) {
+      const refresh = await refreshToken();
+      if (refresh.status === 200) {
+        getUserExercise(date);
+      }
+    } else return { data: resData, status: response.status };
+
     return { data: resData, status: response.status };
   } catch (error) {
     console.error("Error fetching user exercises", error);

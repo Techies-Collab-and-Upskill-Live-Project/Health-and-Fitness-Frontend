@@ -1,5 +1,5 @@
 import { decrypt } from "../utils/helpers";
-import { BASE_URL } from "./apiAuths";
+import { BASE_URL, refreshToken } from "./apiAuths";
 
 export async function getUserWaterIntake(date) {
   const token = decrypt(localStorage.getItem("access"));
@@ -15,7 +15,12 @@ export async function getUserWaterIntake(date) {
       }
     );
     const resData = await response.json();
-    return { data: resData, status: response.status };
+    if (response.status === 401) {
+      const refresh = await refreshToken();
+      if (refresh.status === 200) {
+        getUserWaterIntake(date);
+      }
+    } else return { data: resData, status: response.status };
   } catch (error) {
     console.error("Error fetching user waterintake", error);
   }
