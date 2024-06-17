@@ -1,4 +1,5 @@
 import CryptoJS from "crypto-js";
+import Cookies from "js-cookie";
 
 const SECRET = import.meta.env.VITE_SECRET;
 
@@ -48,4 +49,9 @@ export function reduceObjectsAttr(data, attr) {
   return data.reduce((accumulator, currentObject) => {
     return accumulator + roundUp(currentObject[attr]);
   }, 0);
+}
+
+export function getCookie(name) {
+  console.log(Cookies.get());
+  return Cookies.get(name);
 }

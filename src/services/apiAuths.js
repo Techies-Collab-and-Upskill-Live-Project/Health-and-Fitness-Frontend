@@ -1,5 +1,3 @@
-import { decrypt, encrypt } from "../utils/helpers";
-
 export const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export async function registerUser(formData) {
@@ -37,25 +35,33 @@ export async function logInUser(formData) {
   });
   const jsonString = JSON.stringify(jsonFormData);
   try {
-    const response = await fetch(`${BASE_URL}/auth/jwt/create/`, {
+    const response = await fetch(`${BASE_URL}/api/v1/auth/jwt/create/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: jsonString,
+      credentials: "include",
     });
+
     const jsonData = await response.json();
 
-    if (response.status == 200) {
-      return { data: jsonData, status: response.status };
-    } else {
-      return { data: jsonData, status: response.status };
-    }
+    return { data: jsonData, status: response.status };
   } catch (error) {
     console.error("Error submitting form data:", error);
     throw new Error("Failed to log user in, please try again");
   }
 }
+
+export const logoutUser = async () => {
+  const response = await fetch(`${BASE_URL}/api/v1/auth/jwt/logout/`, {
+    method: "POST",
+    credentials: "include",
+  });
+
+  const jsonData = await response.json();
+  return { data: jsonData, status: response.status };
+};
 
 export async function updateKeepLoggedIn(payload) {
   const jsonFormData = { keep_logged_in: payload.value };
@@ -66,9 +72,9 @@ export async function updateKeepLoggedIn(payload) {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${payload.token}`,
       },
       body: jsonString,
+      credentials: "include",
     });
     return response.status;
   } catch (error) {
@@ -77,13 +83,10 @@ export async function updateKeepLoggedIn(payload) {
 }
 
 export async function getUserProfile() {
-  const token = decrypt(localStorage.getItem("access"));
   try {
     const response = await fetch(`${BASE_URL}/api/v1/profile/`, {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      credentials: "include",
     });
     const jsonData = await response.json();
     return { data: jsonData, status: response.status };
@@ -108,13 +111,10 @@ export async function getOTP(email) {
 }
 
 export async function getUserID() {
-  const token = decrypt(localStorage.getItem("access"));
   try {
     const response = await fetch(`${BASE_URL}/auth/users/me`, {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      credentials: "include",
     });
     const jsonData = await response.json();
     return { data: jsonData, status: response.status };
@@ -161,23 +161,18 @@ export async function resetPassword(jsonData, userID) {
 }
 
 export async function refreshToken() {
-  const refresh = decrypt(localStorage.getItem("refresh"));
-  const jsonString = JSON.stringify({ refresh: refresh });
   try {
-    const response = await fetch(`${BASE_URL}/auth/jwt/refresh/`, {
+    const response = await fetch(`${BASE_URL}/api/v1/auth/jwt/refresh/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: jsonString,
+      credentials: "include",
     });
     const resData = await response.json();
-      
     if (response.status === 401) {
       return { data: resData, status: response.status };
     } else if (response.status === 200) {
-      localStorage.removeItem("access");
-      localStorage.setItem("access", encrypt(resData.access));
       return { status: response.status };
     }
     return { data: resData, status: response.status };

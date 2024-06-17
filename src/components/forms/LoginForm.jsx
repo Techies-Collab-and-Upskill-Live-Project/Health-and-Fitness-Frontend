@@ -8,7 +8,6 @@ import {
   logInUser,
   updateKeepLoggedIn,
 } from "../../services/apiAuths";
-import { encrypt } from "../../utils/helpers";
 import toast from "react-hot-toast";
 
 function LoginForm() {
@@ -43,21 +42,14 @@ function LoginForm() {
     onSuccess: async (data) => {
       /** If user's credentials are correct **/
       if (data.status == 200) {
-        localStorage.removeItem("access");
-        localStorage.removeItem("refresh");
-        localStorage.setItem("access", encrypt(data.data["access"]));
-        localStorage.setItem("refresh", encrypt(data.data["refresh"]));
-
         // Update user, set keepLoggedIn
         update_keep_logged_in({
-          value: keepLoggedIn,
-          token: data.data["access"],
+          value: keepLoggedIn
         });
 
         // query user's profile, if found, redirect to diary page else redirect to profile page
         // Query user Profile
         const profile = await getUserProfile();
-
         if (profile.status === 404) {
           navigate("/profile");
         } else if (profile.status === 200) {

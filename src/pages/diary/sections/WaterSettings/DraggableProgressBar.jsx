@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useGetQuery } from "../../../../hooks/useGetQuery";
 
 const DraggableProgressBar = () => {
-  
-  const waterIntake = useGetQuery("waterIntake");
-  const [value, setValue] = useState(waterIntake.water_goal / 0.04);
+  const { data: waterIntake, status: waterIntakeStatus } =
+    useGetQuery("waterIntake");
+  const [value, setValue] = useState(
+    waterIntakeStatus === 404 ? 0 : waterIntake.water_goal / 0.04
+  );
 
   const handleChange = (event) => {
     setValue(event.target.value);

@@ -18,12 +18,13 @@ export function CircularProgress() {
     const ellipsisY = 100 + radius * Math.sin(angle);
     return { x: ellipsisX, y: ellipsisY };
   };
-  const data = useGetQuery("calorie");
+  const { data } = useGetQuery("calorie");
   const { calorie } = data;
 
-  const mealData = useGetQuery("meals");
+  const { data: mealData, status: mealStatus } = useGetQuery("meals");
 
-  const totalCalorie = reduceObjectsAttr(mealData, "energy");
+  const totalCalorie =
+    mealStatus === 404 ? 0 : reduceObjectsAttr(mealData, "energy");
   const progress = roundUp((totalCalorie / calorie) * 100);
 
   const offset = calculateOffset(progress);

@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useGetQuery } from "../../../../hooks/useGetQuery";
@@ -10,12 +9,12 @@ import { Modal } from "../MealSection/MealSection";
 
 import ScreenOverlay from "../../../../components/ScreenOverlay";
 import SmallModal from "../../../../components/SmallModal";
+import { useState } from "react";
 
 export default function ExerciseSection() {
-  
   const navigate = useNavigate();
-  const empty = false;
-  const exerciseData = useGetQuery("exercises");
+  const { data: exerciseData, status: exerciseStatus } =
+    useGetQuery("exercises");
 
   return (
     <OuterContainer
@@ -24,9 +23,9 @@ export default function ExerciseSection() {
       }}
       title="Exercises"
     >
-      {empty ? (
+      {exerciseStatus === 404 ? (
         <InnerContainer
-          isEmpty={empty}
+          isEmpty={exerciseStatus === 404}
           image_url={"/exercise.png"}
           name="Exercise"
         />

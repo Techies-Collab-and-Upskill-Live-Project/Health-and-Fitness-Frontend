@@ -1,4 +1,3 @@
-import { DiaryProvider } from "../../../../contexts/DiaryContext";
 import { useGetQuery } from "../../../../hooks/useGetQuery";
 import { MainWrapper } from "../../MainWrapper";
 import TopNavBar from "../../TopNavBar";
@@ -6,7 +5,6 @@ import DraggableProgressBar from "./DraggableProgressBar";
 
 export default function Settings() {
   return (
-    <DiaryProvider>
       <MainWrapper id={1}>
         <TopNavBar
           bg="primary-9"
@@ -24,12 +22,12 @@ export default function Settings() {
           <Advice />
         </div>
       </MainWrapper>
-    </DiaryProvider>
   );
 }
 
 function WaterGoal() {
-  const waterIntake = useGetQuery("waterIntake");
+  const { data: waterIntake, status: waterIntakeStatus } =
+    useGetQuery("waterIntake");
 
   return (
     <div className="w-full">
@@ -42,13 +40,14 @@ function WaterGoal() {
        border-grey-1"
       >
         <p className="w-full text-right font-medium text-xs leading-[18px] text-grey-5">
-          {waterIntake.water_goal / 0.25} Glasses
+          {waterIntakeStatus === 404 ? 0 : waterIntake.water_goal / 0.25}{" "}
+          Glasses
         </p>
         <p
           className="text-grey-6 font-semibold min-h-20
         text-[28px] leading-[38px]"
         >
-          {waterIntake.water_goal} Litres
+          {waterIntakeStatus === 404 ? 0 : waterIntake.water_goal} Litres
         </p>
         <DraggableProgressBar />
       </div>

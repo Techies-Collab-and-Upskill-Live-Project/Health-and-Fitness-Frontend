@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { DiaryProvider } from "../../contexts/DiaryContext";
+import { DiaryContext, DiaryProvider } from "../../contexts/DiaryContext";
 import { formatDate, formatToBackendDate } from "../../utils/helpers";
 import { getUserCalorie } from "../../services/apiCalorieLog";
 import { getUserMeal } from "../../services/apiMeal";
@@ -18,53 +18,70 @@ import Spinner from "../../components/Spinner";
 import { Pentagon } from "../../components/Pentagon";
 import { Pill } from "../../components/Pill";
 import { MainWrapper } from "./MainWrapper";
+import Settings from "./sections/WaterSettings/WaterSettings";
 
 export default function Diary() {
-  const navigate = useNavigate();
+  return (
+    <DiaryProvider>
+      <DiaryPage />
+    </DiaryProvider>
+  );
+}
 
-  const access = localStorage.getItem("access");
-  const refresh = localStorage.getItem("refresh");
-  useEffect(() => {
-    if (access === null || refresh === null) {
-      navigate("/log-in");
-    }
-  }, [navigate, access, refresh]);
+export function DiaryPage() {
+  const navigate = useNavigate();
 
   const [step, setStep] = useState(0);
   const date = new Date();
   date.setDate(date.getDate() + step);
   const formattedDate = formatDate(date);
 
+  const { showWaterSettings } = useContext(DiaryContext);
+
   const queryClient = useQueryClient();
+
   useEffect(() => {
-    queryClient.removeQueries({
-      queryKey: ["waterIntake"],
+    // Define an array of query keys to be removed
+    const queryKeys = ["calorie", "meals", "exercises", "waterIntake"];
+
+    // Iterate over the array and remove each query
+    queryKeys.forEach((key) => {
+      queryClient.removeQueries({
+        queryKey: [key],
+      });
     });
   }, [step, queryClient]);
 
-  const { isLoading: isFetchingCalorie } = useQuery({
+  const { isLoading: isFetchingCalorie, data: calorieData } = useQuery({
     queryKey: ["calorie"],
     queryFn: () => getUserCalorie(formatToBackendDate(date)),
   });
 
-  const { isLoading: isFetchingMeal } = useQuery({
+  const { isLoading: isFetchingMeal, data: mealData } = useQuery({
     queryKey: ["meals"],
     queryFn: () => getUserMeal(formatToBackendDate(date)),
   });
 
-  const { isLoading: isFetchingExercise } = useQuery({
+  const { isLoading: isFetchingExercise, data: exerciseData } = useQuery({
     queryKey: ["exercises"],
     queryFn: () => getUserExercise(formatToBackendDate(date)),
   });
 
-  const { isLoading: isFetchingWaterIntake } = useQuery({
+  const { isLoading: isFetchingWaterIntake, data: waterIntakeData } = useQuery({
     queryKey: ["waterIntake"],
     queryFn: () => getUserWaterIntake(formatToBackendDate(date)),
   });
 
-  if (access === null || refresh === null) {
-    return null;
+  // If user is logged out, redirect to log in page
+  if (
+    calorieData?.status === 401 ||
+    exerciseData?.status === 401 ||
+    mealData?.status === 401 ||
+    waterIntakeData?.status === 401
+  ) {
+    navigate("/log-in");
   }
+
   if (
     isFetchingCalorie ||
     isFetchingMeal ||
@@ -74,17 +91,21 @@ export default function Diary() {
     return <Spinner />;
 
   return (
-    <DiaryProvider>
-      <MainWrapper id={1}>
-        <CalorieLog
-          step={step}
-          setStep={setStep}
-          formattedDate={formattedDate}
-        />
-        <Pentagon />
-        <Pill />
-        <SectionTwo />
-      </MainWrapper>
-    </DiaryProvider>
+    <>
+      {showWaterSettings ? (
+        <Settings />
+      ) : (
+        <MainWrapper id={1}>
+          <CalorieLog
+            step={step}
+            setStep={setStep}
+            formattedDate={formattedDate}
+          />
+          <Pentagon />
+          <Pill />
+          <SectionTwo />
+        </MainWrapper>
+      )}
+    </>
   );
 }

@@ -1,14 +1,19 @@
+/* eslint-disable react/prop-types */
 import { useGetQuery } from "../hooks/useGetQuery";
 import { roundUp } from "../utils/helpers";
 
 export function Pill() {
-  const exerciseData = useGetQuery("exercises");
+  const { data: exerciseData, status: exerciseStatus } =
+    useGetQuery("exercises");
 
-  const totalEnergyExpelled = exerciseData.reduce((acc, item) => {
-    return (acc += roundUp(
-      parseFloat(item.energy_per_minute) * item.time_spent
-    ));
-  }, 0);
+  const totalEnergyExpelled =
+    exerciseStatus === 404
+      ? 0
+      : exerciseData.reduce((acc, item) => {
+          return (acc += roundUp(
+            parseFloat(item.energy_per_minute) * item.time_spent
+          ));
+        }, 0);
 
   return (
     <div className="flex items-center justify-center w-full h-0 relative">

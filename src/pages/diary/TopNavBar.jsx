@@ -6,12 +6,23 @@ import { DiaryContext } from "../../contexts/DiaryContext";
 
 function TopNavBar({ bg, iconFill, iconStroke, textColor, text }) {
   const navigate = useNavigate();
-  const { isSearchMeal, setIsSearchMeal, setMeal } = useContext(DiaryContext);
+  const {
+    isSearchMeal,
+    setIsSearchMeal,
+    setMeal,
+    showWaterSettings,
+    setShowWaterSettings,
+  } = useContext(DiaryContext);
 
   function handleNavigate() {
+    // Handle back navigation on meal search page
     if (isSearchMeal) {
       setIsSearchMeal(false);
       setMeal("");
+      // Handle back navigation on water settings page
+    } else if (showWaterSettings) {
+      setShowWaterSettings(false);
+      // Handle back navigation in other scenarios
     } else {
       navigate(-1);
     }

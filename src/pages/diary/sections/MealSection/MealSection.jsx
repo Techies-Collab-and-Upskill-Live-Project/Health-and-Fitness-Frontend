@@ -13,9 +13,8 @@ import SmallModal from "../../../../components/SmallModal";
 import SwipeableDiv from "../../../../components/SwipeableDiv";
 
 export default function MealSection() {
-  const empty = false;
   const navigate = useNavigate();
-  const mealData = useGetQuery("meals");
+  const { data: mealData, status: mealStatus } = useGetQuery("meals");
 
   function onAddMeal() {
     navigate("/diary/add-meal");
@@ -23,9 +22,9 @@ export default function MealSection() {
 
   return (
     <OuterContainer title="Meals" handleClick={onAddMeal}>
-      {empty ? (
+      {mealStatus === 404 ? (
         <InnerContainer
-          isEmpty={empty}
+          isEmpty={mealStatus === 404}
           image_url={"/Empty_Meal.png"}
           name="Empty Meal"
         />

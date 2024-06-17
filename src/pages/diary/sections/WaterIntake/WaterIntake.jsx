@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { OuterContainer } from "../../Containers";
 import ScreenOverlay from "../../../../components/ScreenOverlay";
-import { useNavigate } from "react-router-dom";
 import { useGetQuery } from "../../../../hooks/useGetQuery";
+import { DiaryContext } from "../../../../contexts/DiaryContext";
 
 export default function WaterIntakeSection() {
   return (
@@ -14,20 +14,28 @@ export default function WaterIntakeSection() {
 }
 
 export function WaterIntake() {
-  const waterIntake = useGetQuery("waterIntake");
-  
-  const navigate = useNavigate();
+  const { data: waterIntake, status: waterIntakeStatus } =
+    useGetQuery("waterIntake");
   const [getSettings, setGetSettings] = useState(false);
 
+  const { setShowWaterSettings } = useContext(DiaryContext);
+
   const emptyIntakes =
-    waterIntake.number_of_glass <= 6 ? 6 - waterIntake.number_of_glass : 0;
+    waterIntakeStatus === 404
+      ? 6
+      : waterIntake.number_of_glass <= 6
+      ? 6 - waterIntake.number_of_glass
+      : 0;
+
+  const numberOfGlass =
+    waterIntakeStatus === 404 ? 0 : waterIntake.number_of_glass;
 
   function handleClick() {
     setGetSettings((value) => !value);
   }
 
   function handleGetSettings() {
-    navigate("/diary/water-setting");
+    setShowWaterSettings(true);
   }
 
   return (
@@ -41,7 +49,7 @@ export function WaterIntake() {
           className="font-inter text-grey-6 tracking-[0.3em]
             text-base font-normal leading-8"
         >
-          {0.25 * waterIntake.number_of_glass}L
+          {0.25 * numberOfGlass}L
         </p>
         <img
           onClick={handleClick}
@@ -86,7 +94,7 @@ export function WaterIntake() {
         </ScreenOverlay>
       )}
       <div className="w-full flex flex-wrap gap-2 items-center">
-        {Array.from({ length: waterIntake.number_of_glass }, (_, index) => (
+        {Array.from({ length: numberOfGlass }, (_, index) => (
           <WaterIntakeBox icon={"/cup.svg"} key={index} />
         ))}
         <WaterIntakeBox style="cursor-pointer" icon={"/PlusBtn.svg"} />

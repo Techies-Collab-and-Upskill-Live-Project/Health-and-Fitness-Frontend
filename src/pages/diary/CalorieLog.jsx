@@ -38,13 +38,17 @@ export function Title() {
 }
 
 export function NutritionalRequirements() {
-  const calorieData = useGetQuery("calorie");
-  const mealData = useGetQuery("meals");
+  const { data: calorieData } = useGetQuery("calorie");
+  const { data: mealData, status: mealStatus } = useGetQuery("meals");
+
   const { carbs, fats, protein } = calorieData;
 
-  const totalCarbs = reduceObjectsAttr(mealData, "carbs");
-  const totalFats = reduceObjectsAttr(mealData, "fats");
-  const totalProtein = reduceObjectsAttr(mealData, "protein");
+  const totalCarbs =
+    mealStatus === 404 ? 0 : reduceObjectsAttr(mealData, "carbs");
+  const totalFats =
+    mealStatus === 404 ? 0 : reduceObjectsAttr(mealData, "fats");
+  const totalProtein =
+    mealStatus === 404 ? 0 : reduceObjectsAttr(mealData, "protein");
 
   return (
     <div className="flex justify-between items-center w-full sm:px-20">
