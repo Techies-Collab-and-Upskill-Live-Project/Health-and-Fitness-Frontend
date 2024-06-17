@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { useGetQuery } from "../../../../hooks/useGetQuery";
 import { DiaryContext } from "../../../../contexts/DiaryContext";
@@ -13,11 +12,11 @@ import SmallModal from "../../../../components/SmallModal";
 import SwipeableDiv from "../../../../components/SwipeableDiv";
 
 export default function MealSection() {
-  const navigate = useNavigate();
   const { data: mealData, status: mealStatus } = useGetQuery("meals");
+  const { setShowAddMeal } = useContext(DiaryContext);
 
   function onAddMeal() {
-    navigate("/diary/add-meal");
+    setShowAddMeal(true);
   }
 
   return (

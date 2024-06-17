@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import { useNavigate } from "react-router-dom";
 
 import { useGetQuery } from "../../../../hooks/useGetQuery";
 import { roundUp } from "../../../../utils/helpers";
@@ -9,17 +8,18 @@ import { Modal } from "../MealSection/MealSection";
 
 import ScreenOverlay from "../../../../components/ScreenOverlay";
 import SmallModal from "../../../../components/SmallModal";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { DiaryContext } from "../../../../contexts/DiaryContext";
 
 export default function ExerciseSection() {
-  const navigate = useNavigate();
   const { data: exerciseData, status: exerciseStatus } =
     useGetQuery("exercises");
+  const { setShowAddExercise } = useContext(DiaryContext);
 
   return (
     <OuterContainer
       handleClick={() => {
-        navigate("/diary/add-exercise");
+        setShowAddExercise(true);
       }}
       title="Exercises"
     >

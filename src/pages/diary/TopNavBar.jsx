@@ -12,6 +12,10 @@ function TopNavBar({ bg, iconFill, iconStroke, textColor, text }) {
     setMeal,
     showWaterSettings,
     setShowWaterSettings,
+    showAddMeal,
+    setShowAddMeal,
+    showAddExercise,
+    setShowAddExercise,
   } = useContext(DiaryContext);
 
   function handleNavigate() {
@@ -22,7 +26,13 @@ function TopNavBar({ bg, iconFill, iconStroke, textColor, text }) {
       // Handle back navigation on water settings page
     } else if (showWaterSettings) {
       setShowWaterSettings(false);
-      // Handle back navigation in other scenarios
+      // Handle back navigation on add exercise page
+    } else if (showAddExercise) {
+      setShowAddExercise(false);
+      // Handle back navigation on add meal page
+    } else if (showAddMeal) {
+      setShowAddMeal(false);
+      // Handle back navigation on other pages
     } else {
       navigate(-1);
     }

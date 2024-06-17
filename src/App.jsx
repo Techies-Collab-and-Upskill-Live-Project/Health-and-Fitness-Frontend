@@ -24,16 +24,9 @@ const ActivateAccountSuccess = lazy(() =>
   import("./pages/ActivationSuccess/ActivationSuccess")
 );
 
-const AddMeal = lazy(() => import("./pages/diary/sections/AddMeal/AddMeal"));
-
 const Diary = lazy(() => import("./pages/diary/UserDiary"));
 
-const WaterSettings = lazy(() =>
-  import("./pages/diary/sections/WaterSettings/WaterSettings")
-);
-const AddExercise = lazy(() =>
-  import("./pages/diary/sections/AddExercise/AddExercise")
-);
+
 
 const queryClient = new QueryClient({
   defaultOptions: {

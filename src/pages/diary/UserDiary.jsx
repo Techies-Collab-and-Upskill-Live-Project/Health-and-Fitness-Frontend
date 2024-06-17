@@ -19,6 +19,8 @@ import { Pentagon } from "../../components/Pentagon";
 import { Pill } from "../../components/Pill";
 import { MainWrapper } from "./MainWrapper";
 import Settings from "./sections/WaterSettings/WaterSettings";
+import AddMeal from "./sections/AddMeal/AddMeal";
+import AddExercise from "./sections/AddExercise/AddExercise";
 
 export default function Diary() {
   return (
@@ -36,7 +38,8 @@ export function DiaryPage() {
   date.setDate(date.getDate() + step);
   const formattedDate = formatDate(date);
 
-  const { showWaterSettings } = useContext(DiaryContext);
+  const { showWaterSettings, showAddMeal, showAddExercise } =
+    useContext(DiaryContext);
 
   const queryClient = useQueryClient();
 
@@ -94,6 +97,10 @@ export function DiaryPage() {
     <>
       {showWaterSettings ? (
         <Settings />
+      ) : showAddMeal ? (
+        <AddMeal />
+      ) : showAddExercise ? (
+        <AddExercise />
       ) : (
         <MainWrapper id={1}>
           <CalorieLog

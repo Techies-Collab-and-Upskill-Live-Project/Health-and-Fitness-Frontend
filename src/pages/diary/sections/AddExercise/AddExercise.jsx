@@ -2,7 +2,7 @@
 
 import { useContext, useState } from "react";
 
-import { DiaryContext, DiaryProvider } from "../../../../contexts/DiaryContext";
+import { DiaryContext } from "../../../../contexts/DiaryContext";
 import { MainWrapper } from "../../MainWrapper";
 import { AddBtn } from "../../../../components/AddBtn";
 import { Modal } from "../MealSection/MealSection";
@@ -14,7 +14,6 @@ import TimePicker from "../../../../components/TimePicker";
 
 export default function AddExercise() {
   return (
-    <DiaryProvider>
       <MainWrapper id={1}>
         <TopNavBar
           bg="primary-9"
@@ -32,7 +31,6 @@ export default function AddExercise() {
           <Note />
         </div>
       </MainWrapper>
-    </DiaryProvider>
   );
 }
 
