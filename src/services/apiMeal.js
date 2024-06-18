@@ -51,3 +51,27 @@ export async function createUserMeal(mealData) {
     console.error("Error creating meal:", error);
   }
 }
+export async function deleteUserMeal(id) {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/api/v1/food-diaries/meal/${id}/`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    if (response.status === 401) {
+      const refresh = await refreshToken();
+      if (refresh.status === 200) {
+        return await deleteUserMeal(id);
+      } else if (refresh.status === 401) {
+        return { status: response.status };
+      }
+    } else return { status: response.status };
+  } catch (error) {
+    console.error("Error deleting meal:", error);
+  }
+}

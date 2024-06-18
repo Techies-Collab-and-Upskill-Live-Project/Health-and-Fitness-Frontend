@@ -10,6 +10,10 @@ import { InnerContainer, OuterContainer } from "../../Containers";
 import ScreenOverlay from "../../../../components/ScreenOverlay";
 import SmallModal from "../../../../components/SmallModal";
 import SwipeableDiv from "../../../../components/SwipeableDiv";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteUserMeal } from "../../../../services/apiMeal";
+import { Navigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function MealSection() {
   const { data: mealData, status: mealStatus } = useGetQuery("meals");
@@ -67,18 +71,60 @@ export function Meal({ id, meal }) {
   );
 }
 
-function DeleteMealBtn() {
+function DeleteMealBtn({ id }) {
   const [isConfirmDelete, setIsConfirmDelete] = useState(false);
   const { setCurrentId } = useContext(DiaryContext);
-
+  const queryClient = useQueryClient();
   function onCancel() {
     setCurrentId(null);
   }
+  function onDelete() {
+    mutate(id);
+  }
+  const { mutate, status } = useMutation({
+    mutationFn: deleteUserMeal,
+    networkMode: "always",
+    onSuccess: async (data) => {
+      /** If user's credentials are correct **/
+      if (data.status == 204) {
+        setIsConfirmDelete(false);
+        onCancel();
+        queryClient.invalidateQueries({
+          queryKey: ["meals"],
+        });
+        toast.success("Successfully deleted meal");
+      } else if (data.status == 401) {
+        /** If user's credentials are not correct **/
+        Navigate("/log-in");
+      } else if (data.status == 400) {
+        /** If user does not provide one or more fields **/
+        Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
+          try {
+            errorMessages.forEach((errorMessage) => {
+              toast.error(`${fieldName}: ${errorMessage}`); //Make toast
+            });
+          } catch {
+            toast.error(`${errorMessages}`);
+          }
+        });
+      }
+    },
+    onError: (err) => toast.error(err.message),
+  });
 
   return (
     <>
-      {isConfirmDelete ? (
+      {status === "pending" ? (
+        <div className="flex items-center justify-center w-full h-full">
+          <img
+            src="/Loader.png"
+            alt="Deleting meal"
+            className="w-12 h-12 animate-spin"
+          />
+        </div>
+      ) : isConfirmDelete ? (
         <Modal
+          handleAction={onDelete}
           handleCancel={onCancel}
           title={"Delete Meal?"}
           bg={"bg-accent-1"}
