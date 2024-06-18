@@ -55,3 +55,13 @@ export function getCookie(name) {
   console.log(Cookies.get());
   return Cookies.get(name);
 }
+
+export function capitalizeFirstLetter(string) {
+  if (!string) return string; // handle empty strings
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export function changeFirstLetterToLower(string) {
+  if (!string) return string; // handle empty strings
+  return string.charAt(0).toLowerCase() + string.slice(1);
+}

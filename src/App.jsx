@@ -26,8 +26,6 @@ const ActivateAccountSuccess = lazy(() =>
 
 const Diary = lazy(() => import("./pages/diary/UserDiary"));
 
-
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -125,30 +123,6 @@ function App() {
             element={
               <Suspense fallback={<Spinner />}>
                 <Diary />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/diary/add-meal"
-            element={
-              <Suspense fallback={<Spinner />}>
-                <AddMeal />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/diary/water-setting"
-            element={
-              <Suspense fallback={<Spinner />}>
-                <WaterSettings />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/diary/add-exercise"
-            element={
-              <Suspense fallback={<Spinner />}>
-                <AddExercise />
               </Suspense>
             }
           />

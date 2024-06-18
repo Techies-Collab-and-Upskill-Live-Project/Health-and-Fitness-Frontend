@@ -108,6 +108,7 @@ export function Modal({
   action,
   actionColor,
   handleCancel,
+  handleAction,
   children,
 }) {
   return (
@@ -131,7 +132,10 @@ export function Modal({
           <button onClick={handleCancel} className="font-inter font-normal">
             Cancel
           </button>
-          <button className={`text-${actionColor} font-semibold`}>
+          <button
+            onClick={handleAction}
+            className={`text-${actionColor} font-semibold`}
+          >
             {action}
           </button>
         </div>

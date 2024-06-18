@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -32,14 +32,12 @@ export default function Diary() {
 
 export function DiaryPage() {
   const navigate = useNavigate();
+  const { showWaterSettings, showAddMeal, showAddExercise, step, setStep } =
+    useContext(DiaryContext);
 
-  const [step, setStep] = useState(0);
   const date = new Date();
   date.setDate(date.getDate() + step);
   const formattedDate = formatDate(date);
-
-  const { showWaterSettings, showAddMeal, showAddExercise } =
-    useContext(DiaryContext);
 
   const queryClient = useQueryClient();
 

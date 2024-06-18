@@ -19,6 +19,8 @@ export function DiaryProvider({ children }) {
   const [showWaterSettings, setShowWaterSettings] = useState(false);
   const [showAddExercise, setShowAddExercise] = useState(false);
   const [showAddMeal, setShowAddMeal] = useState(false);
+  const [mealObject, setMealObject] = useState({ servings: 1 });
+  const [step, setStep] = useState(0);
 
   const navigate = useNavigate();
 
@@ -59,6 +61,10 @@ export function DiaryProvider({ children }) {
         setShowAddExercise,
         showAddMeal,
         setShowAddMeal,
+        mealObject,
+        setMealObject,
+        step,
+        setStep,
       }}
     >
       {children}
