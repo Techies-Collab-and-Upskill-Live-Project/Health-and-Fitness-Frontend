@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 import { registerUser } from "../../services/apiAuths";
@@ -9,6 +8,8 @@ import { InputField } from "../input-fields/InputField";
 import { Button } from "../Button";
 import EmailField from "../input-fields/EmailField";
 import PasswordField from "../input-fields/PasswordField";
+import { useCustomMutation } from "../../hooks/useCustomMutation";
+import { InlineSpinner } from "../InlineSpinner";
 
 export function SignUpForm() {
   const [fname, setFName] = useState("");
@@ -28,10 +29,9 @@ export function SignUpForm() {
 
   const navigate = useNavigate();
 
-  const { isLoading: isSubmiting, mutate } = useMutation({
-    mutationFn: registerUser,
-    networkMode: "always",
-    onSuccess: (data) => {
+  const { isLoading: isSubmiting, mutate } = useCustomMutation(
+    registerUser,
+    (data) => {
       if (data.status == 201) {
         localStorage.setItem("email", data["email"]);
         navigate("/account/activate");
@@ -43,8 +43,8 @@ export function SignUpForm() {
         });
       }
     },
-    onError: (err) => toast.error(err.message),
-  });
+    (err) => toast.error(err.message)
+  );
 
   function handleFNameChange(e) {
     setFName(e.target.value);
@@ -156,7 +156,7 @@ export function SignUpForm() {
             isValid ? "bg-primary-9" : "bg-grey-1"
           }`}
         >
-          Sign Up
+          {isSubmiting ? <InlineSpinner type="Signing up" /> : "Sign Up"}
         </Button>
         <div className="grid gap-3 grid-cols-3 items-center w-full h-[20px]">
           <div className="bg-grey-2 border h-0"></div>

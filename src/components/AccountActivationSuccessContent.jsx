@@ -1,10 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "./Button";
 
 function AccountActivationSuccessContent() {
+  const navigate = useNavigate();
   return (
     <div className="h-[85dvh] flex justify-between items-center flex-col font-montserrat text-grey-6">
       <UserSuccess />
       <Button
+        handleClick={() => navigate("/log-in")}
         width="w-full"
         bgColor="bg-primary-9"
       >

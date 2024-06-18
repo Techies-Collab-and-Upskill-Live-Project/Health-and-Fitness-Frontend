@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { Button } from "../Button";
 import { InputField } from "../input-fields/InputField";
 import { Link, useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
 import {
   getUserProfile,
   logInUser,
   updateKeepLoggedIn,
 } from "../../services/apiAuths";
 import toast from "react-hot-toast";
+import { useCustomMutation } from "../../hooks/useCustomMutation";
 
 function LoginForm() {
   const [passwordNotCorrect, setPasswordNotCorrect] = useState(false);
@@ -25,26 +25,21 @@ function LoginForm() {
   const navigate = useNavigate();
 
   // KeepLoggedIn Mutation function
-  const { mutate: update_keep_logged_in } = useMutation({
-    mutationFn: updateKeepLoggedIn,
-    networkMode: "always",
-    // onSuccess: () => {
-    //   console.log("User data patched successfully");
-    // },
-    onError: (error) => {
+  const { mutate: update_keep_logged_in } = useCustomMutation(
+    updateKeepLoggedIn,
+    (error) => {
       console.error("Error patching user data:", error);
-    },
-  });
+    }
+  );
 
-  const { mutate, status } = useMutation({
-    mutationFn: logInUser,
-    networkMode: "always",
-    onSuccess: async (data) => {
+  const { mutate, status } = useCustomMutation(
+    logInUser,
+    async (data) => {
       /** If user's credentials are correct **/
       if (data.status == 200) {
         // Update user, set keepLoggedIn
         update_keep_logged_in({
-          value: keepLoggedIn
+          value: keepLoggedIn,
         });
 
         // query user's profile, if found, redirect to diary page else redirect to profile page
@@ -67,8 +62,8 @@ function LoginForm() {
         });
       }
     },
-    onError: (err) => toast.error(err.message),
-  });
+    (err) => toast.error(err.message)
+  );
 
   useEffect(() => {
     if (status === "pending") {

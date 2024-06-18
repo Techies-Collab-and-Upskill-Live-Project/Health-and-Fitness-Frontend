@@ -3,7 +3,7 @@ import { DiaryContext } from "../../../../contexts/DiaryContext";
 
 export function MealManualInput() {
   const { setMealObject, mealObject } = useContext(DiaryContext);
-  const mealQTY = mealObject?.servings ? mealObject?.servings * 300 : 1 * 300;
+  const mealQTY = mealObject?.servings ? mealObject?.servings * 300 : "";
 
   function handleMealName(e) {
     setMealObject((prevObj) => ({
@@ -60,7 +60,7 @@ export function MealManualInput() {
              rounded-lg focus:outline-none focus:border-grey-9
            font-bold border-grey-4`}
             autoComplete="off"
-            value={`${mealObject?.servings ? mealObject?.servings : 1}`}
+            value={`${mealObject?.servings ? mealObject?.servings : ""}`}
             onChange={handleChangeServings}
             maxLength="3"
             pattern="[0-9]*"

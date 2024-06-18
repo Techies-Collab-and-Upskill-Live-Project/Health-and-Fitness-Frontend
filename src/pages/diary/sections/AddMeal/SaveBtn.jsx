@@ -2,10 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { Button } from "../../../../components/Button";
 import { DiaryContext } from "../../../../contexts/DiaryContext";
 import toast from "react-hot-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { createUserMeal } from "../../../../services/apiMeal";
 import { useNavigate } from "react-router-dom";
 import { formatToBackendDate } from "../../../../utils/helpers";
+import { useCustomMutation } from "../../../../hooks/useCustomMutation";
+import { InlineSpinner } from "../../../../components/InlineSpinner";
 
 export function SaveBtn() {
   const { mealObject, step, setMealObject } = useContext(DiaryContext);
@@ -22,13 +24,12 @@ export function SaveBtn() {
     mutate({ date: formatToBackendDate(date), ...mealObject });
   }
 
-  const { mutate, status } = useMutation({
-    mutationFn: createUserMeal,
-    networkMode: "always",
-    onSuccess: async (data) => {
+  const { mutate, status } = useCustomMutation(
+    createUserMeal,
+    async (data) => {
       /** If user's credentials are correct **/
       if (data.status == 201) {
-        setMealObject({});
+        setMealObject({ servings: 1 });
         queryClient.invalidateQueries({
           queryKey: ["meals"],
         });
@@ -49,8 +50,8 @@ export function SaveBtn() {
         });
       }
     },
-    onError: (err) => toast.error(err.message),
-  });
+    (err) => toast.error(err.message)
+  );
 
   useEffect(() => {
     if (status === "pending") {
@@ -61,7 +62,8 @@ export function SaveBtn() {
           Boolean(mealObject?.energy) &&
           Boolean(mealObject?.carbs) &&
           Boolean(mealObject?.protein) &&
-          Boolean(mealObject?.fats)
+          Boolean(mealObject?.fats) &&
+          Boolean(mealObject?.servings)
       );
     }
   }, [
@@ -71,6 +73,7 @@ export function SaveBtn() {
     mealObject?.carbs,
     mealObject?.protein,
     mealObject?.fats,
+    mealObject?.servings,
   ]);
 
   return (
@@ -83,11 +86,7 @@ export function SaveBtn() {
       mt="mt-10"
     >
       {status === "pending" ? (
-        <img
-          className="w-8 h-8 animate-spin"
-          src="/Loader.png"
-          alt="Logging in"
-        />
+        <InlineSpinner type="Adding meal" />
       ) : (
         "Save meal"
       )}

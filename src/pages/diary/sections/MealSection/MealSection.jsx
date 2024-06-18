@@ -10,10 +10,8 @@ import { InnerContainer, OuterContainer } from "../../Containers";
 import ScreenOverlay from "../../../../components/ScreenOverlay";
 import SmallModal from "../../../../components/SmallModal";
 import SwipeableDiv from "../../../../components/SwipeableDiv";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteUserMeal } from "../../../../services/apiMeal";
-import { Navigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { InlineSpinner } from "../../../../components/InlineSpinner";
+import { useDeleteMeal } from "../../../../hooks/useCustomMutation";
 
 export default function MealSection() {
   const { data: mealData, status: mealStatus } = useGetQuery("meals");
@@ -35,7 +33,7 @@ export default function MealSection() {
         <>
           {mealData.map((meal) => {
             return (
-              <SwipeableDiv key={meal.id}>
+              <SwipeableDiv id={meal.id} key={meal.id}>
                 <Meal meal={meal} id={meal.id} />
               </SwipeableDiv>
             );
@@ -74,53 +72,21 @@ export function Meal({ id, meal }) {
 function DeleteMealBtn({ id }) {
   const [isConfirmDelete, setIsConfirmDelete] = useState(false);
   const { setCurrentId } = useContext(DiaryContext);
-  const queryClient = useQueryClient();
+
   function onCancel() {
     setCurrentId(null);
   }
   function onDelete() {
     mutate(id);
   }
-  const { mutate, status } = useMutation({
-    mutationFn: deleteUserMeal,
-    networkMode: "always",
-    onSuccess: async (data) => {
-      /** If user's credentials are correct **/
-      if (data.status == 204) {
-        setIsConfirmDelete(false);
-        onCancel();
-        queryClient.invalidateQueries({
-          queryKey: ["meals"],
-        });
-        toast.success("Successfully deleted meal");
-      } else if (data.status == 401) {
-        /** If user's credentials are not correct **/
-        Navigate("/log-in");
-      } else if (data.status == 400) {
-        /** If user does not provide one or more fields **/
-        Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
-          try {
-            errorMessages.forEach((errorMessage) => {
-              toast.error(`${fieldName}: ${errorMessage}`); //Make toast
-            });
-          } catch {
-            toast.error(`${errorMessages}`);
-          }
-        });
-      }
-    },
-    onError: (err) => toast.error(err.message),
-  });
+
+  const { mutate, status } = useDeleteMeal(false, setIsConfirmDelete, onCancel);
 
   return (
     <>
       {status === "pending" ? (
         <div className="flex items-center justify-center w-full h-full">
-          <img
-            src="/Loader.png"
-            alt="Deleting meal"
-            className="w-12 h-12 animate-spin"
-          />
+          <InlineSpinner type="Deleting meal" />
         </div>
       ) : isConfirmDelete ? (
         <Modal
