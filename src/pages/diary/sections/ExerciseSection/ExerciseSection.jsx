@@ -10,6 +10,12 @@ import ScreenOverlay from "../../../../components/ScreenOverlay";
 import SmallModal from "../../../../components/SmallModal";
 import { useContext, useState } from "react";
 import { DiaryContext } from "../../../../contexts/DiaryContext";
+import { useCustomMutation } from "../../../../hooks/useCustomMutation";
+import { deleteUserExercise } from "../../../../services/apiExercise";
+import { useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { InlineSpinner } from "../../../../components/InlineSpinner";
 
 export default function ExerciseSection() {
   const { data: exerciseData, status: exerciseStatus } =
@@ -32,7 +38,13 @@ export default function ExerciseSection() {
       ) : (
         <>
           {exerciseData.map((exercise) => {
-            return <Exercise exercise={exercise} key={exercise.id} />;
+            return (
+              <Exercise
+                exercise={exercise}
+                id={exercise.id}
+                key={exercise.id}
+              />
+            );
           })}
         </>
       )}
@@ -40,7 +52,7 @@ export default function ExerciseSection() {
   );
 }
 
-export function Exercise({ exercise }) {
+export function Exercise({ exercise, id }) {
   const [showExerciseModal, setShowExerciseModal] = useState(false);
 
   return (
@@ -63,24 +75,65 @@ export function Exercise({ exercise }) {
       </div>
       {showExerciseModal && (
         <ScreenOverlay>
-          <DeleteExerciseBtn handleCancel={setShowExerciseModal} />
+          <DeleteExerciseBtn id={id} handleCancel={setShowExerciseModal} />
         </ScreenOverlay>
       )}
     </InnerContainer>
   );
 }
 
-function DeleteExerciseBtn({ handleCancel }) {
+function DeleteExerciseBtn({ id, handleCancel }) {
   const [isConfirmDelete, setIsConfirmDelete] = useState(false);
-
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  
   function onCancel() {
     handleCancel(false);
   }
 
+  const { mutate, status } = useCustomMutation(
+    deleteUserExercise,
+    async (data) => {
+      /** If user's credentials are correct **/
+      if (data.status == 204) {
+        queryClient.invalidateQueries({
+          queryKey: ["exercises"],
+        });
+        toast.success("Successfully deleted exercise");
+        onCancel();
+        setIsConfirmDelete(false);
+      } else if (data.status == 401) {
+        /** If user's credentials are not correct **/
+        navigate("/log-in");
+      } else if (data.status == 400) {
+        /** If user does not provide one or more fields **/
+        Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
+          try {
+            errorMessages.forEach((errorMessage) => {
+              toast.error(`${fieldName}: ${errorMessage}`); //Make toast
+            });
+          } catch {
+            toast.error(`${errorMessages}`);
+          }
+        });
+      }
+    },
+    (err) => toast.error(err.message)
+  );
+
+  function handleDeleteExercise() {
+    mutate(id);
+  }
+
   return (
     <>
-      {isConfirmDelete ? (
+      {status === "pending" ? (
+        <div className="flex items-center justify-center w-full h-full">
+          <InlineSpinner type="Deleting exercise" />
+        </div>
+      ) : isConfirmDelete ? (
         <Modal
+          handleAction={handleDeleteExercise}
           handleCancel={onCancel}
           title={"Delete Exercise?"}
           bg={"bg-accent-1"}

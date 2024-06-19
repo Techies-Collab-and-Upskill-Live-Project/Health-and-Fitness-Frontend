@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { animated } from "react-spring";
+import { DiaryContext } from "../contexts/DiaryContext";
 
 const TimePicker = () => {
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(15);
+  const { setSelectedExerciseTime, currentExerciseId, exerciseObject } =
+    useContext(DiaryContext);
+
+  const currentTime = exerciseObject[currentExerciseId].time_spent;
+  const [hours, setHours] = useState(parseInt(currentTime / 60));
+  const [minutes, setMinutes] = useState(currentTime % 60);
 
   const updateHours = (newHour) => setHours(() => (newHour + 24) % 24);
   const updateMinutes = (newMinute) => setMinutes(() => (newMinute + 60) % 60);
@@ -27,6 +32,12 @@ const TimePicker = () => {
 
   const hourItems = createItems(hours, 24);
   const minuteItems = createItems(minutes, 60);
+
+  useEffect(() => {
+    const hrsInMinutes = hours * 60;
+    const totalMinutes = minutes + hrsInMinutes;
+    setSelectedExerciseTime(totalMinutes);
+  }, [minutes, hours, setSelectedExerciseTime]);
 
   return (
     <div className="flex items-center justify-center font-montserrat w-full gap-[29px]">
