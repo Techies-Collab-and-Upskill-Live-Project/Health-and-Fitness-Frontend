@@ -32,7 +32,7 @@ export function MainWrapper({ id, children }) {
       >
         <FooterItem
           id={1}
-          navLink="/diaries"
+          navLink="/diary"
           icon={
             <DiaryIcon fill={`${activeID === 1 ? "#3F6A11" : "#8A8992"}`} />
           }
@@ -40,7 +40,7 @@ export function MainWrapper({ id, children }) {
         />
         <FooterItem
           id={2}
-          navLink="/diaries"
+          navLink="/recipe"
           icon={
             <RecipeIcon stroke={`${activeID === 2 ? "#3F6A11" : "#8A8992"}`} />
           }
@@ -48,7 +48,7 @@ export function MainWrapper({ id, children }) {
         />
         <FooterItem
           id={3}
-          navLink="/diaries"
+          navLink="/meal-planner"
           icon={
             <PlannerIcon stroke={`${activeID === 3 ? "#3F6A11" : "#8A8992"}`} />
           }
@@ -56,7 +56,7 @@ export function MainWrapper({ id, children }) {
         />
         <FooterItem
           id={4}
-          navLink="/diaries"
+          navLink="/account"
           icon={
             <AccountIcon fill={`${activeID === 4 ? "#3F6A11" : "#8A8992"}`} />
           }

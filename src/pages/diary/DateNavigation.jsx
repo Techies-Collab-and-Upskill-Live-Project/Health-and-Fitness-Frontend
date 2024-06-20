@@ -17,7 +17,7 @@ export function DateNavigation({ formattedDate, onDecStep, onIncStep }) {
           fill="#2D264B"
         />
       </svg>
-      <p className="text-semibold text-lg w-32 text-center">{formattedDate}</p>
+      <p className="font-semibold text-base text-center">{formattedDate}</p>
       <svg
         className="cursor-pointer"
         onClick={onIncStep}
