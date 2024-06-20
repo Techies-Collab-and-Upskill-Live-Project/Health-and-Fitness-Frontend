@@ -24,8 +24,8 @@ export async function getUserWaterIntake(date) {
   }
 }
 
-export async function createWaterIntake(waterIntakeData) {
-  const jsonString = JSON.stringify(waterIntakeData);
+export async function createWaterIntake(data) {
+  const jsonString = JSON.stringify(data);
   try {
     const response = await fetch(
       `${BASE_URL}/api/v1/food-diaries/water-intake/`,
@@ -43,7 +43,7 @@ export async function createWaterIntake(waterIntakeData) {
     if (response.status === 401) {
       const refresh = await refreshToken();
       if (refresh.status === 200) {
-        return await createWaterIntake(waterIntakeData);
+        return await createWaterIntake(data);
       } else if (refresh.status === 401) {
         return { data: resData, status: response.status };
       }
@@ -53,8 +53,8 @@ export async function createWaterIntake(waterIntakeData) {
   }
 }
 
-export async function updateWaterIntake(updatedData) {
-  const jsonString = JSON.stringify(updatedData);
+export async function updateWaterIntake(data) {
+  const jsonString = JSON.stringify(data);
   try {
     const response = await fetch(
       `${BASE_URL}/api/v1/food-diaries/water-intake/`,
@@ -72,11 +72,11 @@ export async function updateWaterIntake(updatedData) {
     if (response.status === 401) {
       const refresh = await refreshToken();
       if (refresh.status === 200) {
-        return await updateWaterIntake(updatedData);
+        return await updateWaterIntake(data);
       } else if (refresh.status === 401) {
         return { data: resData, status: response.status };
       }
-    } else return { data: resData, status: response.status };
+    } else return { data: resData, status: response?.status };
   } catch (error) {
     console.error("Error updating waterIntake:", error);
   }

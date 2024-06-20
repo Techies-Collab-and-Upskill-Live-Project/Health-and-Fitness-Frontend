@@ -40,7 +40,7 @@ function WaterGoal() {
        border-grey-1"
       >
         <p className="w-full text-right font-medium text-xs leading-[18px] text-grey-5">
-          {waterIntakeStatus === 404 ? 0 : waterIntake.water_goal / 0.25}{" "}
+          {waterIntakeStatus === 404 ? 0 : Math.round(waterIntake.water_goal / 0.25)}{" "}
           Glasses
         </p>
         <p
