@@ -32,12 +32,12 @@ export function MealPlannerProvider({ children }) {
   });
 
   const year = currentDate.getFullYear();
-  
-  const weekRange = `${startDay} - ${endDay} ${month}, ${year}`;
+
+  const weekRange = `${startDay}-${endDay} ${month}, ${year}`;
 
   const backendDateRange = `${formatToBackendDate(
     startOfWeek
-  )} -${formatToBackendDate(endOfWeek)}`;
+  )}, ${formatToBackendDate(endOfWeek)}`;
 
   // Function to increment or decrement the week
   const changeWeek = (direction) => {
@@ -46,9 +46,19 @@ export function MealPlannerProvider({ children }) {
     setCurrentDate(newDate);
   };
 
+  const [plannedMealCurrentId, setPlannedMealCurrentId] = useState(null);
+
   return (
     <MealPlannerContext.Provider
-      value={{ weekNumber, changeWeek, weekRange, year, backendDateRange }}
+      value={{
+        weekNumber,
+        changeWeek,
+        weekRange,
+        year,
+        backendDateRange,
+        plannedMealCurrentId,
+        setPlannedMealCurrentId,
+      }}
     >
       {children}
     </MealPlannerContext.Provider>
