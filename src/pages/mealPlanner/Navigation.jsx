@@ -1,33 +1,37 @@
+import { useContext } from "react";
 import { PlainLogo } from "../../components/PlainLogo";
+import { MealPlannerContext } from "../../contexts/MealPlanner";
 
-export function Navigation() {
+export default function Navigation() {
   return (
     <div
-      className="w-full mb-[-1px] pl-2 pt-2 bg-primary-9 h-44 
+      className="w-full mb-[-1px] pl-4 pt-4 bg-primary-9 h-44 
     flex flex-col items-center justify-between"
     >
       <PlainLogo />
-      <div className="pb-[1px] pt-6 w-[207px] h-full flex flex-col justify-between items-center">
+      <div className="pb-[1px] pt-3 w-[207px] h-full flex flex-col justify-between items-center">
         <Title />
         <WeekNavigation />
       </div>
     </div>
   );
 }
+
 function Title() {
   return <p className="font-semibold text-white-3 text-2xl">Meal Planner</p>;
 }
 
 function WeekNavigation() {
+  const { weekNumber, changeWeek, weekRange } = useContext(MealPlannerContext);
   return (
     <div className="flex flex-col gap-2">
       <p className="text-center text-secondary-1 font-medium text-base">
-        Week 50
+        Week {weekNumber}
       </p>
-      <div className="flex items-center gap-5">
+      <div className="flex items-center justify-between gap-5 min-w-[220px]">
         <svg
           className="cursor-pointer"
-          //   onClick={onDecStep}
+          onClick={() => changeWeek("prev")}
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -40,10 +44,10 @@ function WeekNavigation() {
             fill="#2D264B"
           />
         </svg>
-        <p className="font-medium text-base text-center">11-17 Dec, 2023</p>
+        <p className="font-medium text-base text-center">{weekRange}</p>
         <svg
           className="cursor-pointer"
-          //   onClick={onIncStep}
+          onClick={() => changeWeek("next")}
           width="24"
           height="24"
           viewBox="0 0 24 24"

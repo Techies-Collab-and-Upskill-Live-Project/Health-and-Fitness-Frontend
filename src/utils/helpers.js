@@ -65,3 +65,16 @@ export function changeFirstLetterToLower(string) {
   if (!string) return string; // handle empty strings
   return string.charAt(0).toLowerCase() + string.slice(1);
 }
+
+
+export function getWeekNumber(date) {
+  // Create a new date object for the first day of the year
+  const startOfYear = new Date(date.getFullYear(), 0, 1);
+  // Calculate the number of days between the current date and the start of the year
+  const daysDifference = Math.floor(
+    (date - startOfYear) / (24 * 60 * 60 * 1000)
+  );
+  // Calculate the week number (ISO 8601 week starts on Monday)
+  const weekNumber = Math.ceil((daysDifference + startOfYear.getDay() + 1) / 7);
+  return weekNumber;
+}
