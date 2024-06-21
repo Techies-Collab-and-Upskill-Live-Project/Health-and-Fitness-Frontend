@@ -1,39 +1,58 @@
 /* eslint-disable react/prop-types */
-import { useNavigate } from "react-router-dom";
+
+import { useGetQuery } from "../../../../hooks/useGetQuery";
+import { roundUp } from "../../../../utils/helpers";
+
 import { InnerContainer, OuterContainer } from "../../Containers";
-import ScreenOverlay from "../../../../components/ScreenOverlay";
 import { Modal } from "../MealSection/MealSection";
+
+import ScreenOverlay from "../../../../components/ScreenOverlay";
 import SmallModal from "../../../../components/SmallModal";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { DiaryContext } from "../../../../contexts/DiaryContext";
+import { useCustomMutation } from "../../../../hooks/useCustomMutation";
+import { deleteUserExercise } from "../../../../services/apiExercise";
+import { useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { InlineSpinner } from "../../../../components/InlineSpinner";
 
 export default function ExerciseSection() {
-  const navigate = useNavigate();
-  const empty = false;
+  const { data: exerciseData, status: exerciseStatus } =
+    useGetQuery("exercises");
+  const { setShowAddExercise } = useContext(DiaryContext);
 
   return (
     <OuterContainer
       handleClick={() => {
-        navigate("/diary/add-exercise");
+        setShowAddExercise(true);
       }}
       title="Exercises"
     >
-      {empty ? (
+      {exerciseStatus === 404 ? (
         <InnerContainer
-          isEmpty={empty}
+          isEmpty={exerciseStatus === 404}
           image_url={"/exercise.png"}
           name="Exercise"
         />
       ) : (
         <>
-          <Exercise />
-          <Exercise />
+          {exerciseData.map((exercise) => {
+            return (
+              <Exercise
+                exercise={exercise}
+                id={exercise.id}
+                key={exercise.id}
+              />
+            );
+          })}
         </>
       )}
     </OuterContainer>
   );
 }
 
-export function Exercise() {
+export function Exercise({ exercise, id }) {
   const [showExerciseModal, setShowExerciseModal] = useState(false);
 
   return (
@@ -44,30 +63,77 @@ export function Exercise() {
     >
       <div className="flex flex-col h-[60px] justify-end">
         <p className="flex items-center justify-center gap-2">
-          <span>Walking</span>
-          <img src="/Flame.svg" alt="Burned calorie" /> <span>100 kcal</span>
+          <span>{exercise.name}</span>
+          <img src="/Flame.svg" alt="Burned calorie" />{" "}
+          <span>
+            {roundUp(
+              exercise.time_spent * parseFloat(exercise.energy_per_minute)
+            )}{" "}
+            kcal
+          </span>
         </p>
       </div>
       {showExerciseModal && (
         <ScreenOverlay>
-          <DeleteExerciseBtn handleCancel={setShowExerciseModal} />
+          <DeleteExerciseBtn id={id} handleCancel={setShowExerciseModal} />
         </ScreenOverlay>
       )}
     </InnerContainer>
   );
 }
 
-function DeleteExerciseBtn({ handleCancel }) {
+function DeleteExerciseBtn({ id, handleCancel }) {
   const [isConfirmDelete, setIsConfirmDelete] = useState(false);
-
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  
   function onCancel() {
     handleCancel(false);
   }
 
+  const { mutate, status } = useCustomMutation(
+    deleteUserExercise,
+    async (data) => {
+      /** If user's credentials are correct **/
+      if (data.status == 204) {
+        queryClient.invalidateQueries({
+          queryKey: ["exercises"],
+        });
+        toast.success("Successfully deleted exercise");
+        onCancel();
+        setIsConfirmDelete(false);
+      } else if (data.status == 401) {
+        /** If user's credentials are not correct **/
+        navigate("/log-in");
+      } else if (data.status == 400) {
+        /** If user does not provide one or more fields **/
+        Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
+          try {
+            errorMessages.forEach((errorMessage) => {
+              toast.error(`${fieldName}: ${errorMessage}`); //Make toast
+            });
+          } catch {
+            toast.error(`${errorMessages}`);
+          }
+        });
+      }
+    },
+    (err) => toast.error(err.message)
+  );
+
+  function handleDeleteExercise() {
+    mutate(id);
+  }
+
   return (
     <>
-      {isConfirmDelete ? (
+      {status === "pending" ? (
+        <div className="flex items-center justify-center w-full h-full">
+          <InlineSpinner type="Deleting exercise" />
+        </div>
+      ) : isConfirmDelete ? (
         <Modal
+          handleAction={handleDeleteExercise}
           handleCancel={onCancel}
           title={"Delete Exercise?"}
           bg={"bg-accent-1"}

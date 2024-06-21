@@ -2,6 +2,8 @@
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import exerciseData from "../data/InitialExercises.json";
+
 export const DiaryContext = createContext();
 
 export function DiaryProvider({ children }) {
@@ -13,6 +15,16 @@ export function DiaryProvider({ children }) {
   const [factID, setFactId] = useState(null);
   const [isSearchMeal, setIsSearchMeal] = useState(false);
   const [meal, setMeal] = useState("");
+  const [isMealEmpty, setIsMealEmpty] = useState(false);
+  const [isExerciseEmpty, setIsExerciseEmpty] = useState(false);
+  const [isWaterIntakeEmpty, setIsWaterIntakeEmpty] = useState(false);
+  const [showWaterSettings, setShowWaterSettings] = useState(false);
+  const [showAddExercise, setShowAddExercise] = useState(false);
+  const [showAddMeal, setShowAddMeal] = useState(false);
+  const [mealObject, setMealObject] = useState({ servings: 1 });
+  const [exerciseObject, setExerciseObject] = useState(exerciseData);
+  const [step, setStep] = useState(0);
+  const [selectedExerciseTime, setSelectedExerciseTime] = useState(null);
 
   const navigate = useNavigate();
 
@@ -41,6 +53,26 @@ export function DiaryProvider({ children }) {
         setIsSearchMeal,
         meal,
         setMeal,
+        isMealEmpty,
+        setIsMealEmpty,
+        isExerciseEmpty,
+        setIsExerciseEmpty,
+        isWaterIntakeEmpty,
+        setIsWaterIntakeEmpty,
+        showWaterSettings,
+        setShowWaterSettings,
+        showAddExercise,
+        setShowAddExercise,
+        showAddMeal,
+        setShowAddMeal,
+        mealObject,
+        setMealObject,
+        step,
+        setStep,
+        exerciseObject,
+        setExerciseObject,
+        selectedExerciseTime,
+        setSelectedExerciseTime,
       }}
     >
       {children}

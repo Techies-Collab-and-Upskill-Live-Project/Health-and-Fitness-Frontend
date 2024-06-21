@@ -1,26 +1,25 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
-
 import { CircularProgress } from "../../components/CircularProgressBar";
 import { PlainLogo } from "../../components/PlainLogo";
-import { formatDate } from "../../utils/helpers";
+import { reduceObjectsAttr, roundUp } from "../../utils/helpers";
 import { DateNavigation } from "./DateNavigation";
+import { useGetQuery } from "../../hooks/useGetQuery";
 
-export default function CalorieLog() {
-  const [step, setStep] = useState(0);
-  const date = new Date();
-  date.setDate(date.getDate() + step);
-  const formattedDate = formatDate(date);
+export default function CalorieLog({ step, setStep, formattedDate }) {
   function handleIncStep() {
     setStep(() => step + 1);
   }
+
   function handleDecStep() {
     setStep(() => step - 1);
   }
+
   return (
-    <div className="
+    <div
+      className="
     bg-primary-9 p-4 flex-col flex items-center
-     text-white-3 gap-3 pb-12 mb-[-1px] mr-[-1px]">
+     text-white-3 gap-3 pb-12 mb-[-1px] mr-[-1px]"
+    >
       <PlainLogo />
       <Title />
       <DateNavigation
@@ -28,7 +27,7 @@ export default function CalorieLog() {
         onDecStep={handleDecStep}
         onIncStep={handleIncStep}
       />
-      <CircularProgress progress={10} />
+      <CircularProgress />
       <NutritionalRequirements />
     </div>
   );
@@ -39,11 +38,35 @@ export function Title() {
 }
 
 export function NutritionalRequirements() {
+  const { data: calorieData } = useGetQuery("calorie");
+  const { data: mealData, status: mealStatus } = useGetQuery("meals");
+
+  const { carbs, fats, protein } = calorieData;
+
+  const totalCarbs =
+    mealStatus === 404 ? 0 : reduceObjectsAttr(mealData, "carbs");
+  const totalFats =
+    mealStatus === 404 ? 0 : reduceObjectsAttr(mealData, "fats");
+  const totalProtein =
+    mealStatus === 404 ? 0 : reduceObjectsAttr(mealData, "protein");
+
   return (
     <div className="flex justify-between items-center w-full sm:px-20">
-      <TwoColumnGrid bg="bg-primary-6" name="Carb" value="35g / 380g" />
-      <TwoColumnGrid bg="bg-accent-4" name="Protein" value="35g / 380g" />
-      <TwoColumnGrid bg="bg-secondary-6" name="Fats" value="35g / 380g" />
+      <TwoColumnGrid
+        bg="bg-primary-6"
+        name="Carb"
+        value={`${totalCarbs}g / ${roundUp(carbs)}g`}
+      />
+      <TwoColumnGrid
+        bg="bg-accent-4"
+        name="Protein"
+        value={`${totalProtein}g / ${roundUp(protein)}g`}
+      />
+      <TwoColumnGrid
+        bg="bg-secondary-6"
+        name="Fats"
+        value={`${totalFats}g / ${roundUp(fats)}g`}
+      />
     </div>
   );
 }

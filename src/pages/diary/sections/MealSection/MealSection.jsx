@@ -1,53 +1,64 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
-import { InnerContainer, OuterContainer } from "../../Containers";
+
+import { useGetQuery } from "../../../../hooks/useGetQuery";
 import { DiaryContext } from "../../../../contexts/DiaryContext";
+import { roundUp } from "../../../../utils/helpers";
+
+import { InnerContainer, OuterContainer } from "../../Containers";
+
 import ScreenOverlay from "../../../../components/ScreenOverlay";
-import { useNavigate } from "react-router-dom";
 import SmallModal from "../../../../components/SmallModal";
 import SwipeableDiv from "../../../../components/SwipeableDiv";
+import { InlineSpinner } from "../../../../components/InlineSpinner";
+import { useDeleteMeal } from "../../../../hooks/useCustomMutation";
 
 export default function MealSection() {
-  const empty = false;
-  const navigate = useNavigate();
+  const { data: mealData, status: mealStatus } = useGetQuery("meals");
+  const { setShowAddMeal } = useContext(DiaryContext);
+
   function onAddMeal() {
-    navigate("/diary/add-meal");
+    setShowAddMeal(true);
   }
 
   return (
     <OuterContainer title="Meals" handleClick={onAddMeal}>
-      {empty ? (
+      {mealStatus === 404 ? (
         <InnerContainer
-          isEmpty={empty}
+          isEmpty={mealStatus === 404}
           image_url={"/Empty_Meal.png"}
           name="Empty Meal"
         />
       ) : (
         <>
-          <SwipeableDiv>
-            <Meal id={1} />
-          </SwipeableDiv>
-          <SwipeableDiv>
-            <Meal id={2} />
-          </SwipeableDiv>
+          {mealData.map((meal) => {
+            return (
+              <SwipeableDiv id={meal.id} key={meal.id}>
+                <Meal meal={meal} id={meal.id} />
+              </SwipeableDiv>
+            );
+          })}
         </>
       )}
     </OuterContainer>
   );
 }
 
-export function Meal({ id }) {
+export function Meal({ id, meal }) {
   const { currentId, setCurrentId } = useContext(DiaryContext);
 
   return (
     <InnerContainer
       handleHamburgerClick={() => setCurrentId(id)}
-      image_url={"/PoundedYam.png"}
-      name="Oha and pounded yam"
+      image_url={meal?.image_url ? meal?.image_url : "/mealPlaceholder.png"}
+      name={meal.name}
     >
       <div className="flex flex-col gap-2">
-        <p className="font-semibold">Oha and pounded yam</p>
-        <p>69 kcal. 1 serving (300 ml)</p>
+        <p className="font-semibold">{meal.name}</p>
+        <p>
+          {roundUp(meal.energy)} kcal. {meal.servings} serving (
+          {300 * meal.servings} ml)
+        </p>
       </div>
       {currentId === id && (
         <ScreenOverlay>
@@ -58,18 +69,28 @@ export function Meal({ id }) {
   );
 }
 
-function DeleteMealBtn() {
+function DeleteMealBtn({ id }) {
   const [isConfirmDelete, setIsConfirmDelete] = useState(false);
   const { setCurrentId } = useContext(DiaryContext);
 
   function onCancel() {
     setCurrentId(null);
   }
+  function onDelete() {
+    mutate(id);
+  }
+
+  const { mutate, status } = useDeleteMeal(false, setIsConfirmDelete, onCancel);
 
   return (
     <>
-      {isConfirmDelete ? (
+      {status === "pending" ? (
+        <div className="flex items-center justify-center w-full h-full">
+          <InlineSpinner type="Deleting meal" />
+        </div>
+      ) : isConfirmDelete ? (
         <Modal
+          handleAction={onDelete}
           handleCancel={onCancel}
           title={"Delete Meal?"}
           bg={"bg-accent-1"}
@@ -99,6 +120,7 @@ export function Modal({
   action,
   actionColor,
   handleCancel,
+  handleAction,
   children,
 }) {
   return (
@@ -122,7 +144,10 @@ export function Modal({
           <button onClick={handleCancel} className="font-inter font-normal">
             Cancel
           </button>
-          <button className={`text-${actionColor} font-semibold`}>
+          <button
+            onClick={handleAction}
+            className={`text-${actionColor} font-semibold`}
+          >
             {action}
           </button>
         </div>

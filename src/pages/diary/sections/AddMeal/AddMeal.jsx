@@ -4,7 +4,7 @@ import { useContext } from "react";
 
 import TopNavBar from "../../TopNavBar";
 
-import { DiaryContext, DiaryProvider } from "../../../../contexts/DiaryContext";
+import { DiaryContext } from "../../../../contexts/DiaryContext";
 import { MainWrapper } from "../../MainWrapper";
 import { SearchMeal } from "../MealSearchBar";
 import { MealManualInput } from "./MealManualInput";
@@ -13,18 +13,16 @@ import { SaveBtn } from "./SaveBtn";
 
 export default function AddMeal() {
   return (
-    <DiaryProvider>
-      <MainWrapper id={1}>
-        <TopNavBar
-          bg="primary-9"
-          iconFill="white-3"
-          iconStroke="grey-6"
-          text="Meals"
-          textColor="white-3"
-        />
-        <AddMealContent />
-      </MainWrapper>
-    </DiaryProvider>
+    <MainWrapper id={1}>
+      <TopNavBar
+        bg="primary-9"
+        iconFill="white-3"
+        iconStroke="grey-6"
+        text="Meals"
+        textColor="white-3"
+      />
+      <AddMealContent />
+    </MainWrapper>
   );
 }
 

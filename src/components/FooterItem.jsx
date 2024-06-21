@@ -12,7 +12,7 @@ export function FooterItem({ id, navLink, icon, text }) {
       }}
       className={`flex flex-col items-center leading-5 
         ${activeID === id ? "text-primary-6" : "text-grey-3"}
-    w-[52px] h-12 font-montserrat font-medium text-[13px]`}
+    w-[52px] h-12 font-montserrat font-medium text-[13px] cursor-pointer`}
     >
       <div
         className={`

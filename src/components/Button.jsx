@@ -7,16 +7,18 @@ export function Button({
   bgColor,
   border = "border-0",
   shadowBox = "shadow-none",
-  mt = "mt-0",  
+  mt = "mt-0",
   type,
   children,
 }) {
   return (
     <button
       className={`${
-        isValid ? `${bgColor} cursor-pointer active:scale-97` : `${bgColor} cursor-auto`
+        isValid
+          ? `${bgColor} cursor-pointer active:scale-97`
+          : `${bgColor} cursor-auto`
       } ${width} ${height} rounded-lg
-  font-4 text-white-2 text-center  
+  font-4 text-white-2 flex items-center justify-center
   font-montserrat font-medium
    ${mt} ${bgColor} ${border} ${shadowBox}`}
       onClick={handleClick}

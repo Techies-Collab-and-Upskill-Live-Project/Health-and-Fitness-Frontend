@@ -1,15 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../Button";
 import { InputField } from "../input-fields/InputField";
 import { Link, useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
 import {
   getUserProfile,
   logInUser,
   updateKeepLoggedIn,
 } from "../../services/apiAuths";
-import { encrypt } from "../../utils/helpers";
 import toast from "react-hot-toast";
+import { useCustomMutation } from "../../hooks/useCustomMutation";
 
 function LoginForm() {
   const [passwordNotCorrect, setPasswordNotCorrect] = useState(false);
@@ -20,47 +19,36 @@ function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
 
-  const isInputValid = username.length > 0 && password.length > 0;
+  const [isInputValid, setIsInputValid] = useState(
+    username.length > 0 && password.length > 0
+  );
   const navigate = useNavigate();
 
   // KeepLoggedIn Mutation function
-  const { mutate: update_keep_logged_in } = useMutation({
-    mutationFn: updateKeepLoggedIn,
-    networkMode: "always",
-    // onSuccess: () => {
-    //   console.log("User data patched successfully");
-    // },
-    onError: (error) => {
+  const { mutate: update_keep_logged_in } = useCustomMutation(
+    updateKeepLoggedIn,
+    (error) => {
       console.error("Error patching user data:", error);
-    },
-  });
+    }
+  );
 
-  const { mutate } = useMutation({
-    mutationFn: logInUser,
-    networkMode: "always",
-    onSuccess: async (data) => {
+  const { mutate, status } = useCustomMutation(
+    logInUser,
+    async (data) => {
       /** If user's credentials are correct **/
       if (data.status == 200) {
-        localStorage.removeItem("access");
-        localStorage.removeItem("refresh");
-        localStorage.setItem("access", encrypt(data.data["access"]));
-        localStorage.setItem("refresh", encrypt(data.data["refresh"]));
-
         // Update user, set keepLoggedIn
         update_keep_logged_in({
           value: keepLoggedIn,
-          token: data.data["access"],
         });
 
         // query user's profile, if found, redirect to diary page else redirect to profile page
         // Query user Profile
         const profile = await getUserProfile();
-
         if (profile.status === 404) {
           navigate("/profile");
         } else if (profile.status === 200) {
-          console.log("User has profile!!", profile.data);
-          // redirect to diary page
+          navigate("/diary");
         }
       } else if (data.status == 401) {
         /** If user's credentials are not correct **/
@@ -74,8 +62,16 @@ function LoginForm() {
         });
       }
     },
-    onError: (err) => toast.error(err.message),
-  });
+    (err) => toast.error(err.message)
+  );
+
+  useEffect(() => {
+    if (status === "pending") {
+      setIsInputValid(false);
+    } else {
+      setIsInputValid(username.length > 0 && password.length > 0);
+    }
+  }, [status, username, password]);
 
   function handleFormSubmit(e) {
     e.preventDefault();
@@ -216,7 +212,15 @@ function LoginForm() {
             isInputValid ? "bg-primary-9" : "bg-grey-1"
           }`}
         >
-          Log In
+          {status === "pending" ? (
+            <img
+              className="w-8 h-8 animate-spin"
+              src="/Loader.png"
+              alt="Logging in"
+            />
+          ) : (
+            "Log In"
+          )}
         </Button>
         <div className="grid gap-3 grid-cols-3 items-center w-full h-[20px]">
           <div className="bg-grey-2 border h-0"></div>

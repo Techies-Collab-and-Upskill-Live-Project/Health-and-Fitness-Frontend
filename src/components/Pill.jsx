@@ -1,4 +1,20 @@
+/* eslint-disable react/prop-types */
+import { useGetQuery } from "../hooks/useGetQuery";
+import { roundUp } from "../utils/helpers";
+
 export function Pill() {
+  const { data: exerciseData, status: exerciseStatus } =
+    useGetQuery("exercises");
+
+  const totalEnergyExpelled =
+    exerciseStatus === 404
+      ? 0
+      : exerciseData.reduce((acc, item) => {
+          return (acc += roundUp(
+            parseFloat(item.energy_per_minute) * item.time_spent
+          ));
+        }, 0);
+
   return (
     <div className="flex items-center justify-center w-full h-0 relative">
       <div
@@ -11,7 +27,8 @@ export function Pill() {
         <div className="flex justify-between gap-3 items-center">
           <img src="/Flame.svg" alt="Burned calorie" />
           <p className="font-montserrat font-normal text-lg space-x-1">
-            Burned 217 <span className="font-bold text-xs">kcal</span>
+            Burned {totalEnergyExpelled}{" "}
+            <span className="font-bold text-xs">kcal</span>
           </p>
         </div>
       </div>

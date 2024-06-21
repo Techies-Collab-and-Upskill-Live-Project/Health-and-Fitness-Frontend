@@ -2,37 +2,41 @@
 
 import { useContext, useState } from "react";
 
-import { DiaryContext, DiaryProvider } from "../../../../contexts/DiaryContext";
+import { DiaryContext } from "../../../../contexts/DiaryContext";
 import { MainWrapper } from "../../MainWrapper";
 import { AddBtn } from "../../../../components/AddBtn";
 import { Modal } from "../MealSection/MealSection";
 
 import TopNavBar from "../../TopNavBar";
-import exerciseData from "../../../../data/InitialExercises.json";
 import ScreenOverlay from "../../../../components/ScreenOverlay";
 import TimePicker from "../../../../components/TimePicker";
+import { useCustomMutation } from "../../../../hooks/useCustomMutation";
+import { createUserExercise } from "../../../../services/apiExercise";
+import { useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { formatToBackendDate } from "../../../../utils/helpers";
+import { InlineSpinner } from "../../../../components/InlineSpinner";
 
 export default function AddExercise() {
   return (
-    <DiaryProvider>
-      <MainWrapper id={1}>
-        <TopNavBar
-          bg="primary-9"
-          iconFill="white-3"
-          iconStroke="grey-6"
-          text="Exercises"
-          textColor="white-3"
-        />
-        <div
-          className="w-full min-h-[650px] h-custom-dvh overflow-y-auto px-4 
+    <MainWrapper id={1}>
+      <TopNavBar
+        bg="primary-9"
+        iconFill="white-3"
+        iconStroke="grey-6"
+        text="Exercises"
+        textColor="white-3"
+      />
+      <div
+        className="w-full min-h-[650px] h-custom-dvh overflow-y-auto px-4 
           flex flex-col items-center font-montserrat bg-white-3"
-        >
-          <Heading />
-          <DefaultExercises />
-          <Note />
-        </div>
-      </MainWrapper>
-    </DiaryProvider>
+      >
+        <Heading />
+        <DefaultExercises />
+        <Note />
+      </div>
+    </MainWrapper>
   );
 }
 
@@ -52,9 +56,10 @@ function Heading() {
 }
 
 function DefaultExercises() {
+  const { exerciseObject } = useContext(DiaryContext);
   return (
     <div className="mt-4 w-full border-grey-1 min-h-[461px] bg-white-4 rounded border flex flex-col justify-between p-4">
-      {exerciseData.map((exercise) => {
+      {exerciseObject.map((exercise) => {
         return (
           <ExerciseOption
             id={exercise.id}
@@ -137,34 +142,105 @@ function SmallModal({ children }) {
 }
 
 function EditTime() {
-  const { setCurrentExerciseId } = useContext(DiaryContext);
+  const {
+    setCurrentExerciseId,
+    currentExerciseId,
+    setExerciseObject,
+    selectedExerciseTime,
+  } = useContext(DiaryContext);
 
   function onCancel() {
     setCurrentExerciseId(null);
   }
+
+  function onSave() {
+    setExerciseObject((prevItems) => {
+      const newItems = [...prevItems];
+      newItems[currentExerciseId] = {
+        ...newItems[currentExerciseId],
+        time_spent: selectedExerciseTime,
+      };
+      return newItems;
+    });
+    setCurrentExerciseId(null);
+  }
   return (
     <Modal
+      handleAction={onSave}
       handleCancel={onCancel}
       title="Edit time"
       action="Save"
       bg="bg-primary-1"
       actionColor="primary-9"
     >
-      <TimePicker />
+      <TimePicker id={currentExerciseId} />
     </Modal>
   );
 }
 
 function EditExerciseBtn() {
+  const date = new Date();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { exerciseObject, currentExerciseId, step, setCurrentExerciseId } =
+    useContext(DiaryContext);
+
   const [showEditTime, setShowEditTime] = useState(false);
+
+  date.setDate(date.getDate() + step);
+
+  const { mutate, status } = useCustomMutation(
+    createUserExercise,
+    async (data) => {
+      /** If user's credentials are correct **/
+      if (data.status == 201) {
+        queryClient.invalidateQueries({
+          queryKey: ["exercises"],
+        });
+        toast.success("Successfully created exercise");
+        setCurrentExerciseId(null);
+      } else if (data.status == 401) {
+        /** If user's credentials are not correct **/
+        navigate("/log-in");
+      } else if (data.status == 400) {
+        /** If user does not provide one or more fields **/
+        Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
+          try {
+            errorMessages.forEach((errorMessage) => {
+              toast.error(`${fieldName}: ${errorMessage}`); //Make toast
+            });
+          } catch {
+            toast.error(`${errorMessages}`);
+          }
+        });
+      }
+    },
+    (err) => toast.error(err.message)
+  );
+
+  function handleAddExercise() {
+    const { id, ...rest } = exerciseObject[currentExerciseId];
+    const newExerciseData = {
+      ...rest,
+      date: formatToBackendDate(date),
+    };
+    mutate(newExerciseData);
+  }
 
   return (
     <>
-      {showEditTime ? (
+      {status === "pending" ? (
+        <div className="flex items-center justify-center w-full h-full">
+          <InlineSpinner type="Creating exercise" />
+        </div>
+      ) : showEditTime ? (
         <EditTime />
       ) : (
         <SmallModal>
-          <div className="h-[30px] w-full flex items-center gap-2 cursor-pointer">
+          <div
+            onClick={handleAddExercise}
+            className="h-[30px] w-full flex items-center gap-2 cursor-pointer"
+          >
             <svg
               width="18"
               height="18"

@@ -24,16 +24,8 @@ const ActivateAccountSuccess = lazy(() =>
   import("./pages/ActivationSuccess/ActivationSuccess")
 );
 
-const AddMeal = lazy(() => import("./pages/diary/sections/AddMeal/AddMeal"));
-
 const Diary = lazy(() => import("./pages/diary/UserDiary"));
-
-const WaterSettings = lazy(() =>
-  import("./pages/diary/sections/WaterSettings/WaterSettings")
-);
-const AddExercise = lazy(() =>
-  import("./pages/diary/sections/AddExercise/AddExercise")
-);
+const MealPlanner = lazy(() => import("./pages/mealPlanner/MealPlanner"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -136,26 +128,10 @@ function App() {
             }
           />
           <Route
-            path="/diary/add-meal"
+            path="/meal-planner"
             element={
               <Suspense fallback={<Spinner />}>
-                <AddMeal />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/diary/water-setting"
-            element={
-              <Suspense fallback={<Spinner />}>
-                <WaterSettings />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/diary/add-exercise"
-            element={
-              <Suspense fallback={<Spinner />}>
-                <AddExercise />
+                <MealPlanner />
               </Suspense>
             }
           />

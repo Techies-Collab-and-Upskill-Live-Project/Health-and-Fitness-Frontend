@@ -1,18 +1,24 @@
-import { useState } from "react";
+import { useContext } from "react";
+import { DiaryContext } from "../../../../contexts/DiaryContext";
 
 export function MealManualInput() {
-  const [mealName, setMealName] = useState("");
-  const [servings, setServings] = useState(1);
-  const mealQTY = servings * 300;
+  const { setMealObject, mealObject } = useContext(DiaryContext);
+  const mealQTY = mealObject?.servings ? mealObject?.servings * 300 : "";
 
   function handleMealName(e) {
-    setMealName(e.target.value);
+    setMealObject((prevObj) => ({
+      ...prevObj,
+      name: e.target.value,
+    }));
   }
 
   function handleChangeServings(e) {
     const inputValue = e.target.value;
     if (/^\d{0,3}$/.test(inputValue)) {
-      setServings(inputValue);
+      setMealObject((prevObj) => ({
+        ...prevObj,
+        servings: e.target.value,
+      }));
     }
   }
 
@@ -39,7 +45,7 @@ export function MealManualInput() {
           placeholder:font-montserrat border-grey-4`}
           placeholder="input meal e.g yam porridge"
           autoComplete="off"
-          value={mealName}
+          value={`${mealObject?.name ? mealObject?.name : ""}`}
           onChange={handleMealName}
         />
 
@@ -54,7 +60,7 @@ export function MealManualInput() {
              rounded-lg focus:outline-none focus:border-grey-9
            font-bold border-grey-4`}
             autoComplete="off"
-            value={servings}
+            value={`${mealObject?.servings ? mealObject?.servings : ""}`}
             onChange={handleChangeServings}
             maxLength="3"
             pattern="[0-9]*"
