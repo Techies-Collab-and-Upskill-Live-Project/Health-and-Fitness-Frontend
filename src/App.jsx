@@ -26,6 +26,7 @@ const ActivateAccountSuccess = lazy(() =>
 
 const Diary = lazy(() => import("./pages/diary/UserDiary"));
 const MealPlanner = lazy(() => import("./pages/mealPlanner/MealPlanner"));
+const Account = lazy(() => import("./pages/Account/Account"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -132,6 +133,14 @@ function App() {
             element={
               <Suspense fallback={<Spinner />}>
                 <MealPlanner />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/user/account"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <Account />
               </Suspense>
             }
           />
