@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { getUserProfile } from "../../services/apiAuths";
 import { DiaryProvider } from "../../contexts/DiaryContext";
+import Profile from "./sections/Profile";
 
 export default function Account() {
   return (
@@ -24,7 +25,6 @@ export function AccountPage() {
     queryFn: () => getUserProfile(),
   });
 
-  console.log(profileData);
   // If user is logged out, redirect to log in page
   if (profileData?.status === 401) {
     navigate("/log-in");
@@ -32,5 +32,9 @@ export function AccountPage() {
 
   if (isFetchingProfile) return <Spinner />;
 
-  return <MainWrapper id={4}>Profile</MainWrapper>;
+  return (
+    <MainWrapper id={4}>
+      <Profile />
+    </MainWrapper>
+  );
 }

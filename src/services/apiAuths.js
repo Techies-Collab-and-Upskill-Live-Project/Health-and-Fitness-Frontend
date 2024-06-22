@@ -84,16 +84,29 @@ export async function updateKeepLoggedIn(payload) {
 
 export async function getUserProfile() {
   try {
-    const response = await fetch(`${BASE_URL}/api/v1/profile/`, {
+    const response = await fetch(`${BASE_URL}/api/v1/profile`, {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
       credentials: "include",
     });
-    const jsonData = await response.json();
-    return { data: jsonData, status: response.status };
+    const resData = await response.json();
+    if (response.status === 401) {
+      const refresh = await refreshToken();
+      if (refresh.status === 200) {
+        return await getUserProfile();
+      } else if (refresh.status === 401) {
+        return { data: resData, status: response.status };
+      }
+    } else return { data: resData, status: response.status };
+
+    return { data: resData, status: response.status };
   } catch (error) {
-    console.log("Error fetching profile:", error);
+    console.error("Error fetching user profile", error);
   }
 }
+
 
 export async function getOTP(email) {
   try {
