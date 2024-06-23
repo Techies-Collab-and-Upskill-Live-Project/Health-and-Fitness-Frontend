@@ -8,17 +8,23 @@ import { useNavigate } from "react-router-dom";
 import { getUserProfile } from "../../services/apiAuths";
 import { DiaryProvider } from "../../contexts/DiaryContext";
 import Profile from "./sections/Profile";
+import { useContext } from "react";
+import { AccountContext, AccountProvider } from "../../contexts/Account";
+import PersonalDetails from "./sections/PersonalDetails/PersonalDetails";
 
 export default function Account() {
   return (
     <DiaryProvider>
-      <AccountPage />
+      <AccountProvider>
+        <AccountPage />
+      </AccountProvider>
     </DiaryProvider>
   );
 }
 
 export function AccountPage() {
   const navigate = useNavigate();
+  const { showPersonalDetails } = useContext(AccountContext);
 
   const { isLoading: isFetchingProfile, data: profileData } = useQuery({
     queryKey: ["profile"],
@@ -34,7 +40,7 @@ export function AccountPage() {
 
   return (
     <MainWrapper id={4}>
-      <Profile />
+      {showPersonalDetails ? <PersonalDetails /> : <Profile />}
     </MainWrapper>
   );
 }

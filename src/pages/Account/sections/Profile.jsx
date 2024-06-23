@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
+import { useContext } from "react";
 import { useGetQuery } from "../../../hooks/useGetQuery";
+import { AccountContext } from "../../../contexts/Account";
 
 export default function Profile() {
   return (
@@ -47,12 +49,17 @@ function Customization() {
 }
 
 function PersonalCustomization() {
+  const { setShowPersonalDetails } = useContext(AccountContext);
   return (
     <div className="w-full flex flex-col gap-1">
       <p className="text-grey-5 font-semibold text-base">
         Personal Customization
       </p>
-      <ProfileData icon="userIcon" title="Personal Details" />
+      <ProfileData
+        handleClick={setShowPersonalDetails}
+        icon="userIcon"
+        title="Personal Details"
+      />
       <ProfileData icon="activity_level" title="Activity Level" />
       <ProfileData icon="notification" title="Notification Preferences" />
     </div>
@@ -69,9 +76,10 @@ function AppCustomization() {
   );
 }
 
-function ProfileData({ isDelete = false, icon, title }) {
+function ProfileData({ handleClick, isDelete = false, icon, title }) {
   return (
     <div
+      onClick={() => handleClick(true)}
       className={`cursor-pointer w-full py-[10px] 
        ${
          !isDelete && "border-b-[0.5px] border-grey-1 "
@@ -93,6 +101,9 @@ function ProfileData({ isDelete = false, icon, title }) {
 }
 
 function DeleteAccount() {
-  return <div className="w-full py-2">
-    <ProfileData isDelete={true} icon="delete" title="Delete Account" />
-  </div>}
+  return (
+    <div className="w-full py-2">
+      <ProfileData isDelete={true} icon="delete" title="Delete Account" />
+    </div>
+  );
+}
