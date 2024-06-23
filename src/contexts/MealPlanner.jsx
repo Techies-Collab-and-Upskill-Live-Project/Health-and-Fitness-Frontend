@@ -8,11 +8,9 @@ export function MealPlannerProvider({ children }) {
   // Get the current date
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  // Find the start date of the current week (Monday)
   const startOfWeek = new Date(currentDate);
-  startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+  startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
 
-  // Calculate the end date of the current week (Sunday)
   const endOfWeek = new Date(startOfWeek);
   endOfWeek.setDate(startOfWeek.getDate() + 6);
 

@@ -137,7 +137,7 @@ function App() {
             }
           />
           <Route
-            path="/user/account"
+            path="/account"
             element={
               <Suspense fallback={<Spinner />}>
                 <Account />

@@ -20,13 +20,13 @@ import Spinner from "../../components/Spinner";
 export default function MainSection() {
   return (
     <div className="w-full pt-4 mt-[-65px] px-2 flex flex-col gap-4">
+      <DayContainer day="Sunday" />
       <DayContainer day="Monday" />
       <DayContainer day="Tuesday" />
       <DayContainer day="Wednesday" />
       <DayContainer day="Thursday" />
       <DayContainer day="Friday" />
       <DayContainer day="Saturday" />
-      <DayContainer day="Sunday" />
     </div>
   );
 }

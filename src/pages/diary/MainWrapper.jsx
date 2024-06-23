@@ -56,7 +56,7 @@ export function MainWrapper({ id, children }) {
         />
         <FooterItem
           id={4}
-          navLink="/user/account"
+          navLink="/account"
           icon={
             <AccountIcon fill={`${activeID === 4 ? "#3F6A11" : "#8A8992"}`} />
           }
