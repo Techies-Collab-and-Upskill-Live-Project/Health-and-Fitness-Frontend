@@ -4,12 +4,18 @@ import { useContext } from "react";
 import { AccountContext } from "../../contexts/Account";
 
 function TopNavBar({ textColor, text }) {
-  const { showPersonalDetails, setShowPersonalDetails } =
-    useContext(AccountContext);
+  const {
+    showPersonalDetails,
+    setShowPersonalDetails,
+    showActivityLevel,
+    setShowActivityLevel,
+  } = useContext(AccountContext);
 
   function handleNavigate() {
     if (showPersonalDetails) {
       setShowPersonalDetails(false);
+    } else if (showActivityLevel) {
+      setShowActivityLevel(false);
     }
   }
 

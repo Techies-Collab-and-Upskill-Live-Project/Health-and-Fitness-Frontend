@@ -50,7 +50,8 @@ function Customization() {
 }
 
 function PersonalCustomization() {
-  const { setShowPersonalDetails } = useContext(AccountContext);
+  const { setShowPersonalDetails, setShowActivityLevel } =
+    useContext(AccountContext);
   return (
     <div className="w-full flex flex-col gap-1">
       <p className="text-grey-5 font-semibold text-base">
@@ -61,7 +62,11 @@ function PersonalCustomization() {
         icon="userIcon"
         title="Personal Details"
       />
-      <ProfileData icon="activity_level" title="Activity Level" />
+      <ProfileData
+        handleClick={() => setShowActivityLevel(true)}
+        icon="activity_level"
+        title="Activity Level"
+      />
       <ProfileData icon="notification" title="Notification Preferences" />
     </div>
   );

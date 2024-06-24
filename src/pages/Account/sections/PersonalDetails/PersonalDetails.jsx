@@ -17,8 +17,13 @@ export default function PersonalDetails() {
 }
 
 function Details() {
-  const { showEditName, setShowEditName, showEditSex, setShowEditSex } =
-    useContext(AccountContext);
+  const {
+    showEditName,
+    setShowEditName,
+    setShowEditSex,
+    setShowActivityLevel,
+    setShowPersonalDetails,
+  } = useContext(AccountContext);
   const { data } = useGetQuery("profile");
   return (
     <>
@@ -38,7 +43,14 @@ function Details() {
           value={`${roundUp(data.height)}${data.height_unit}`}
         />
         <Detail title="Sex" value={data.sex} />
-        <Detail title="Activity Level" value={data.activity_level} />
+        <Detail
+          handleClick={() => {
+            setShowPersonalDetails(false);
+            setShowActivityLevel(true);
+          }}
+          title="Activity Level"
+          value={data.activity_level}
+        />
         <Detail
           title="My Goal"
           value={capitalizeFirstLetter(data.nutritional_goal)}
@@ -56,7 +68,7 @@ function Detail({ title, value, handleClick }) {
       onClick={() => handleClick(true)}
       className="w-full flex justify-between
     rounded border-b-[0.5px] border-grey-1 
-    bg-white-4 py-2 px-1"
+    bg-white-4 py-2 px-1 cursor-pointer"
     >
       <p className="font-semibold text-base">{title}</p>
       <div className="flex gap-2 items-center">

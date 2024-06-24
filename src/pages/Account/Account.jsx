@@ -11,6 +11,7 @@ import Profile from "./sections/Profile";
 import { useContext } from "react";
 import { AccountContext, AccountProvider } from "../../contexts/Account";
 import PersonalDetails from "./sections/PersonalDetails/PersonalDetails";
+import ActivityLevel from "./sections/ActivityLevel";
 
 export default function Account() {
   return (
@@ -24,7 +25,7 @@ export default function Account() {
 
 export function AccountPage() {
   const navigate = useNavigate();
-  const { showPersonalDetails } = useContext(AccountContext);
+  const { showPersonalDetails, showActivityLevel } = useContext(AccountContext);
 
   const { isLoading: isFetchingProfile, data: profileData } = useQuery({
     queryKey: ["profile"],
@@ -40,7 +41,13 @@ export function AccountPage() {
 
   return (
     <MainWrapper id={4}>
-      {showPersonalDetails ? <PersonalDetails /> : <Profile />}
+      {showPersonalDetails ? (
+        <PersonalDetails />
+      ) : showActivityLevel ? (
+        <ActivityLevel />
+      ) : (
+        <Profile />
+      )}
     </MainWrapper>
   );
 }

@@ -8,6 +8,9 @@ export function AccountProvider({ children }) {
   const [showEditName, setShowEditName] = useState(false);
   const [showEditSex, setShowEditSex] = useState(false);
   const [showLogOut, setShowLogOut] = useState(false);
+  const [showActivityLevel, setShowActivityLevel] = useState(false);
+
+  const [selectedActivity, setSelectedActivity] = useState(null);
 
   return (
     <AccountContext.Provider
@@ -20,6 +23,10 @@ export function AccountProvider({ children }) {
         setShowEditSex,
         showLogOut,
         setShowLogOut,
+        showActivityLevel,
+        setShowActivityLevel,
+        selectedActivity,
+        setSelectedActivity,
       }}
     >
       {children}
