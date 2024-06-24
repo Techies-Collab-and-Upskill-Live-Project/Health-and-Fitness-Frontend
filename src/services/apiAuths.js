@@ -53,15 +53,14 @@ export async function logInUser(formData) {
   }
 }
 
-export const logoutUser = async () => {
+export async function logoutUser() {
   const response = await fetch(`${BASE_URL}/api/v1/auth/jwt/logout/`, {
     method: "POST",
     credentials: "include",
   });
 
-  const jsonData = await response.json();
-  return { data: jsonData, status: response.status };
-};
+  return { status: response.status };
+}
 
 export async function updateKeepLoggedIn(payload) {
   const jsonFormData = { keep_logged_in: payload.value };
@@ -106,7 +105,6 @@ export async function getUserProfile() {
     console.error("Error fetching user profile", error);
   }
 }
-
 
 export async function getOTP(email) {
   try {

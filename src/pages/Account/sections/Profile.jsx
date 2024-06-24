@@ -2,6 +2,7 @@
 import { useContext } from "react";
 import { useGetQuery } from "../../../hooks/useGetQuery";
 import { AccountContext } from "../../../contexts/Account";
+import { LogOut } from "./LogOut";
 
 export default function Profile() {
   return (
@@ -66,13 +67,21 @@ function PersonalCustomization() {
   );
 }
 function AppCustomization() {
+  const { showLogOut, setShowLogOut } = useContext(AccountContext);
   return (
-    <div className="w-full flex flex-col gap-1">
-      <p className="text-grey-5 font-semibold text-base">App Customization</p>
-      <ProfileData icon="privacy" title="Privacy" />
-      <ProfileData icon="termsAndConditions" title="Terms and Conditions" />
-      <ProfileData icon="logout" title="Log out" />
-    </div>
+    <>
+      {showLogOut && <LogOut />}
+      <div className="w-full flex flex-col gap-1">
+        <p className="text-grey-5 font-semibold text-base">App Customization</p>
+        <ProfileData icon="privacy" title="Privacy" />
+        <ProfileData icon="termsAndConditions" title="Terms and Conditions" />
+        <ProfileData
+          handleClick={() => setShowLogOut(true)}
+          icon="logout"
+          title="Log out"
+        />
+      </div>
+    </>
   );
 }
 

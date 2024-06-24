@@ -15,15 +15,14 @@ export async function setNewUsername(data) {
       }
     );
 
-    const resData = await response.json();
     if (response.status === 401) {
       const refresh = await refreshToken();
       if (refresh.status === 200) {
         return await setNewUsername(data);
       } else if (refresh.status === 401) {
-        return { data: resData, status: response.status };
+        return { status: response.status };
       }
-    } else return { data: resData, status: response.status };
+    } else return { status: response.status };
   } catch (error) {
     console.error("Error setting usernanme", error);
   }
