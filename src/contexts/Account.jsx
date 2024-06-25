@@ -9,6 +9,9 @@ export function AccountProvider({ children }) {
   const [showEditSex, setShowEditSex] = useState(false);
   const [showLogOut, setShowLogOut] = useState(false);
   const [showActivityLevel, setShowActivityLevel] = useState(false);
+  const [showNotificationalPreferences, setShowNotificationalPreferences] =
+    useState(false);
+  const [preferences, setPreferences] = useState({});
 
   const [selectedActivity, setSelectedActivity] = useState(null);
 
@@ -27,6 +30,10 @@ export function AccountProvider({ children }) {
         setShowActivityLevel,
         selectedActivity,
         setSelectedActivity,
+        showNotificationalPreferences,
+        setShowNotificationalPreferences,
+        preferences,
+        setPreferences,
       }}
     >
       {children}

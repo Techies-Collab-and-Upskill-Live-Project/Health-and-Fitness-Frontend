@@ -9,6 +9,8 @@ function TopNavBar({ textColor, text }) {
     setShowPersonalDetails,
     showActivityLevel,
     setShowActivityLevel,
+    showNotificationalPreferences,
+    setShowNotificationalPreferences,
   } = useContext(AccountContext);
 
   function handleNavigate() {
@@ -16,18 +18,22 @@ function TopNavBar({ textColor, text }) {
       setShowPersonalDetails(false);
     } else if (showActivityLevel) {
       setShowActivityLevel(false);
+    } else if (showNotificationalPreferences) {
+      setShowNotificationalPreferences(false);
     }
   }
 
   return (
     <div
-      onClick={handleNavigate}
       className={`
     w-full flex justify-between items-center
      p-2 text-${textColor} 
      font-montserrat font-semibold text-xl`}
     >
-      <div className="rounded-3xl cursor-pointer shadow-[0px_0px_8px_2px_#0000001A]">
+      <div
+        onClick={handleNavigate}
+        className="rounded-3xl cursor-pointer shadow-[0px_0px_8px_2px_#0000001A]"
+      >
         <LeftArrow fill="white-4" stroke="grey-6" />
       </div>
       <div className="w-full flex items-center justify-center">{text}</div>

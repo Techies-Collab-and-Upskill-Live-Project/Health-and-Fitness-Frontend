@@ -15,7 +15,7 @@ export function Button({
     <button
       className={`${
         isValid
-          ? `${bgColor} cursor-pointer active:scale-97`
+          ? `${bgColor} cursor-pointer active:scale-[0.97]`
           : `${bgColor} cursor-auto`
       } ${width} ${height} rounded-lg
   font-4 text-white-2 flex items-center justify-center

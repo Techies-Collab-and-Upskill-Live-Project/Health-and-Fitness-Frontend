@@ -50,7 +50,7 @@ function Customization() {
 }
 
 function PersonalCustomization() {
-  const { setShowPersonalDetails, setShowActivityLevel } =
+  const { setShowPersonalDetails, setShowActivityLevel, setShowNotificationalPreferences } =
     useContext(AccountContext);
   return (
     <div className="w-full flex flex-col gap-1">
@@ -67,7 +67,11 @@ function PersonalCustomization() {
         icon="activity_level"
         title="Activity Level"
       />
-      <ProfileData icon="notification" title="Notification Preferences" />
+      <ProfileData
+        handleClick={() => setShowNotificationalPreferences(true)}
+
+        icon="notification"
+        title="Notification Preferences" />
     </div>
   );
 }

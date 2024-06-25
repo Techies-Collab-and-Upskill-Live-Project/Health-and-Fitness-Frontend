@@ -79,7 +79,7 @@ function SaveBtn() {
       {updateActivityStatus === "pending" ? (
         <img className="w-8 h-8 animate-spin" src="/Loader.png" alt="Saving" />
       ) : (
-        "Save"
+        "Save changes"
       )}
     </Button>
   );

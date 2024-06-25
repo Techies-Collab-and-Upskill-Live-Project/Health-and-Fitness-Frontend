@@ -12,6 +12,8 @@ import { useContext } from "react";
 import { AccountContext, AccountProvider } from "../../contexts/Account";
 import PersonalDetails from "./sections/PersonalDetails/PersonalDetails";
 import ActivityLevel from "./sections/ActivityLevel";
+import NotificationalPreferences from "./sections/NotificationalPreferences";
+import { getNotificationPreferences } from "../../services/apiAccount";
 
 export default function Account() {
   return (
@@ -25,19 +27,28 @@ export default function Account() {
 
 export function AccountPage() {
   const navigate = useNavigate();
-  const { showPersonalDetails, showActivityLevel } = useContext(AccountContext);
+  const {
+    showPersonalDetails,
+    showActivityLevel,
+    showNotificationalPreferences,
+  } = useContext(AccountContext);
 
   const { isLoading: isFetchingProfile, data: profileData } = useQuery({
     queryKey: ["profile"],
-    queryFn: () => getUserProfile(),
+    queryFn: getUserProfile,
+  });
+
+  const { isLoading: isFetchingPreferences, data: preferenceData } = useQuery({
+    queryKey: ["preferences"],
+    queryFn: getNotificationPreferences,
   });
 
   // If user is logged out, redirect to log in page
-  if (profileData?.status === 401) {
+  if (profileData?.status === 401 || preferenceData?.status === 401) {
     navigate("/log-in");
   }
 
-  if (isFetchingProfile) return <Spinner />;
+  if (isFetchingProfile || isFetchingPreferences) return <Spinner />;
 
   return (
     <MainWrapper id={4}>
@@ -45,6 +56,8 @@ export function AccountPage() {
         <PersonalDetails />
       ) : showActivityLevel ? (
         <ActivityLevel />
+      ) : showNotificationalPreferences ? (
+        <NotificationalPreferences />
       ) : (
         <Profile />
       )}

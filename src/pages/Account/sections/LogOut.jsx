@@ -37,7 +37,7 @@ export function LogOut() {
           <Modal
             handleAction={handleLogOut}
             handleCancel={onCancel}
-            title="Name"
+            title="Log Out?"
             bg="bg-accent-1"
             action="Log Out"
             actionColor="error"
