@@ -11,6 +11,8 @@ function TopNavBar({ textColor, text }) {
     setShowActivityLevel,
     showNotificationalPreferences,
     setShowNotificationalPreferences,
+    showGoal,
+    setShowGoal,
   } = useContext(AccountContext);
 
   function handleNavigate() {
@@ -20,6 +22,8 @@ function TopNavBar({ textColor, text }) {
       setShowActivityLevel(false);
     } else if (showNotificationalPreferences) {
       setShowNotificationalPreferences(false);
+    } else if (showGoal) {
+      setShowGoal(false);
     }
   }
 

@@ -11,9 +11,11 @@ export function AccountProvider({ children }) {
   const [showActivityLevel, setShowActivityLevel] = useState(false);
   const [showNotificationalPreferences, setShowNotificationalPreferences] =
     useState(false);
+  const [showGoal, setShowGoal] = useState(false);
   const [preferences, setPreferences] = useState({});
+  const [selectedGoal, setSelectedGoal] = useState("");
 
-  const [selectedActivity, setSelectedActivity] = useState(null);
+  const [selectedActivity, setSelectedActivity] = useState("");
 
   return (
     <AccountContext.Provider
@@ -34,6 +36,10 @@ export function AccountProvider({ children }) {
         setShowNotificationalPreferences,
         preferences,
         setPreferences,
+        showGoal,
+        setShowGoal,
+        selectedGoal,
+        setSelectedGoal,
       }}
     >
       {children}

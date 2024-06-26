@@ -13,7 +13,7 @@ export function Preferences() {
   }, [setPreferences, preferenceData]);
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-3">
       <Preference title="Meal recommendation" />
       <Preference title="Water intake reminder" />
       <Preference title="Food log reminder" />
@@ -35,7 +35,8 @@ function Preference({ title }) {
 
   return (
     <div
-      className="flex justify-between items-center min-h-10 min-w-72 cursor-pointer"
+      className="flex justify-between items-center 
+      min-h-10 min-w-72 cursor-pointer border-b-[0.5px] border-grey-1"
       onClick={handlePreferenceChange}
     >
       <div className="text-lg font-semibold">{title}</div>

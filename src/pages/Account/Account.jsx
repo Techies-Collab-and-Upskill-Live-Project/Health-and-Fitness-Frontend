@@ -14,6 +14,7 @@ import PersonalDetails from "./sections/PersonalDetails/PersonalDetails";
 import ActivityLevel from "./sections/ActivityLevel";
 import NotificationalPreferences from "./sections/NotificationalPreferences";
 import { getNotificationPreferences } from "../../services/apiAccount";
+import Goal from "./sections/PersonalDetails/Goal";
 
 export default function Account() {
   return (
@@ -31,6 +32,7 @@ export function AccountPage() {
     showPersonalDetails,
     showActivityLevel,
     showNotificationalPreferences,
+    showGoal,
   } = useContext(AccountContext);
 
   const { isLoading: isFetchingProfile, data: profileData } = useQuery({
@@ -58,6 +60,8 @@ export function AccountPage() {
         <ActivityLevel />
       ) : showNotificationalPreferences ? (
         <NotificationalPreferences />
+      ) : showGoal ? (
+        <Goal />
       ) : (
         <Profile />
       )}

@@ -23,6 +23,7 @@ function Details() {
     setShowEditSex,
     setShowActivityLevel,
     setShowPersonalDetails,
+    setShowGoal,
   } = useContext(AccountContext);
   const { data } = useGetQuery("profile");
   return (
@@ -52,6 +53,10 @@ function Details() {
           value={data.activity_level}
         />
         <Detail
+          handleClick={() => {
+            setShowPersonalDetails(false);
+            setShowGoal(true);
+          }}
           title="My Goal"
           value={capitalizeFirstLetter(data.nutritional_goal)}
         />

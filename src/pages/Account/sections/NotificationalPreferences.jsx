@@ -85,6 +85,7 @@ function SaveBtn() {
 
   return (
     <Button
+    mt="mt-3"
       handleClick={handleClick}
       isValid={Object.keys(changes).length !== 0}
       width="w-full"
