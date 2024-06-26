@@ -14,6 +14,7 @@ export function AccountProvider({ children }) {
   const [showGoal, setShowGoal] = useState(false);
   const [preferences, setPreferences] = useState({});
   const [selectedGoal, setSelectedGoal] = useState("");
+  const [selectedSex, setSelectedSex] = useState("");
 
   const [selectedActivity, setSelectedActivity] = useState("");
 
@@ -40,6 +41,8 @@ export function AccountProvider({ children }) {
         setShowGoal,
         selectedGoal,
         setSelectedGoal,
+        selectedSex,
+        setSelectedSex,
       }}
     >
       {children}

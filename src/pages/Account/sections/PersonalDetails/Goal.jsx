@@ -77,7 +77,7 @@ function SaveBtn() {
 
   return (
     <Button
-      mt="mt-40"
+      mt="mt-[50px]"
       handleClick={() => {
         updateGoal({ nutritional_goal: selectedGoal });
       }}

@@ -7,6 +7,7 @@ import { AccountContext } from "../../../../contexts/Account";
 import TopNavBar from "../../TopNavBar";
 
 import { EditName } from "./EditName";
+import { EditSex } from "./EditSex";
 export default function PersonalDetails() {
   return (
     <div className="p-4 flex flex-col gap-4 text-grey-5">
@@ -19,6 +20,7 @@ export default function PersonalDetails() {
 function Details() {
   const {
     showEditName,
+    showEditSex,
     setShowEditName,
     setShowEditSex,
     setShowActivityLevel,
@@ -30,12 +32,11 @@ function Details() {
     <>
       <div className="w-full flex flex-col gap-4">
         <Detail
-          handleClick={setShowEditName}
+          handleClick={() => setShowEditName(true)}
           title="Name"
           value={data.username}
         />
         <Detail
-          handleClick={setShowEditSex}
           title="Current Weight"
           value={`${roundUp(data.weight)}${data.weight_unit}`}
         />
@@ -43,7 +44,11 @@ function Details() {
           title="Height"
           value={`${roundUp(data.height)}${data.height_unit}`}
         />
-        <Detail title="Sex" value={data.sex} />
+        <Detail
+          handleClick={() => setShowEditSex(true)}
+          title="Sex"
+          value={data.sex}
+        />
         <Detail
           handleClick={() => {
             setShowPersonalDetails(false);
@@ -63,6 +68,7 @@ function Details() {
       </div>
 
       {showEditName && <EditName />}
+      {showEditSex && <EditSex />}
     </>
   );
 }
@@ -70,7 +76,7 @@ function Details() {
 function Detail({ title, value, handleClick }) {
   return (
     <div
-      onClick={() => handleClick(true)}
+      onClick={handleClick}
       className="w-full flex justify-between
     rounded border-b-[0.5px] border-grey-1 
     bg-white-4 py-2 px-1 cursor-pointer"
