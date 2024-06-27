@@ -41,12 +41,12 @@ function Preference({ title }) {
     >
       <div className="text-lg font-semibold">{title}</div>
       <div
-        className={`relative w-[52px] h-7 p-1 rounded-2xl flex items-center justify-end ${
+        className={`transition-colors duration-500 relative w-[52px] h-7 p-1 rounded-2xl flex items-center justify-end ${
           preferences[backendTitle] ? "bg-primary-8" : "bg-grey-1"
         }`}
       >
         <div
-          className={`absolute w-5 h-5 rounded-full transition-transform transform ${
+          className={`duration-500 absolute w-5 h-5 rounded-full transition-transform transform ${
             preferences[backendTitle] ? "translate-x-0" : "translate-x-[-22px]"
           } bg-white-4`}
         ></div>

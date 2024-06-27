@@ -13,7 +13,7 @@ export function Button({
 }) {
   return (
     <button
-      className={`${
+      className={`transition-all duration-500 ${
         isValid
           ? `${bgColor} cursor-pointer active:scale-[0.97]`
           : `${bgColor} cursor-auto`
