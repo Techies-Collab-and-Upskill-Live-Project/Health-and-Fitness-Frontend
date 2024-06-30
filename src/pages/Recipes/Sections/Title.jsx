@@ -28,7 +28,7 @@ export function SearchBar() {
         <input
           className={`h-8 opacity-0.5 py-5 pl-12
           w-full bg-transparent outline-1 outline-white border
-           rounded-lg focus:outline-none transition focus:shadow-[2px_2px_20px_0px_#00000026] focus:border-primary-7
+           rounded-lg focus:outline-none transition focus:shadow-[2px_2px_15px_0px_#00000026] focus:border-primary-7
           placeholder:text-xs placeholder:text-grey-6 text-grey-6 text-sm
            placeholder:font-medium font-medium
         placeholder:font-montserrat border-grey-12`}
