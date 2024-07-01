@@ -1,4 +1,7 @@
+/* eslint-disable react/prop-types */
+import { useContext } from "react";
 import { roundUp } from "../../utils/helpers";
+import { RecipesContext } from "../../contexts/Recipes";
 
 export function Meals() {
   return (
@@ -22,8 +25,16 @@ export function Meals() {
   );
 }
 function Meal({ img, name, calorie }) {
+  const { setShowMealDetail } = useContext(RecipesContext);
+  function handleClick() {
+    setShowMealDetail(true);
+  }
+
   return (
-    <div className="w-[156px] cursor-pointer flex flex-col shadow-[2px_2px_20px_0px_#00000026] rounded-[5px]">
+    <div
+      onClick={handleClick}
+      className="w-[156px] cursor-pointer flex flex-col shadow-[2px_2px_20px_0px_#00000026] rounded-[5px]"
+    >
       <img src={img} alt={name} className="w-[156px] h-[156px]" />
       <div
         className="bg-white-4 h-full w-full flex flex-col gap-2
