@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useContext } from "react";
-import { roundUp } from "../../utils/helpers";
-import { RecipesContext } from "../../contexts/Recipes";
+import { roundUp } from "../../../utils/helpers";
+import { RecipesContext } from "../../../contexts/Recipes";
 
 export function Meals() {
   return (
