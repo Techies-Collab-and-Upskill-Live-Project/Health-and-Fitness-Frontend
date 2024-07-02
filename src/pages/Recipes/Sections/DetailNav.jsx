@@ -1,3 +1,7 @@
+import { useContext } from "react";
+import { RecipesContext } from "../../../contexts/Recipes";
+
+/* eslint-disable react/prop-types */
 export function DetailNav() {
   return (
     <div className="py-[10px] px-4 flex bg-primary-1 gap-[9px] justify-between">
@@ -8,11 +12,14 @@ export function DetailNav() {
   );
 }
 function TextSwitcher({ name }) {
+  const { detail, setDetail } = useContext(RecipesContext);
+
   return (
     <div className="gap-3 flex flex-col justify-between items-center w-full">
       <p
-        className={`text-base text-nowrap ${
-          name === "Calories Count"
+        onClick={() => setDetail(name)}
+        className={`cursor-pointer text-base text-nowrap ${
+          name === detail
             ? "text-primary-10 font-semibold"
             : "font-normal text-grey-3"
         }`}
@@ -20,9 +27,7 @@ function TextSwitcher({ name }) {
         {name}
       </p>
       <div
-        className={`h-[2px] ${
-          name === "Calories Count" ? "bg-primary-10 w-full" : ""
-        }`}
+        className={`h-[2px] ${name === detail ? "bg-primary-10 w-full" : ""}`}
       ></div>
     </div>
   );
