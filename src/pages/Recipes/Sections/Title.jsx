@@ -1,3 +1,6 @@
+import { useContext } from "react";
+import { RecipesContext } from "../../../contexts/Recipes";
+
 export function Title() {
   return (
     <p
@@ -9,6 +12,8 @@ export function Title() {
   );
 }
 export function SearchBar() {
+  const { setShowFilter } = useContext(RecipesContext);
+
   return (
     <div className="w-full items-center justify-center flex gap-2">
       <label className="w-full relative grid auto-rows-max gap-2">
@@ -36,6 +41,7 @@ export function SearchBar() {
         />
       </label>
       <svg
+        onClick={() => setShowFilter(true)}
         className="cursor-pointer"
         width="28"
         height="28"

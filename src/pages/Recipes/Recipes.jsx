@@ -9,6 +9,14 @@ import { useContext } from "react";
 import { TopNavBar } from "./TopNavBar";
 import { DetailNav } from "./Sections/DetailNav";
 import { CaloriesCount } from "./Sections/CaloriesCount";
+import {
+  Ingredients,
+  Ingredient,
+  Instructions,
+  Instruction,
+} from "./Sections/Ingredients";
+import { Filter } from "./Sections/Filter";
+
 export default function Recipes() {
   return (
     <DiaryProvider>
@@ -20,11 +28,13 @@ export default function Recipes() {
 }
 
 function RecipesPage() {
-  const { showMealDetail } = useContext(RecipesContext);
+  const { showMealDetail, showFilter } = useContext(RecipesContext);
   return (
     <MainWrapper id={2}>
       {showMealDetail ? (
         <MealDetails />
+      ) : showFilter ? (
+        <Filter />
       ) : (
         <Container>
           <Logo />
@@ -76,34 +86,6 @@ function MealDetails() {
           />
         </Instructions>
       )}
-    </div>
-  );
-}
-
-function Ingredients({ children }) {
-  return <div className="p-4 space-y-2">{children}</div>;
-}
-
-function Ingredient({ item }) {
-  return (
-    <div className="flex font-normal text-grey-4 text-base items-center">
-      <p className="h-1/2 w-6 flex items-end justify-center">
-        <span className="rounded-full w-1 h-1 bg-grey-4"></span>
-      </p>
-      <p>{item}</p>
-    </div>
-  );
-}
-function Instructions({ children }) {
-  return <div className="p-4 space-y-2">{children}</div>;
-}
-
-function Instruction({ number, item }) {
-  return (
-    <div className="flex font-normal text-grey-4 text-base items-center">
-      <p>
-        {number}. {item}
-      </p>
     </div>
   );
 }
