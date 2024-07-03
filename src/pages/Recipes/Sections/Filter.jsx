@@ -1,4 +1,5 @@
-import { RecipesContext } from "../../contexts/Recipes";
+/* eslint-disable react/prop-types */
+import { RecipesContext } from "../../../contexts/Recipes";
 import { useContext } from "react";
 
 export function Filter() {

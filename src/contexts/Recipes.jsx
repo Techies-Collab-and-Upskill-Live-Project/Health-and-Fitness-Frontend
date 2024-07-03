@@ -6,11 +6,13 @@ export function RecipesProvider({ children }) {
   const [showMealDetail, setShowMealDetail] = useState(false);
   const [detail, setDetail] = useState("Calories Count");
   const [filterOptions, setFilterOptions] = useState({
-    type: "All",
+    type: { type: "All", name: "All" },
     diet: [],
     intolerances: [],
   });
   const [showFilter, setShowFilter] = useState(false);
+  
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <RecipesContext.Provider
@@ -23,6 +25,8 @@ export function RecipesProvider({ children }) {
         setFilterOptions,
         showFilter,
         setShowFilter,
+        isLoading,
+        setIsLoading,
       }}
     >
       {children}

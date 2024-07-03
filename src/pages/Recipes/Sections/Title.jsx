@@ -1,5 +1,6 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { RecipesContext } from "../../../contexts/Recipes";
+import { useRecipes } from "../../../hooks/useRecipes";
 
 export function Title() {
   return (
@@ -13,6 +14,9 @@ export function Title() {
 }
 export function SearchBar() {
   const { setShowFilter } = useContext(RecipesContext);
+  const [query, setQuery] = useState("");
+  const { recipes } = useRecipes(query);
+  console.log(recipes);
 
   return (
     <div className="w-full items-center justify-center flex gap-2">
@@ -31,6 +35,8 @@ export function SearchBar() {
           />
         </svg>
         <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
           className={`h-8 opacity-0.5 py-5 pl-12
           w-full bg-transparent outline-1 outline-white border
            rounded-lg focus:outline-none transition focus:shadow-[2px_2px_15px_0px_#00000026] focus:border-primary-7

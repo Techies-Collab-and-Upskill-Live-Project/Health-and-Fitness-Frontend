@@ -2,25 +2,34 @@
 import { useContext } from "react";
 import { roundUp } from "../../../utils/helpers";
 import { RecipesContext } from "../../../contexts/Recipes";
+import { InlineSpinner } from "../../../components/InlineSpinner";
 
 export function Meals() {
+  const { isLoading } = useContext(RecipesContext);
   return (
     <div className="flex gap-4 flex-wrap min-w-80 w-full justify-center">
-      <Meal
-        name="Jollof rice and chicken"
-        calorie="480.56"
-        img="/JollofRice.png"
-      />
-      <Meal
-        name="Jollof rice and chicken"
-        calorie="480.56"
-        img="/JollofRice.png"
-      />
-      <Meal
-        name="Jollof rice and chicken"
-        calorie="480.56"
-        img="/JollofRice.png"
-      />
+      {isLoading ? (
+        <InlineSpinner />
+      ) : (
+        <>
+          {" "}
+          <Meal
+            name="Jollof rice and chicken"
+            calorie="480.56"
+            img="/JollofRice.png"
+          />
+          <Meal
+            name="Jollof rice and chicken"
+            calorie="480.56"
+            img="/JollofRice.png"
+          />
+          <Meal
+            name="Jollof rice and chicken"
+            calorie="480.56"
+            img="/JollofRice.png"
+          />{" "}
+        </>
+      )}
     </div>
   );
 }
