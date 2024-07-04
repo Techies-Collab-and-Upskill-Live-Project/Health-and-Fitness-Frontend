@@ -21,19 +21,16 @@ export function useRecipes(query) {
 
   useEffect(
     function () {
-      // callback?.();
-
       const controller = new AbortController();
-
       async function fetchMovies() {
+        setIsLoading(true);
         try {
-          setIsLoading(true);
-
           const res = await fetch(
             `https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=${KEY}&addRecipeNutrition=true&instructionsRequired=true&fillIngredients=true&number=100${mealType}${userAllergy}${userDiet}`,
             { signal: controller.signal }
           );
 
+          setIsLoading(false)
           if (!res.ok)
             throw new Error(
               "Something went wrong with fetching recipes, try back later"
@@ -46,10 +43,9 @@ export function useRecipes(query) {
           setRecipes(data.results);
         } catch (err) {
           if (err.name !== "AbortError") toast.error(err.message);
-        } finally {
-          setIsLoading(false);
         }
       }
+     
       if (query.length < 3) {
         setRecipes([]);
         return;

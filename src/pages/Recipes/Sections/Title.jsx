@@ -1,6 +1,5 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { RecipesContext } from "../../../contexts/Recipes";
-import { useRecipes } from "../../../hooks/useRecipes";
 
 export function Title() {
   return (
@@ -13,10 +12,7 @@ export function Title() {
   );
 }
 export function SearchBar() {
-  const { setShowFilter } = useContext(RecipesContext);
-  const [query, setQuery] = useState("");
-  const { recipes } = useRecipes(query);
-  console.log(recipes);
+  const { setShowFilter, query, setQuery } = useContext(RecipesContext);
 
   return (
     <div className="w-full items-center justify-center flex gap-2">

@@ -11,8 +11,10 @@ export function RecipesProvider({ children }) {
     intolerances: [],
   });
   const [showFilter, setShowFilter] = useState(false);
-  
+
+  const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [currentMeal, setCurrentMeal] = useState({});
 
   return (
     <RecipesContext.Provider
@@ -27,6 +29,10 @@ export function RecipesProvider({ children }) {
         setShowFilter,
         isLoading,
         setIsLoading,
+        query,
+        setQuery,
+        currentMeal,
+        setCurrentMeal,
       }}
     >
       {children}
