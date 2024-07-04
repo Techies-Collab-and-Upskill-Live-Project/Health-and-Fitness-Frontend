@@ -16,6 +16,10 @@ import {
   Instruction,
 } from "./Sections/Ingredients";
 import { Filter } from "./Sections/Filter";
+import Spinner from "../../components/Spinner";
+import { getUserProfile } from "../../services/apiAuths";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Recipes() {
   return (
@@ -29,6 +33,20 @@ export default function Recipes() {
 
 function RecipesPage() {
   const { showMealDetail, showFilter } = useContext(RecipesContext);
+  const navigate = useNavigate();
+
+  const { isLoading: isFetchingProfile, data: profileData } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getUserProfile,
+  });
+
+  // If user is logged out, redirect to log in page
+  if (profileData?.status === 401) {
+    navigate("/log-in");
+  }
+
+  if (isFetchingProfile) return <Spinner />;
+
   return (
     <MainWrapper id={2}>
       {showMealDetail ? (
