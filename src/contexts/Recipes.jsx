@@ -6,7 +6,7 @@ export function RecipesProvider({ children }) {
   const [showMealDetail, setShowMealDetail] = useState(false);
   const [detail, setDetail] = useState("Calories Count");
   const [filterOptions, setFilterOptions] = useState({
-    type: { type: "All", name: "All" },
+    type: [],
     diet: [],
     intolerances: [],
   });

@@ -9,7 +9,6 @@ export function Meals() {
   const { isLoading, query } = useContext(RecipesContext);
 
   const { recipes } = useRecipes(query);
-  console.log(recipes);
 
   return (
     <div className="flex gap-4 flex-wrap min-w-80 w-full justify-center">
@@ -20,14 +19,14 @@ export function Meals() {
           Meal with the name could not be found, try using a different keyword
         </p>
       ) : (
-        recipes.map((meal) => {
+        recipes.map(({recipe: meal}) => {
           return (
             <Meal
-              id={meal.id}
-              name={meal.title}
+              uri={meal.uri}
+              name={meal.label}
               img={meal.image}
-              calorie={meal.nutrition.nutrients[0].amount / meal.servings}
-              key={meal.id}
+              calorie={meal.totalNutrients.ENERC_KCAL.quantity}
+              key={meal.uri}
             />
           );
         })

@@ -3,6 +3,7 @@ import { RecipesContext } from "../contexts/Recipes";
 import toast from "react-hot-toast";
 
 const KEY = import.meta.env.VITE_KEY;
+const ID = import.meta.env.VITE_APP_ID;
 
 export function useRecipes(query) {
   const [recipes, setRecipes] = useState([]);
@@ -26,11 +27,11 @@ export function useRecipes(query) {
         setIsLoading(true);
         try {
           const res = await fetch(
-            `https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=${KEY}&addRecipeNutrition=true&instructionsRequired=true&fillIngredients=true&number=100${mealType}${userAllergy}${userDiet}`,
+            `https://api.edamam.com/api/recipes/v2?q=${query}&app_id=${ID}&app_key=${KEY}&type=any&field=uri&field=label&field=image&field=ingredients&field=totalNutrients&field=ingredientLines`,
             { signal: controller.signal }
           );
 
-          setIsLoading(false)
+          setIsLoading(false);
           if (!res.ok)
             throw new Error(
               "Something went wrong with fetching recipes, try back later"
@@ -38,14 +39,14 @@ export function useRecipes(query) {
 
           const data = await res.json();
 
-          if (data.results.length === 0) throw new Error("recipe not found");
+          if (data.count === 0) throw new Error("recipe not found");
 
-          setRecipes(data.results);
+          setRecipes(data.hits);
         } catch (err) {
           if (err.name !== "AbortError") toast.error(err.message);
         }
       }
-     
+
       if (query.length < 3) {
         setRecipes([]);
         return;
