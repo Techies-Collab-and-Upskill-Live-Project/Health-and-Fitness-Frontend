@@ -42,7 +42,7 @@ export function formatToBackendDate(date) {
 }
 
 export function roundUp(value) {
-  return Math.ceil(value);
+  return Math.round(value);
 }
 
 export function reduceObjectsAttr(data, attr) {

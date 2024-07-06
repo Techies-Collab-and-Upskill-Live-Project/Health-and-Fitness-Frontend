@@ -82,7 +82,7 @@ function MealDetails() {
       ) : detail === "Ingredients" ? (
         <Ingredients>
           {currentMeal.ingredientLines.map((ing, index) => {
-            return <Ingredient key={index} item={ing.text} />;
+            return <Ingredient key={index} item={ing} />;
           })}
         </Ingredients>
       ) : (

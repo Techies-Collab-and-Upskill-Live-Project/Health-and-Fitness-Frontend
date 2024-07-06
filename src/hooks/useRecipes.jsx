@@ -69,7 +69,10 @@ export function useRecipes(query) {
 
           const data = await res.json();
 
-          if (data.count === 0) throw new Error("recipe not found");
+          if (data.count === 0) {
+            setRecipes([]);
+            throw new Error("recipe not found");
+          }
 
           setPagination({
             count: data.count,

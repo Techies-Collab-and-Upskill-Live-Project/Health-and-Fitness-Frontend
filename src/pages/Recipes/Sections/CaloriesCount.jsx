@@ -67,6 +67,10 @@ export function CaloriesCount() {
 }
 
 export function MealNutrFacts() {
+  const { currentMeal } = useContext(RecipesContext);
+
+  const { CHOCDF, FAT, PROCNT, ENERC_KCAL } = currentMeal.totalNutrients;
+
   return (
     <div
       className="w-full min-h-[216px] flex flex-col justify-around items-center 
@@ -79,10 +83,26 @@ export function MealNutrFacts() {
         className="w-full min-h-[188px] rounded border
          border-grey-1 bg-white-4 py-3 px-2 flex flex-col justify-between"
       >
-        <Fact icon="energy.png" name="Energy" value={`${"476"}kcal`} />
-        <Fact icon="carbs.png" name="Carbs" value={`${"55.52"}g`} />
-        <Fact icon="protein.png" name="Protein" value={`${"38.7"}g`} />
-        <Fact icon="fats.png" name="Fats" value={`${"10"}g`} />
+        <Fact
+          icon="energy.png"
+          name="Energy"
+          value={`${ENERC_KCAL.quantity.toFixed(2)}kcal`}
+        />
+        <Fact
+          icon="carbs.png"
+          name="Carbs"
+          value={`${CHOCDF.quantity.toFixed(2)}g`}
+        />
+        <Fact
+          icon="protein.png"
+          name="Protein"
+          value={`${PROCNT.quantity.toFixed(2)}g`}
+        />
+        <Fact
+          icon="fats.png"
+          name="Fats"
+          value={`${FAT.quantity.toFixed(2)}g`}
+        />
       </div>
     </div>
   );
