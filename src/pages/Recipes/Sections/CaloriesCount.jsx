@@ -1,6 +1,24 @@
+/* eslint-disable react/prop-types */
+import { useContext } from "react";
 import { CircularProgress } from "./NutrientProgress";
+import { RecipesContext } from "../../../contexts/Recipes";
 
 export function CaloriesCount() {
+  const { currentMeal } = useContext(RecipesContext);
+
+  const { CHOCDF, FAT, PROCNT } = currentMeal.totalNutrients;
+
+  const totalCaloriesFromFat = FAT.quantity * 9;
+  const totalCaloriesFromCarbs = CHOCDF.quantity * 4;
+  const totalCaloriesFromProtein = PROCNT.quantity * 4;
+
+  const totalCalories =
+    totalCaloriesFromFat + totalCaloriesFromCarbs + totalCaloriesFromProtein;
+
+  const fatPercentage = (totalCaloriesFromFat / totalCalories) * 100;
+  const carbsPercentage = (totalCaloriesFromCarbs / totalCalories) * 100;
+  const proteinPercentage = (totalCaloriesFromProtein / totalCalories) * 100;
+
   return (
     <div className="p-4 flex flex-col gap-6">
       <div className="w-full flex gap-[7px] text-grey-6 font-normal">
@@ -27,17 +45,17 @@ export function CaloriesCount() {
         </div>
         <div className="h-36 p-3 justify-between flex">
           <CircularProgress
-            progress={80}
+            progress={Math.round(carbsPercentage)}
             stroke="stroke-primary-6"
             name="CARBS"
           />
           <CircularProgress
-            progress={24}
+            progress={Math.round(proteinPercentage)}
             stroke="stroke-tomato-4"
             name="PROTEIN"
           />
           <CircularProgress
-            progress={18}
+            progress={Math.round(fatPercentage)}
             stroke="stroke-secondary-6"
             name="FATS"
           />

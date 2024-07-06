@@ -8,31 +8,29 @@ export function Categories() {
       <p className="font-semibold text-[19px] leading-[27px]">Categories</p>
       <div className="w-full gap-3 flex justify-between overflow-auto">
         <Category type="All" />
-        <Category type="Local foods" name="main course" bg="/PoundedYam.png" />
-        <Category type="Snacks" name="snack" bg="/Snacks.png" />
-        <Category type="Drinks" name="drink" bg="/Drinks.png" />
-        <Category type="Side Dishes" name="side dish" bg="/SideDishes.png" />
-        <Category type="Soup" name="soup" bg="/Soup.png" />
+        <Category type="Main course" bg="/Main course.jpg" />
+        <Category type="Desserts" bg="/Desserts.jpg" />
+        <Category type="Drinks" bg="/Drinks.jpg" />
+        <Category type="Side dish" bg="/Side dish.jpg" />
+        <Category type="Soup" bg="/Soup.jpg" />
+        <Category type="Biscuits and cookies" bg="/Biscuits and cookies.jpg" />
+        <Category type="Bread" bg="/Bread.jpg" />
+        <Category type="Cereals" bg="/Cereals.jpg" />
+        <Category
+          type="Condiments and sauces"
+          bg="/Condiments and sauces.jpg"
+        />
+        <Category type="Pancake" bg="/Pancake.jpg" />
+        <Category type="Preps" bg="/Preps.jpg" />
+        <Category type="Preserve" bg="/Preserve.jpg" />
+        <Category type="Salad" bg="/Salad.jpg" />
+        <Category type="Starter" bg="/Starter.jpg" />
+        <Category type="Sweets" bg="/Sweets.jpg" />
       </div>
     </div>
   );
 }
-/** Biscuits and cookies
- * Bread
- * Cereals
- * Condiments and sauces
- * Desserts
- * Drinks
- * Main course
- * Pancake
- * Preps
- * Preserve
- * Salad
- * Side dish
- * Soup
- * Sarter
- * Sweets
- */
+
 function Category({ type, bg = null }) {
   const { filterOptions, setFilterOptions } = useContext(RecipesContext);
 
@@ -70,7 +68,7 @@ function Category({ type, bg = null }) {
                : "border-grey-4 bg-grey-1"
            } flex items-center justify-center`}
       >
-        {filterOptions.type.includes("All") ? (
+        {type === "All" ? (
           <svg
             width="18"
             height="18"
@@ -115,7 +113,7 @@ function Category({ type, bg = null }) {
         ) : (
           <img
             className={`w-10 h-10 rounded-lg ${
-              type === filterOptions.type.type ? "grayscale-0" : "grayscale"
+              filterOptions.type.includes(type) ? "grayscale-0" : "grayscale"
             }`}
             src={bg}
             alt={type}

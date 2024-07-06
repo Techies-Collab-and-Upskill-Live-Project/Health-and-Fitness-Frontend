@@ -9,12 +9,7 @@ import { useContext } from "react";
 import { TopNavBar } from "./TopNavBar";
 import { DetailNav } from "./Sections/DetailNav";
 import { CaloriesCount } from "./Sections/CaloriesCount";
-import {
-  Ingredients,
-  Ingredient,
-  Instructions,
-  Instruction,
-} from "./Sections/Ingredients";
+import { Ingredients, Ingredient, Instructions } from "./Sections/Ingredients";
 import { Filter } from "./Sections/Filter";
 import Spinner from "../../components/Spinner";
 import { getUserProfile } from "../../services/apiAuths";
@@ -71,37 +66,30 @@ function Container({ children }) {
 }
 
 function MealDetails() {
-  const { detail } = useContext(RecipesContext);
+  const { detail, currentMeal } = useContext(RecipesContext);
+
   return (
     <div className="flex flex-col">
-      <TopNavBar
-        bg="white-4"
-        text="Jollof rice and chicken"
-        textColor="grey-6"
-      />
+      <TopNavBar bg="white-4" text={currentMeal.label} textColor="grey-6" />
       <img
         className="h-[360px]"
-        src="/JollofRice.png"
-        alt="Jollof rice and chicken"
+        src={currentMeal.image}
+        alt={currentMeal.label}
       />
       <DetailNav />
       {detail === "Calories Count" ? (
         <CaloriesCount />
       ) : detail === "Ingredients" ? (
         <Ingredients>
-          <Ingredient item="24 .oz chopped frozen spinach (680g)" />
-          <Ingredient item="24 .oz chopped frozen spinach (680g)" />
+          {currentMeal.ingredientLines.map((ing, index) => {
+            return <Ingredient key={index} item={ing.text} />;
+          })}
         </Ingredients>
       ) : (
         <Instructions>
-          <Instruction
-            number={1}
-            item="Rinse the rice thoroughly, then soak it in cold water for about 15-20 minutes. Drain and set asid"
-          />
-          <Instruction
-            number={2}
-            item="Rinse the rice thoroughly, then soak it in cold water for about 15-20 minutes. Drain and set asid"
-          />
+          <p className="text-grey-4 font-bold text-center text-2xl">
+            COMING SOON...
+          </p>
         </Instructions>
       )}
     </div>

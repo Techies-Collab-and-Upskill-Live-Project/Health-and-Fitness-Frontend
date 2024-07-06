@@ -73,7 +73,6 @@ export function Filter() {
         </p>
         <Diet diet="Vegetarian" />
         <Diet diet="Vegan" />
-        <Diet diet="Gluten Free" />
       </div>
       <div className="flex w-full flex-col gap-4 text-base text-grey-5">
         <p className="font-semibold">ALLERGIES</p>
@@ -81,7 +80,6 @@ export function Filter() {
         <Allergy name="Peanut" />
         <Allergy name="Soy" />
         <Allergy name="Egg" />
-        <Allergy name="Seafood" />
         <Allergy name="Tree Nut" />
         <Allergy name="Sulfite" />
         <Allergy name="Gluten" />
@@ -89,6 +87,7 @@ export function Filter() {
         <Allergy name="Shellfish" />
         <Allergy name="Wheat" />
         <Allergy name="Grain" />
+        <Allergy name="Red meat" />
       </div>
     </div>
   );

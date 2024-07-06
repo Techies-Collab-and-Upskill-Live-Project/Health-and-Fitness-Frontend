@@ -1,14 +1,18 @@
 /* eslint-disable react/prop-types */
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { roundUp } from "../../../utils/helpers";
 import { RecipesContext } from "../../../contexts/Recipes";
 import { useRecipes } from "../../../hooks/useRecipes";
 import { InlineSpinner } from "../../../components/InlineSpinner";
 
 export function Meals() {
-  const { isLoading, query } = useContext(RecipesContext);
+  const { isLoading, query, setRecipes } = useContext(RecipesContext);
 
   const { recipes } = useRecipes(query);
+
+  useEffect(() => {
+    setRecipes(recipes);
+  }, [recipes, setRecipes]);
 
   return (
     <div className="flex gap-4 flex-wrap min-w-80 w-full justify-center">
@@ -19,7 +23,7 @@ export function Meals() {
           Meal with the name could not be found, try using a different keyword
         </p>
       ) : (
-        recipes.map(({recipe: meal}) => {
+        recipes.map(({ recipe: meal }) => {
           return (
             <Meal
               uri={meal.uri}
@@ -34,9 +38,18 @@ export function Meals() {
     </div>
   );
 }
-function Meal({ img, name, calorie }) {
-  const { setShowMealDetail } = useContext(RecipesContext);
+
+function Meal({ uri, img, name, calorie }) {
+  const { setShowMealDetail, setCurrentMeal, recipes } =
+    useContext(RecipesContext);
+
   function handleClick() {
+    setCurrentMeal(
+      recipes.filter((recipe) => {
+        return recipe.recipe.uri === uri;
+      })[0].recipe
+    );
+
     setShowMealDetail(true);
   }
 

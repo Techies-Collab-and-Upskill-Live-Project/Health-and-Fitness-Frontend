@@ -7,18 +7,48 @@ const ID = import.meta.env.VITE_APP_ID;
 
 export function useRecipes(query) {
   const [recipes, setRecipes] = useState([]);
-  const { filterOptions, setIsLoading } = useContext(RecipesContext);
+  const { filterOptions, setIsLoading, setPagination } =
+    useContext(RecipesContext);
 
   const { diet, intolerances, type } = filterOptions;
-  const mealType = type.name !== "All" ? `&type=${type.name}` : "";
+
+  const mealType =
+    type.length !== 0
+      ? type.includes("All")
+        ? ""
+        : `${type
+            .map((item) => {
+              return `&dishType=${item.toLowerCase().replace(/\s+/g, "-")}`;
+            })
+            .join("")}`
+      : "";
 
   const userDiet =
-    diet.length !== 0 ? `&diet=${diet.join(",").toLowerCase()}` : "";
+    diet.length !== 0
+      ? `${diet
+          .map((item) => {
+            return `&health=${item.toLowerCase()}`;
+          })
+          .join("")}`
+      : "";
 
   const userAllergy =
     intolerances.length !== 0
-      ? `&intolerances=${intolerances.join(",").toLowerCase()}`
+      ? `${intolerances
+          .map((item) => {
+            return `&health=${item.toLowerCase().replace(/\s+/g, "-")}-free`;
+          })
+          .join("")}`
       : "";
+
+  let health = "";
+  if (userAllergy !== "" && userDiet !== "") {
+    health = `${userDiet},${userAllergy}`;
+  } else if (userDiet !== "") {
+    health = userDiet;
+  } else if (userAllergy !== "") {
+    health = userAllergy;
+  }
 
   useEffect(
     function () {
@@ -27,7 +57,7 @@ export function useRecipes(query) {
         setIsLoading(true);
         try {
           const res = await fetch(
-            `https://api.edamam.com/api/recipes/v2?q=${query}&app_id=${ID}&app_key=${KEY}&type=any&field=uri&field=label&field=image&field=ingredients&field=totalNutrients&field=ingredientLines`,
+            `https://api.edamam.com/api/recipes/v2?q=${query}&app_id=${ID}&app_key=${KEY}&type=any&field=uri&field=label&field=image&field=ingredients&field=totalNutrients&field=ingredientLines${health}${mealType}`,
             { signal: controller.signal }
           );
 
@@ -41,6 +71,11 @@ export function useRecipes(query) {
 
           if (data.count === 0) throw new Error("recipe not found");
 
+          setPagination({
+            count: data.count,
+            currentPage: data.to,
+            next: data._links.next.href,
+          });
           setRecipes(data.hits);
         } catch (err) {
           if (err.name !== "AbortError") toast.error(err.message);
@@ -58,7 +93,7 @@ export function useRecipes(query) {
         controller.abort();
       };
     },
-    [query, mealType, userAllergy, userDiet, setIsLoading]
+    [query, mealType, health, setIsLoading, setPagination]
   );
 
   return { recipes };
