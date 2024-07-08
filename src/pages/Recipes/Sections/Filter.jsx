@@ -3,7 +3,7 @@ import { RecipesContext } from "../../../contexts/Recipes";
 import { useContext } from "react";
 
 export function Filter() {
-  const { setShowFilter } = useContext(RecipesContext);
+  const { setShowFilter, setIsNavBack } = useContext(RecipesContext);
 
   return (
     <div className="p-4 flex flex-col gap-4 justify-between">
@@ -52,7 +52,10 @@ export function Filter() {
           Filter meals
         </p>
         <svg
-          onClick={() => setShowFilter(false)}
+          onClick={() => {
+            setIsNavBack(true);
+            setShowFilter(false);
+          }}
           width="20"
           height="20"
           viewBox="0 0 20 20"

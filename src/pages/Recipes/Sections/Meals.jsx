@@ -4,38 +4,65 @@ import { roundUp } from "../../../utils/helpers";
 import { RecipesContext } from "../../../contexts/Recipes";
 import { useRecipes } from "../../../hooks/useRecipes";
 import { InlineSpinner } from "../../../components/InlineSpinner";
+import { Button } from "../../../components/Button";
+import { loadMore } from "../../../services/apiRecipe";
 
 export function Meals() {
-  const { isLoading, query, setRecipes } = useContext(RecipesContext);
+  const {
+    isLoading,
+    query,
+    setRecipes,
+    pagination,
+    setPagination,
+    setIsLoadingMore,
+    isLoadingMore,
+    setIsNavBack,
+  } = useContext(RecipesContext);
 
   const { recipes } = useRecipes(query);
 
   useEffect(() => {
+    setIsNavBack(false);
     setRecipes(recipes);
-  }, [recipes, setRecipes]);
+  }, [recipes, setRecipes, setIsNavBack]);
+
+  function handleClick() {
+    loadMore(pagination.next, setRecipes, setIsLoadingMore, setPagination);
+  }
 
   return (
-    <div className="flex gap-4 flex-wrap min-w-80 w-full justify-center">
-      {isLoading ? (
-        <InlineSpinner />
-      ) : recipes.length === 0 ? (
-        <p className="text-grey-3 font-medium p-3 text-center">
-          Meal with the name could not be found, try using a different keyword
-        </p>
-      ) : (
-        recipes.map(({ recipe: meal }) => {
-          return (
-            <Meal
-              uri={meal.uri}
-              name={meal.label}
-              img={meal.image}
-              calorie={meal.totalNutrients.ENERC_KCAL.quantity}
-              key={meal.uri}
-            />
-          );
-        })
+    <>
+      <div className="flex gap-4 flex-wrap min-w-80 w-full justify-center">
+        {isLoading ? (
+          <InlineSpinner />
+        ) : recipes.length === 0 ? (
+          <p className="text-grey-3 font-medium p-3 text-center">
+            Meal with the name could not be found, try using a different keyword
+          </p>
+        ) : (
+          recipes.map(({ recipe: meal }) => {
+            return (
+              <Meal
+                uri={meal.uri}
+                name={meal.label}
+                img={meal.image}
+                calorie={meal.totalNutrients.ENERC_KCAL.quantity}
+                key={meal.uri}
+              />
+            );
+          })
+        )}
+      </div>
+      {pagination.count > pagination.currentPage && !isLoading && (
+        <Button
+          handleClick={handleClick}
+          bgColor={isLoadingMore ? "bg-grey-2" : "bg-primary-9"}
+          isValid={!isLoadingMore}
+        >
+          {isLoadingMore ? <InlineSpinner /> : "Load more"}
+        </Button>
       )}
-    </div>
+    </>
   );
 }
 

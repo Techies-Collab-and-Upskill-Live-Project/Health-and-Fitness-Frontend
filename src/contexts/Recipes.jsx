@@ -14,6 +14,7 @@ export function RecipesProvider({ children }) {
 
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const [currentMeal, setCurrentMeal] = useState({});
   const [pagination, setPagination] = useState({
@@ -21,6 +22,7 @@ export function RecipesProvider({ children }) {
     currentPage: 0,
     next: "",
   });
+  const [isNavBack, setIsNavBack] = useState(false);
 
   return (
     <RecipesContext.Provider
@@ -43,6 +45,10 @@ export function RecipesProvider({ children }) {
         setRecipes,
         pagination,
         setPagination,
+        isLoadingMore,
+        setIsLoadingMore,
+        isNavBack,
+        setIsNavBack,
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { RecipesContext } from "../contexts/Recipes";
 import toast from "react-hot-toast";
 
@@ -6,9 +6,14 @@ const KEY = import.meta.env.VITE_KEY;
 const ID = import.meta.env.VITE_APP_ID;
 
 export function useRecipes(query) {
-  const [recipes, setRecipes] = useState([]);
-  const { filterOptions, setIsLoading, setPagination } =
-    useContext(RecipesContext);
+  const {
+    filterOptions,
+    setIsLoading,
+    setPagination,
+    setRecipes,
+    recipes,
+    isNavBack,
+  } = useContext(RecipesContext);
 
   const { diet, intolerances, type } = filterOptions;
 
@@ -53,7 +58,7 @@ export function useRecipes(query) {
   useEffect(
     function () {
       const controller = new AbortController();
-      async function fetchMovies() {
+      async function fetchRecipes() {
         setIsLoading(true);
         try {
           const res = await fetch(
@@ -81,7 +86,10 @@ export function useRecipes(query) {
           });
           setRecipes(data.hits);
         } catch (err) {
-          if (err.name !== "AbortError") toast.error(err.message);
+          if (err.name !== "AbortError") {
+            setIsLoading(false);
+            toast.error(err.message);
+          }
         }
       }
 
@@ -90,13 +98,27 @@ export function useRecipes(query) {
         return;
       }
 
-      fetchMovies();
+      if (isNavBack) {
+        console.log("Dont reload");
+        return;
+      } else {
+        fetchRecipes();
+      }
 
       return function () {
         controller.abort();
       };
     },
-    [query, mealType, health, setIsLoading, setPagination]
+    [
+      isNavBack,
+      query,
+      mealType,
+      health,
+      setIsLoading,
+      setPagination,
+      setRecipes,
+      recipes,
+    ]
   );
 
   return { recipes };
