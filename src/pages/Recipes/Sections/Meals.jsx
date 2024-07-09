@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { roundUp } from "../../../utils/helpers";
 import { RecipesContext } from "../../../contexts/Recipes";
 import { useRecipes } from "../../../hooks/useRecipes";
@@ -16,15 +16,9 @@ export function Meals() {
     setPagination,
     setIsLoadingMore,
     isLoadingMore,
-    setIsNavBack,
   } = useContext(RecipesContext);
 
   const { recipes } = useRecipes(query);
-
-  useEffect(() => {
-    setIsNavBack(false);
-    setRecipes(recipes);
-  }, [recipes, setRecipes, setIsNavBack]);
 
   function handleClick() {
     loadMore(pagination.next, setRecipes, setIsLoadingMore, setPagination);

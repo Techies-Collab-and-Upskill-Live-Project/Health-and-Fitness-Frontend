@@ -20,7 +20,7 @@ export async function loadMore(
     setPagination({
       count: data.count,
       currentPage: data.to,
-      next: data._links.next.href,
+      next: data?._links?.next?.href,
     });
 
     setRecipes((prev) => [...prev, ...data.hits]);

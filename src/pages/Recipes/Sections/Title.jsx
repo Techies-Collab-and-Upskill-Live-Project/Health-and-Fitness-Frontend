@@ -12,7 +12,8 @@ export function Title() {
   );
 }
 export function SearchBar() {
-  const { setShowFilter, query, setQuery } = useContext(RecipesContext);
+  const { setShowFilter, query, setQuery, setIsNavBack } =
+    useContext(RecipesContext);
 
   return (
     <div className="w-full items-center justify-center flex gap-2">
@@ -32,7 +33,10 @@ export function SearchBar() {
         </svg>
         <input
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => {
+            setIsNavBack(false);
+            setQuery(e.target.value);
+          }}
           className={`h-8 opacity-0.5 py-5 pl-12
           w-full bg-transparent outline-1 outline-white border
            rounded-lg focus:outline-none transition focus:shadow-[2px_2px_15px_0px_#00000026] focus:border-primary-7

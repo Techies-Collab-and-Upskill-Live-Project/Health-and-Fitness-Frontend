@@ -48,7 +48,7 @@ export function useRecipes(query) {
 
   let health = "";
   if (userAllergy !== "" && userDiet !== "") {
-    health = `${userDiet},${userAllergy}`;
+    health = `${userDiet}${userAllergy}`;
   } else if (userDiet !== "") {
     health = userDiet;
   } else if (userAllergy !== "") {
@@ -82,9 +82,10 @@ export function useRecipes(query) {
           setPagination({
             count: data.count,
             currentPage: data.to,
-            next: data._links.next.href,
+            next: data?._links?.next?.href,
           });
           setRecipes(data.hits);
+
         } catch (err) {
           if (err.name !== "AbortError") {
             setIsLoading(false);
@@ -99,7 +100,6 @@ export function useRecipes(query) {
       }
 
       if (isNavBack) {
-        console.log("Dont reload");
         return;
       } else {
         fetchRecipes();
@@ -117,7 +117,6 @@ export function useRecipes(query) {
       setIsLoading,
       setPagination,
       setRecipes,
-      recipes,
     ]
   );
 
