@@ -4,6 +4,7 @@
 import { useContext, useEffect, useState } from "react";
 
 import TopNavBar from "../../TopNavBar";
+import Spinner from "../../../../components/Spinner";
 
 import { useSearchMeal } from "../../../../hooks/useRecipes";
 import { DiaryContext } from "../../../../contexts/DiaryContext";
@@ -13,6 +14,14 @@ import { MealManualInput } from "./MealManualInput";
 import { MealNutrFacts } from "./NutritionFacts";
 import { SaveBtn } from "./SaveBtn";
 import { useGetQuery } from "../../../../hooks/useGetQuery";
+import { formatToBackendDate } from "../../../../utils/helpers";
+import { createUserMeal } from "../../../../services/apiMeal";
+import { useCustomMutation } from "../../../../hooks/useCustomMutation";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import ScreenOverlay from "../../../../components/ScreenOverlay";
+import { InlineSpinner } from "../../../../components/InlineSpinner";
 
 export default function AddMeal() {
   return (
@@ -30,7 +39,8 @@ export default function AddMeal() {
 }
 
 function AddMealContent() {
-  const { isSearchMeal } = useContext(DiaryContext);
+  const { isSearchMeal, isLoading } = useContext(DiaryContext);
+
   return (
     <div
       className={`w-full flex flex-col
@@ -43,7 +53,7 @@ function AddMealContent() {
       {isSearchMeal ? (
         <>
           <MealSearchOptions />
-          <FoundMeals />
+          {isLoading ? <InlineSpinner /> : <FoundMeals />}
         </>
       ) : (
         <>
@@ -93,7 +103,6 @@ function FoundMeals() {
   return (
     <div className="w-full p-3 overflow-auto text-grey-6 flex flex-col gap-1">
       {meals.map((meal, index) => {
-        console.log(meal);
         const id = meal.id ? meal.id : index;
         return (
           <MealOption
@@ -102,6 +111,9 @@ function FoundMeals() {
             id={id}
             servings={meal.servings}
             energy={meal.energy}
+            carbs={meal.carbs}
+            protein={meal.protein}
+            fats={meal.fats}
             selected={meal.date ? true : false}
             img={meal.image_url}
           />
@@ -111,10 +123,74 @@ function FoundMeals() {
   );
 }
 
-function MealOption({ name, id, servings, energy, selected, img }) {
-  console.log(selected);
+function MealOption({
+  name,
+  id,
+  servings,
+  energy,
+  carbs,
+  protein,
+  fats,
+  selected,
+  img,
+}) {
+  const [newServings, setNewServings] = useState(servings);
+
+  const { step } = useContext(DiaryContext);
+
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const date = new Date();
+  date.setDate(date.getDate() + step);
+
+  function onClick() {
+    mutate({
+      date: formatToBackendDate(date),
+      name: name,
+      image_url: img ? img : null,
+      energy: energy * newServings,
+      servings: newServings,
+      carbs: carbs * newServings,
+      fats: fats * newServings,
+      protein: protein * newServings,
+    });
+  }
+
+  const { mutate, status } = useCustomMutation(
+    createUserMeal,
+    async (data) => {
+      /** If user's credentials are correct **/
+      if (data.status == 201) {
+        queryClient.invalidateQueries({
+          queryKey: ["meals"],
+        });
+        toast.success("Successfully added meal");
+      } else if (data.status == 401) {
+        /** If user's credentials are not correct **/
+        navigate("/log-in");
+      } else if (data.status == 400) {
+        /** If user does not provide one or more fields **/
+        Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
+          try {
+            errorMessages.forEach((errorMessage) => {
+              toast.error(`${fieldName}: ${errorMessage}`); //Make toast
+            });
+          } catch {
+            toast.error(`${errorMessages}`);
+          }
+        });
+      }
+    },
+    (err) => toast.error(err.message)
+  );
+
   return (
-    <div className="w-full flex gap-2 border p-1 rounded border-grey-1">
+    <div
+      className={`${
+        selected && "bg-primary-1"
+      } w-full flex gap-2 border p-1 rounded border-grey-1`}
+    >
       <img
         src={img ? img : "/mealPlaceholder.png"}
         alt={name}
@@ -125,6 +201,11 @@ function MealOption({ name, id, servings, energy, selected, img }) {
         <div className="flex items-center gap-3">
           <p className="flex items-center gap-1">
             <svg
+              onClick={() =>
+                setNewServings(
+                  (servings = servings > 1 ? servings - 1 : servings)
+                )
+              }
               width="16"
               height="16"
               viewBox="0 0 14 15"
@@ -141,10 +222,11 @@ function MealOption({ name, id, servings, energy, selected, img }) {
             </svg>
 
             <span>
-              {servings} serving ({servings * 300} ml)
+              {newServings} serving ({newServings * 300} ml)
             </span>
 
             <svg
+              onClick={() => setNewServings((servings) => servings + 1)}
               width="16"
               height="16"
               viewBox="0 0 14 15"
@@ -160,12 +242,37 @@ function MealOption({ name, id, servings, energy, selected, img }) {
               />
             </svg>
           </p>
-          <span>{Math.round(energy)}kcal</span>
+          <span>{Math.round(energy) * newServings}kcal</span>
         </div>
       </div>
       <div className="flex justify-center items-center">
-        <img src="/PlusBtn.svg" alt="Select Meal" className="cursor-pointer" />
+        {selected ? (
+          <svg
+            width="12"
+            height="9"
+            viewBox="0 0 12 9"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M11.7174 1.48685C11.8942 1.27471 11.8655 0.959432 11.6534 0.78265C11.4413 0.605868 11.126 0.63453 10.9492 0.846668L7.35541 5.15921C6.63352 6.02548 6.1257 6.63299 5.68523 7.03073C5.25504 7.4192 4.95815 7.54266 4.66664 7.54266C4.37513 7.54266 4.07824 7.4192 3.64805 7.03073C3.20758 6.63298 2.69976 6.02548 1.97786 5.15921L1.05075 4.04667C0.873967 3.83453 0.558685 3.80587 0.346546 3.98265C0.134408 4.15943 0.105746 4.47471 0.282528 4.68685L1.23537 5.83027C1.92555 6.65851 2.47828 7.32179 2.97785 7.77291C3.49389 8.2389 4.0214 8.54266 4.66664 8.54266C5.31188 8.54266 5.83939 8.2389 6.35543 7.77291C6.85499 7.3218 7.40771 6.65852 8.09788 5.83029L11.7174 1.48685Z"
+              fill="#63626E"
+            />
+          </svg>
+        ) : (
+          <img
+            onClick={onClick}
+            src="/PlusBtn.svg"
+            alt="Select Meal"
+            className="cursor-pointer"
+          />
+        )}
       </div>
+      {status === "pending" && (
+        <ScreenOverlay>
+          <Spinner />
+        </ScreenOverlay>
+      )}
     </div>
   );
 }
