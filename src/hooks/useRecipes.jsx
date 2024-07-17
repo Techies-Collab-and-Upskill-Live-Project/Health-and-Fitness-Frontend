@@ -1,5 +1,6 @@
 import { useContext, useEffect } from "react";
 import { RecipesContext } from "../contexts/Recipes";
+import { DiaryContext } from "../contexts/DiaryContext";
 import toast from "react-hot-toast";
 
 const KEY = import.meta.env.VITE_KEY;
@@ -85,7 +86,6 @@ export function useRecipes(query) {
             next: data?._links?.next?.href,
           });
           setRecipes(data.hits);
-
         } catch (err) {
           if (err.name !== "AbortError") {
             setIsLoading(false);
@@ -121,4 +121,76 @@ export function useRecipes(query) {
   );
 
   return { recipes };
+}
+
+/** Fetch function for the meal addition section */
+export function useSearchMeal(query) {
+  const { setIsLoading, setPagination, setRecipes, recipes } =
+    useContext(DiaryContext);
+
+  useEffect(
+    function () {
+      const controller = new AbortController();
+      async function fetchRecipes() {
+        setIsLoading(true);
+        try {
+          const res = await fetch(
+            `https://api.edamam.com/api/recipes/v2?q=${query}&app_id=${ID}&app_key=${KEY}&type=any&field=image&field=label&field=ingredients&field=totalNutrients&field=ingredientLines`,
+            { signal: controller.signal }
+          );
+
+          setIsLoading(false);
+          if (!res.ok)
+            throw new Error(
+              "Something went wrong with fetching meals, try back later"
+            );
+
+          const data = await res.json();
+
+          if (data.count === 0) {
+            setRecipes([]);
+            throw new Error("meal not found");
+          }
+
+          setPagination({
+            count: data.count,
+            currentPage: data.to,
+            next: data?._links?.next?.href,
+          });
+          
+          setRecipes(data.hits.map((item) => normalizeRecipeData(item.recipe)));
+        } catch (err) {
+          if (err.name !== "AbortError") {
+            setIsLoading(false);
+            toast.error(err.message);
+          }
+        }
+      }
+
+      if (query.length < 3) {
+        setRecipes([]);
+        return;
+      }
+      fetchRecipes();
+
+      return function () {
+        controller.abort();
+      };
+    },
+    [query, setIsLoading, setPagination, setRecipes]
+  );
+
+  return { recipes };
+}
+
+function normalizeRecipeData(recipe) {
+  return {
+    name: recipe.label,
+    energy: recipe.totalNutrients.ENERC_KCAL?.quantity.toFixed(2) || "0.00",
+    carbs: recipe.totalNutrients.CHOCDF?.quantity.toFixed(2) || "0.00",
+    fats: recipe.totalNutrients.FAT?.quantity.toFixed(2) || "0.00",
+    protein: recipe.totalNutrients.PROCNT?.quantity.toFixed(2) || "0.00",
+    servings: 1,
+    image_url: recipe.image || null,
+  };
 }

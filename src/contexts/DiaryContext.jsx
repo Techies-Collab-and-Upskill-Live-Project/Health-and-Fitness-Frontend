@@ -26,6 +26,17 @@ export function DiaryProvider({ children }) {
   const [step, setStep] = useState(0);
   const [selectedExerciseTime, setSelectedExerciseTime] = useState(null);
 
+  /** Automatic meal addition from recipe */
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [recipes, setRecipes] = useState([]);
+  const [pagination, setPagination] = useState({
+    count: 0,
+    currentPage: 0,
+    next: "",
+  });
+  /** Automatic meal addition from recipe */
+
   const navigate = useNavigate();
 
   function handleFooterClick(navLink, id) {
@@ -73,6 +84,14 @@ export function DiaryProvider({ children }) {
         setExerciseObject,
         selectedExerciseTime,
         setSelectedExerciseTime,
+        isLoading,
+        setIsLoading,
+        isLoadingMore,
+        setIsLoadingMore,
+        recipes,
+        setRecipes,
+        pagination,
+        setPagination,
       }}
     >
       {children}

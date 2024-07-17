@@ -1,15 +1,18 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import TopNavBar from "../../TopNavBar";
 
+import { useSearchMeal } from "../../../../hooks/useRecipes";
 import { DiaryContext } from "../../../../contexts/DiaryContext";
 import { MainWrapper } from "../../MainWrapper";
 import { SearchMeal } from "../MealSearchBar";
 import { MealManualInput } from "./MealManualInput";
 import { MealNutrFacts } from "./NutritionFacts";
 import { SaveBtn } from "./SaveBtn";
+import { useGetQuery } from "../../../../hooks/useGetQuery";
 
 export default function AddMeal() {
   return (
@@ -63,32 +66,62 @@ export function MealSearchOptions() {
 }
 
 function FoundMeals() {
+  const [meals, setMeals] = useState([]);
+
+  const { data: mealData, status: mealStatus } = useGetQuery("meals");
+
+  const { meal } = useContext(DiaryContext);
+  const { recipes } = useSearchMeal(meal);
+
+  useEffect(() => {
+    if (recipes.length === 0 && mealStatus === 404) {
+      setMeals([]);
+    } else if (recipes.length === 0) {
+      const filteredUserDiaryMeals = filterUserDiaryMeals(mealData, meal);
+      setMeals(filteredUserDiaryMeals);
+    } else if (mealStatus === 404) {
+      setMeals(recipes);
+    } else {
+      const filteredUserDiaryMeals = filterUserDiaryMeals(mealData, meal);
+      const filteredApiMeals = filterMeals(filteredUserDiaryMeals, recipes);
+      const combinedMeals = [...filteredUserDiaryMeals, ...filteredApiMeals];
+
+      setMeals(combinedMeals);
+    }
+  }, [recipes, meal, mealData, mealStatus]);
+
   return (
     <div className="w-full p-3 overflow-auto text-grey-6 flex flex-col gap-1">
-      <MealOption />
-      <MealOption />
-      <MealOption />
-      <MealOption />
-      <MealOption />
-      <MealOption />
-      <MealOption />
-      <MealOption />
+      {meals.map((meal, index) => {
+        console.log(meal);
+        const id = meal.id ? meal.id : index;
+        return (
+          <MealOption
+            key={id}
+            name={meal.name}
+            id={id}
+            servings={meal.servings}
+            energy={meal.energy}
+            selected={meal.date ? true : false}
+            img={meal.image_url}
+          />
+        );
+      })}
     </div>
   );
 }
 
-function MealOption() {
+function MealOption({ name, id, servings, energy, selected, img }) {
+  console.log(selected);
   return (
     <div className="w-full flex gap-2 border p-1 rounded border-grey-1">
       <img
-        src="/Jollof Rice and Chicken.png"
-        alt=""
+        src={img ? img : "/mealPlaceholder.png"}
+        alt={name}
         className="rounded w-16 h-[69px]"
       />
       <div className="flex w-full flex-col justify-around items-center">
-        <p className="font-semibold text-[13px] leading-5">
-          Jollof rice with chicken
-        </p>
+        <p className="font-semibold text-[13px] leading-5">{name}</p>
         <div className="flex items-center gap-3">
           <p className="flex items-center gap-1">
             <svg
@@ -107,7 +140,9 @@ function MealOption() {
               />
             </svg>
 
-            <span>1 serving (200 ml)</span>
+            <span>
+              {servings} serving ({servings * 300} ml)
+            </span>
 
             <svg
               width="16"
@@ -125,12 +160,28 @@ function MealOption() {
               />
             </svg>
           </p>
-          <span>240kcal</span>
+          <span>{Math.round(energy)}kcal</span>
         </div>
       </div>
       <div className="flex justify-center items-center">
         <img src="/PlusBtn.svg" alt="Select Meal" className="cursor-pointer" />
       </div>
     </div>
+  );
+}
+
+function filterUserDiaryMeals(userDiaryMeals, keyword) {
+  const lowerKeyword = keyword.toLowerCase();
+
+  return userDiaryMeals.filter((meal) =>
+    meal.name.toLowerCase().includes(lowerKeyword)
+  );
+}
+
+function filterMeals(userDiaryMeals, apiMeals) {
+  const diaryMealNames = userDiaryMeals.map((meal) => meal.name.toLowerCase());
+
+  return apiMeals.filter(
+    (meal) => !diaryMealNames.includes(meal.name.toLowerCase())
   );
 }
