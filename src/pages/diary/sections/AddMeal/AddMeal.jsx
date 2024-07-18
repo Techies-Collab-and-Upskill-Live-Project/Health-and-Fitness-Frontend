@@ -127,10 +127,10 @@ function FoundMeals() {
                 name={meal.name}
                 id={id}
                 servings={meal.servings}
-                energy={meal.energy}
-                carbs={meal.carbs}
-                protein={meal.protein}
-                fats={meal.fats}
+                energy={Math.round(meal.energy)}
+                carbs={Math.round(meal.carbs)}
+                protein={Math.round(meal.protein)}
+                fats={Math.round(meal.fats)}
                 selected={meal.date ? true : false}
                 img={meal.image_url}
               />
@@ -215,6 +215,71 @@ function MealOption({
     (err) => toast.error(err.message)
   );
 
+  const { mutate: updateServings, status: updateServingsStatus } =
+    useCustomMutation(
+      updateUserMeal,
+      async (data) => {
+        /** If user's credentials are correct **/
+        if (data.status == 200) {
+          queryClient.invalidateQueries({
+            queryKey: ["meals"],
+          });
+
+          setNewServings((servings) =>
+            data.data.servings > servings ? servings + 1 : servings - 1
+          );
+        } else if (data.status == 401) {
+          /** If user's credentials are not correct **/
+          navigate("/log-in");
+        } else if (data.status == 400) {
+          /** If user does not provide one or more fields **/
+          Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
+            try {
+              errorMessages.forEach((errorMessage) => {
+                toast.error(`${fieldName}: ${errorMessage}`); //Make toast
+              });
+            } catch {
+              toast.error(`${errorMessages}`);
+            }
+          });
+        }
+      },
+      (err) => toast.error(err.message)
+    );
+
+  function handleChangeServings(action) {
+    if (selected) {
+      const change = action === "inc" ? newServings + 1 : newServings - 1;
+
+      if (action === "dec" && newServings === 1) return;
+
+      updateServings({
+        date: formatToBackendDate(date),
+        name,
+        servings: change,
+        energy:
+          action === "inc"
+            ? energy / newServings + energy
+            : energy - energy / newServings,
+        carbs:
+          action === "inc"
+            ? carbs / newServings + carbs
+            : carbs - carbs / newServings,
+        protein:
+          action === "inc"
+            ? protein / newServings + protein
+            : protein - protein / newServings,
+        fats:
+          action === "inc"
+            ? fats / newServings + fats
+            : fats - fats / newServings,
+      });
+    } else {
+      setNewServings((servings) =>
+        action === "inc" ? servings + 1 : servings > 1 ? servings - 1 : servings
+      );
+    }
+  }
 
   return (
     <div
@@ -232,11 +297,7 @@ function MealOption({
         <div className="flex items-center gap-3">
           <p className="flex items-center gap-1">
             <svg
-              onClick={() =>
-                setNewServings(
-                  (servings = servings > 1 ? servings - 1 : servings)
-                )
-              }
+              onClick={() => handleChangeServings("dec")}
               width="16"
               height="16"
               viewBox="0 0 14 15"
@@ -257,7 +318,7 @@ function MealOption({
             </span>
 
             <svg
-              onClick={handleIncreaseServings}
+              onClick={() => handleChangeServings("inc")}
               width="16"
               height="16"
               viewBox="0 0 14 15"
@@ -273,7 +334,10 @@ function MealOption({
               />
             </svg>
           </p>
-          <span>{Math.round(energy) * newServings}kcal</span>
+          <span>
+            {selected ? energy : energy * newServings}
+            kcal
+          </span>
         </div>
       </div>
       <div className="flex justify-center items-center">
