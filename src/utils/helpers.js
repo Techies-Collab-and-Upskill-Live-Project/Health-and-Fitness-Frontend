@@ -78,3 +78,15 @@ export function getWeekNumber(date) {
   const weekNumber = Math.ceil((daysDifference + startOfYear.getDay() + 1) / 7);
   return weekNumber;
 }
+
+export function normalizeRecipeData(recipe) {
+  return {
+    name: recipe.label,
+    energy: recipe.totalNutrients.ENERC_KCAL?.quantity.toFixed(2) || "0.00",
+    carbs: recipe.totalNutrients.CHOCDF?.quantity.toFixed(2) || "0.00",
+    fats: recipe.totalNutrients.FAT?.quantity.toFixed(2) || "0.00",
+    protein: recipe.totalNutrients.PROCNT?.quantity.toFixed(2) || "0.00",
+    servings: 1,
+    image_url: recipe.image || null,
+  };
+}

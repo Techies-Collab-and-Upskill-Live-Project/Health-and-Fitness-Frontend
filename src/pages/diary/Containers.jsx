@@ -45,7 +45,7 @@ export function InnerContainer({
        "
     >
       <div className="w-full flex gap-3 items-center">
-        <img className="rounded" src={image_url} alt={name} />
+        <img className="rounded w-16 h-[69]" src={image_url} alt={name} />
         {children}
       </div>
       <div

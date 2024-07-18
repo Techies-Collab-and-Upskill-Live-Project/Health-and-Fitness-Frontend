@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { RecipesContext } from "../contexts/Recipes";
 import { DiaryContext } from "../contexts/DiaryContext";
 import toast from "react-hot-toast";
+import { normalizeRecipeData } from "../utils/helpers";
 
 const KEY = import.meta.env.VITE_KEY;
 const ID = import.meta.env.VITE_APP_ID;
@@ -181,16 +182,4 @@ export function useSearchMeal(query) {
   );
 
   return { recipes };
-}
-
-function normalizeRecipeData(recipe) {
-  return {
-    name: recipe.label,
-    energy: recipe.totalNutrients.ENERC_KCAL?.quantity.toFixed(2) || "0.00",
-    carbs: recipe.totalNutrients.CHOCDF?.quantity.toFixed(2) || "0.00",
-    fats: recipe.totalNutrients.FAT?.quantity.toFixed(2) || "0.00",
-    protein: recipe.totalNutrients.PROCNT?.quantity.toFixed(2) || "0.00",
-    servings: 1,
-    image_url: recipe.image || null,
-  };
 }

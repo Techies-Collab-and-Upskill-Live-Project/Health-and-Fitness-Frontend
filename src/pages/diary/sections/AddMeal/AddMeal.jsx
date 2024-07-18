@@ -15,13 +15,15 @@ import { MealNutrFacts } from "./NutritionFacts";
 import { SaveBtn } from "./SaveBtn";
 import { useGetQuery } from "../../../../hooks/useGetQuery";
 import { formatToBackendDate } from "../../../../utils/helpers";
-import { createUserMeal } from "../../../../services/apiMeal";
+import { createUserMeal, updateUserMeal } from "../../../../services/apiMeal";
 import { useCustomMutation } from "../../../../hooks/useCustomMutation";
 import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import ScreenOverlay from "../../../../components/ScreenOverlay";
 import { InlineSpinner } from "../../../../components/InlineSpinner";
+import { loadMore } from "../../../../services/apiRecipe";
+import { Button } from "../../../../components/Button";
 
 export default function AddMeal() {
   return (
@@ -39,8 +41,7 @@ export default function AddMeal() {
 }
 
 function AddMealContent() {
-  const { isSearchMeal, isLoading } = useContext(DiaryContext);
-
+  const { isSearchMeal } = useContext(DiaryContext);
   return (
     <div
       className={`w-full flex flex-col
@@ -53,7 +54,7 @@ function AddMealContent() {
       {isSearchMeal ? (
         <>
           <MealSearchOptions />
-          {isLoading ? <InlineSpinner /> : <FoundMeals />}
+          <FoundMeals />
         </>
       ) : (
         <>
@@ -80,8 +81,20 @@ function FoundMeals() {
 
   const { data: mealData, status: mealStatus } = useGetQuery("meals");
 
-  const { meal } = useContext(DiaryContext);
+  const {
+    meal,
+    isLoading,
+    setRecipes,
+    pagination,
+    setPagination,
+    setIsLoadingMore,
+    isLoadingMore,
+  } = useContext(DiaryContext);
   const { recipes } = useSearchMeal(meal);
+
+  function handleClick() {
+    loadMore(pagination.next, setRecipes, setIsLoadingMore, setPagination);
+  }
 
   useEffect(() => {
     if (recipes.length === 0 && mealStatus === 404) {
@@ -101,25 +114,42 @@ function FoundMeals() {
   }, [recipes, meal, mealData, mealStatus]);
 
   return (
-    <div className="w-full p-3 overflow-auto text-grey-6 flex flex-col gap-1">
-      {meals.map((meal, index) => {
-        const id = meal.id ? meal.id : index;
-        return (
-          <MealOption
-            key={id}
-            name={meal.name}
-            id={id}
-            servings={meal.servings}
-            energy={meal.energy}
-            carbs={meal.carbs}
-            protein={meal.protein}
-            fats={meal.fats}
-            selected={meal.date ? true : false}
-            img={meal.image_url}
-          />
-        );
-      })}
-    </div>
+    <>
+      {isLoading ? (
+        <InlineSpinner />
+      ) : (
+        <div className="w-full p-3 overflow-auto text-grey-6 flex flex-col gap-1">
+          {meals.map((meal, index) => {
+            const id = meal.id ? meal.id : index;
+            return (
+              <MealOption
+                key={id}
+                name={meal.name}
+                id={id}
+                servings={meal.servings}
+                energy={meal.energy}
+                carbs={meal.carbs}
+                protein={meal.protein}
+                fats={meal.fats}
+                selected={meal.date ? true : false}
+                img={meal.image_url}
+              />
+            );
+          })}
+          <div className="h-full m-auto">
+            {pagination.count > pagination.currentPage && !isLoading && (
+              <Button
+                handleClick={handleClick}
+                bgColor={isLoadingMore ? "bg-grey-2" : "bg-primary-9"}
+                isValid={!isLoadingMore}
+              >
+                {isLoadingMore ? <InlineSpinner /> : "Load more"}
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -149,11 +179,11 @@ function MealOption({
       date: formatToBackendDate(date),
       name: name,
       image_url: img ? img : null,
-      energy: energy * newServings,
+      energy: (energy * newServings).toFixed(2),
       servings: newServings,
-      carbs: carbs * newServings,
-      fats: fats * newServings,
-      protein: protein * newServings,
+      carbs: (carbs * newServings).toFixed(2),
+      fats: (fats * newServings).toFixed(2),
+      protein: (protein * newServings).toFixed(2),
     });
   }
 
@@ -184,6 +214,7 @@ function MealOption({
     },
     (err) => toast.error(err.message)
   );
+
 
   return (
     <div
@@ -226,7 +257,7 @@ function MealOption({
             </span>
 
             <svg
-              onClick={() => setNewServings((servings) => servings + 1)}
+              onClick={handleIncreaseServings}
               width="16"
               height="16"
               viewBox="0 0 14 15"

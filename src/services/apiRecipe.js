@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import { normalizeRecipeData } from "../utils/helpers";
 
 export async function loadMore(
   next,
@@ -23,7 +24,11 @@ export async function loadMore(
       next: data?._links?.next?.href,
     });
 
-    setRecipes((prev) => [...prev, ...data.hits]);
+    const normalizedData = data.hits.map((item) =>
+      normalizeRecipeData(item.recipe)
+    );
+
+    setRecipes((prev) => [...prev, ...normalizedData]);
   } catch (err) {
     setIsLoadingMore(false);
     toast.error(err.message);
