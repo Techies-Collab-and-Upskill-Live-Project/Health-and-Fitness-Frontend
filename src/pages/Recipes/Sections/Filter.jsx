@@ -53,7 +53,7 @@ export function Filter() {
         </p>
         <svg
           onClick={() => {
-            setIsNavBack(true);
+            setIsNavBack(false);
             setShowFilter(false);
           }}
           width="20"
@@ -95,6 +95,7 @@ export function Filter() {
     </div>
   );
 }
+
 function Diet({ diet }) {
   const { filterOptions, setFilterOptions } = useContext(RecipesContext);
 

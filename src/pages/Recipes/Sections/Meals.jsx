@@ -5,7 +5,7 @@ import { RecipesContext } from "../../../contexts/Recipes";
 import { useRecipes } from "../../../hooks/useRecipes";
 import { InlineSpinner } from "../../../components/InlineSpinner";
 import { Button } from "../../../components/Button";
-import { loadMore } from "../../../services/apiRecipe";
+import toast from "react-hot-toast";
 
 export function Meals() {
   const {
@@ -20,8 +20,30 @@ export function Meals() {
 
   const { recipes } = useRecipes(query);
 
-  function handleClick() {
-    loadMore(pagination.next, setRecipes, setIsLoadingMore, setPagination);
+  async function handleClick() {
+    setIsLoadingMore(true);
+    try {
+      const res = await fetch(pagination.next);
+
+      setIsLoadingMore(false);
+      if (!res.ok)
+        throw new Error(
+          "Something went wrong with fetching recipes, try back later"
+        );
+
+      const data = await res.json();
+      setPagination({
+        count: data.count,
+        currentPage: data.to,
+        next: data?._links?.next?.href,
+      });
+
+      setRecipes((prev) => [...prev, ...data.hits]);
+    } catch (err) {
+      setIsLoadingMore(false);
+      toast.error(err.message);
+    }
+    //loadMore(pagination.next, setRecipes, setIsLoadingMore, setPagination);
   }
 
   return (

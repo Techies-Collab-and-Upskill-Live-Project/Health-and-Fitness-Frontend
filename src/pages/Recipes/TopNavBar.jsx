@@ -1,11 +1,13 @@
+/* eslint-disable react/prop-types */
 import { RecipesContext } from "../../contexts/Recipes";
 import { useContext } from "react";
 
 export function TopNavBar({ bg, textColor, text }) {
-  const { setShowMealDetail } = useContext(RecipesContext);
+  const { setShowMealDetail, setIsNavBack } = useContext(RecipesContext);
 
   function handleNavigate() {
     setShowMealDetail(false);
+    setIsNavBack(true);
   }
 
   return (

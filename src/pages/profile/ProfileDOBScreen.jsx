@@ -12,9 +12,9 @@ export default function ProfileDOBScreen({setshowWeightScreen}) {
     const [monthIsFocus, setMonthIsFocus] = useState(false);
     const [yearIsFocus, setYearIsFocus] = useState(false);
 
-    const [dateValue,setDateValue]=useState('');
-    const [monthValue,setMonthValue]=useState('');
-    const [yearValue,setYearValue]=useState('');
+    const [dateValue,setDateValue]=useState('DD');
+    const [monthValue,setMonthValue]=useState('MM');
+    const [yearValue,setYearValue]=useState('YYYY');
    function setDateField(e)
     {
      
@@ -133,7 +133,7 @@ export default function ProfileDOBScreen({setshowWeightScreen}) {
       </div>
         </div>
         <div className="pt-4">
-          <p className="text-base font-normal font-montserrat text-sm text-[#131313] text-center">
+          <p className="font-normal font-montserrat text-sm text-[#131313] text-center">
           Did you know? Your age determines your calorie need<br></br> and the amount of calorie your <br></br>body is able to burn.</p>
           </div>
           <div className="w-11/12 h-3/6  justify-center flex flex-col pl-4 pb-4 pt-6">
