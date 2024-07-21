@@ -9,7 +9,7 @@ import Spinner from "./components/Spinner";
 const SplashScreen = lazy(() => import("./components/SplashScreen"));
 const SignUp = lazy(() => import("./pages/signup/SignUp"));
 const Login = lazy(() => import("./pages/login/Login"));
-const ProfileScreen = lazy(() => import("./pages/profile/ProfileScreenMain"));
+const Profile = lazy(() => import("./pages/profile/ProfileScreenMain"));
 const ResetPassword = lazy(() =>
   import("./pages/reset-password/ResetPassword")
 );
@@ -85,7 +85,7 @@ function App() {
             path="/profile"
             element={
               <Suspense fallback={<Spinner />}>
-                <ProfileScreen />
+                <Profile />
               </Suspense>
             }
           />
