@@ -6,6 +6,7 @@ import { ProfileContext, ProfileProvider } from "../../contexts/Profile";
 import { NavBar, ProfileNav } from "./Nav";
 import { NextButton } from "./NextButton";
 import { GoalSwitcher } from "./ProfileNutritionalGoal";
+import GenderScreen from "./ProfileGenderScreen";
 
 export default function Profile() {
   return (
@@ -28,7 +29,7 @@ function ProfilePage() {
       {step > 0 && <NavBar />}
       <ProfileNav />
       <ProfileContent title={titles[step]} note={notes[step]}>
-        <GoalSwitcher />
+        {step === 0 ? <GoalSwitcher /> : step === 1 ? <GenderScreen /> : null}
       </ProfileContent>
       <NextButton />
     </AppWrapper>
@@ -38,11 +39,11 @@ function ProfilePage() {
 function ProfileContent({ title, note, children }) {
   return (
     <div className="flex flex-col h-[576px] items-center justify-between">
-      <p className="text-grey-6 font-semibold text-2xl text-wrap py-5">
+      <p className="text-center text-grey-6 font-semibold text-2xl text-wrap py-5">
         {title}
       </p>
       {children}
-      <p className="text-grey-4 font-normal text-xs py-6">{note}</p>
+      <p className="text-center text-grey-4 font-normal text-xs py-6">{note}</p>
     </div>
   );
 }
