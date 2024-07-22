@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { ProfileContext } from "../../contexts/Profile";
 import { Option } from "./Option";
 
-export function GoalSwitcher() {
+export function GoalScreen() {
   return (
     <div className="w-full gap-3 flex flex-col">
       <Goal goal="Lose weight" />
@@ -19,11 +19,11 @@ function Goal({ goal }) {
   return (
     <Option
       value={goal}
-      type={profile.weight}
+      type={profile.nutritional_goal}
       onClick={() =>
         setProfile((prev) => ({
           ...prev,
-          weight: goal,
+          nutritional_goal: goal,
         }))
       }
     />

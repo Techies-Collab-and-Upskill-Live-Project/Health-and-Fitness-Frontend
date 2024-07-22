@@ -19,11 +19,11 @@ function Gender({ gender }) {
   return (
     <Option
       value={gender}
-      type={profile.gender}
+      type={profile.sex}
       onClick={() =>
         setProfile((prev) => ({
           ...prev,
-          gender: gender,
+          sex: gender,
         }))
       }
     />

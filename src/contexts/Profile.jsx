@@ -6,13 +6,19 @@ export function ProfileProvider({ children }) {
   const [profile, setProfile] = useState({});
   const [step, setStep] = useState(0);
 
-  const [date, setDate] = useState({});
+  const [date, setDate] = useState({ day: "", month: "", year: "" });
   function setDOB() {
     setProfile((prev) => ({
       ...prev,
       dob: `${date.day}-${date.month}-${date.year}`,
     }));
   }
+
+  const [weightHeight, setWeightHeight] = useState({ weight: "", height: "" });
+  const [weightHeightUnit, setWeightHeightUnit] = useState({
+    weight: "Kg",
+    height: "Cm",
+  });
 
   return (
     <ProfileContext.Provider
@@ -24,6 +30,10 @@ export function ProfileProvider({ children }) {
         date,
         setDate,
         setDOB,
+        weightHeight,
+        setWeightHeight,
+        weightHeightUnit,
+        setWeightHeightUnit,
       }}
     >
       {children}
