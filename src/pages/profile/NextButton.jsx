@@ -3,14 +3,23 @@ import { Button } from "../../components/Button";
 import { ProfileContext } from "../../contexts/Profile";
 
 export function NextButton() {
-  const { step, profile, setStep } = useContext(ProfileContext);
+  const { step, profile, setStep, setDOB, date } = useContext(ProfileContext);
 
   const isValid =
     step === 0
       ? profile.weight !== undefined
       : step === 1
       ? profile.gender !== undefined
-      : profile.dob !== undefined;
+      : step === 2
+      ? date.day && date.month && date.year
+      : null;
+
+  function handleNext() {
+    if (step === 2) {
+      setDOB();
+    }
+    setStep((step) => step + 1);
+  }
 
   return (
     <Button
@@ -20,7 +29,7 @@ export function NextButton() {
       bgColor={`transition duration-300 ${
         isValid ? "bg-primary-9" : "bg-grey-1"
       }`}
-      handleClick={() => setStep((step) => step + 1)}
+      handleClick={handleNext}
     >
       {" "}
       <p className="text-white-4">Next</p>

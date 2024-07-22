@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useContext } from "react";
 import { ProfileContext } from "../../contexts/Profile";
 
@@ -39,11 +40,13 @@ export function ProfileNav() {
     </div>
   );
 }
-/* eslint-disable react/prop-types */
+
 function HorizontalDash({ index, step }) {
   return (
     <div
-      className={`${`bg-${index <= step ? "success" : "grey-1"}`} w-10 h-1`}
+      className={`${`bg-${
+        index <= step ? "success" : "grey-1"
+      }`} w-10 h-1 rounded-sm`}
     ></div>
   );
 }

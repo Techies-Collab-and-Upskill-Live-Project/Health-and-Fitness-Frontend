@@ -7,6 +7,7 @@ import { NavBar, ProfileNav } from "./Nav";
 import { NextButton } from "./NextButton";
 import { GoalSwitcher } from "./ProfileNutritionalGoal";
 import GenderScreen from "./ProfileGenderScreen";
+import DOBScreen from "./ProfileDOBScreen";
 
 export default function Profile() {
   return (
@@ -29,7 +30,13 @@ function ProfilePage() {
       {step > 0 && <NavBar />}
       <ProfileNav />
       <ProfileContent title={titles[step]} note={notes[step]}>
-        {step === 0 ? <GoalSwitcher /> : step === 1 ? <GenderScreen /> : null}
+        {step === 0 ? (
+          <GoalSwitcher />
+        ) : step === 1 ? (
+          <GenderScreen />
+        ) : step === 2 ? (
+          <DOBScreen />
+        ) : null}
       </ProfileContent>
       <NextButton />
     </AppWrapper>
@@ -39,7 +46,7 @@ function ProfilePage() {
 function ProfileContent({ title, note, children }) {
   return (
     <div className="flex flex-col h-[576px] items-center justify-between">
-      <p className="text-center text-grey-6 font-semibold text-2xl text-wrap py-5">
+      <p className="text-center text-grey-6 font-semibold text-2xl text-wrap py-5 px-3">
         {title}
       </p>
       {children}
