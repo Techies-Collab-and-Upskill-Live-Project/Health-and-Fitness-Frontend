@@ -20,6 +20,8 @@ export function ProfileProvider({ children }) {
     height: "Cm",
   });
 
+  const [isBuilding, setIsBuilding] = useState(false);
+
   return (
     <ProfileContext.Provider
       value={{
@@ -34,6 +36,8 @@ export function ProfileProvider({ children }) {
         setWeightHeight,
         weightHeightUnit,
         setWeightHeightUnit,
+        isBuilding,
+        setIsBuilding,
       }}
     >
       {children}

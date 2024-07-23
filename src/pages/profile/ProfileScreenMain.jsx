@@ -10,6 +10,8 @@ import GenderScreen from "./ProfileGenderScreen";
 import DOBScreen from "./ProfileDOBScreen";
 import WeightScreen from "./ProfileWeightScreen";
 import HeightScreen from "./ProfileHeightScreen";
+import ActivityScreen from "./ProfileActivityLevel";
+import BuildingProfile from "./BuildingProfile";
 
 export default function Profile() {
   return (
@@ -20,7 +22,7 @@ export default function Profile() {
 }
 
 function ProfilePage() {
-  const { step } = useContext(ProfileContext);
+  const { step, isBuilding } = useContext(ProfileContext);
 
   return (
     <AppWrapper>
@@ -29,22 +31,30 @@ function ProfilePage() {
         src="/Logo plain background.svg"
         alt="FudHouse logo"
       />
-      {step > 0 && <NavBar />}
-      <ProfileNav />
-      <ProfileContent title={titles[step]} note={notes[step]}>
-        {step === 0 ? (
-          <GoalScreen />
-        ) : step === 1 ? (
-          <GenderScreen />
-        ) : step === 2 ? (
-          <DOBScreen />
-        ) : step === 3 ? (
-          <WeightScreen />
-        ) : step === 4 ? (
-          <HeightScreen />
-        ) : null}
-      </ProfileContent>
-      <NextButton />
+      {isBuilding === "pending" ? (
+        <BuildingProfile />
+      ) : (
+        <>
+          {step > 0 && <NavBar />}
+          <ProfileNav />
+          <ProfileContent title={titles[step]} note={notes[step]}>
+            {step === 0 ? (
+              <GoalScreen />
+            ) : step === 1 ? (
+              <GenderScreen />
+            ) : step === 2 ? (
+              <DOBScreen />
+            ) : step === 3 ? (
+              <WeightScreen />
+            ) : step === 4 ? (
+              <HeightScreen />
+            ) : step === 5 ? (
+              <ActivityScreen />
+            ) : null}
+          </ProfileContent>
+          <NextButton />
+        </>
+      )}
     </AppWrapper>
   );
 }

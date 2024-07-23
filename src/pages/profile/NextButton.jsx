@@ -1,8 +1,14 @@
 import { useContext } from "react";
 import { Button } from "../../components/Button";
 import { ProfileContext } from "../../contexts/Profile";
+import { useCustomMutation } from "../../hooks/useCustomMutation";
+import { createProfile } from "../../services/apiProfile";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export function NextButton() {
+  const navigate = useNavigate();
+
   const {
     step,
     profile,
@@ -12,6 +18,7 @@ export function NextButton() {
     date,
     weightHeight,
     weightHeightUnit,
+    setIsBuilding,
   } = useContext(ProfileContext);
 
   const isValid =
@@ -25,6 +32,8 @@ export function NextButton() {
       ? weightHeight.weight
       : step === 4
       ? weightHeight.height
+      : step === 5
+      ? profile.activity_level !== undefined
       : null;
 
   function handleNext() {
@@ -42,9 +51,39 @@ export function NextButton() {
         height: weightHeight.height,
         height_unit: weightHeightUnit.height,
       }));
+    } else if (step === 5) {
+      setIsBuilding(status);
+      mutate({
+        ...profile,
+      });
     }
-    setStep((step) => step + 1);
+    if (step !== 5) setStep((step) => step + 1);
   }
+
+  const { mutate, status } = useCustomMutation(
+    createProfile,
+    async (data) => {
+      /** If user's credentials are correct **/
+      if (data.status == 201) {
+        navigate("/diary");
+      } else if (data.status == 401) {
+        /** If user's credentials are not correct **/
+        navigate("/log-in");
+      } else if (data.status == 400) {
+        /** If user does not provide one or more fields **/
+        Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
+          try {
+            errorMessages.forEach((errorMessage) => {
+              toast.error(`${fieldName}: ${errorMessage}`); //Make toast
+            });
+          } catch {
+            toast.error(`${errorMessages}`);
+          }
+        });
+      }
+    },
+    (err) => toast.error(err.message)
+  );
 
   return (
     <Button
@@ -56,8 +95,7 @@ export function NextButton() {
       }`}
       handleClick={handleNext}
     >
-      {" "}
-      <p className="text-white-4">Next</p>
+      <p className="text-white-4">{step === 5 ? "Done" : "Next"}</p>
     </Button>
   );
 }

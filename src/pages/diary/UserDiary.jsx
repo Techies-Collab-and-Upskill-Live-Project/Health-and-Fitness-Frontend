@@ -73,13 +73,16 @@ export function DiaryPage() {
     queryFn: () => getUserWaterIntake(formatToBackendDate(date)),
   });
 
-  // If user is logged out, redirect to log in page
+  if (calorieData?.status === 404) {
+    navigate("/profile");
+  }
   if (
     calorieData?.status === 401 ||
     exerciseData?.status === 401 ||
     mealData?.status === 401 ||
     waterIntakeData?.status === 401
   ) {
+    // If user is logged out, redirect to log in page
     navigate("/log-in");
   }
 

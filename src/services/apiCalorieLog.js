@@ -26,6 +26,8 @@ export async function getUserCalorie(date) {
       const { data, status } = await createUserCalorie(date);
       if (status === 201) {
         return { data, status: 200 };
+      } else if (status === 404) {
+        return { data, status: 404 };
       }
     } else if (response.status === 200) {
       return { data: resData, status: response.status };
