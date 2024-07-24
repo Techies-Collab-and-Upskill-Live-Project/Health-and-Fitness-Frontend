@@ -53,7 +53,7 @@ export function Meal({ id, meal }) {
       image_url={meal?.image_url ? meal?.image_url : "/mealPlaceholder.png"}
       name={meal.name}
     >
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 overflow-y-auto">
         <p className="font-semibold">{meal.name}</p>
         <p>
           {roundUp(meal.energy)} kcal. {meal.servings} serving (

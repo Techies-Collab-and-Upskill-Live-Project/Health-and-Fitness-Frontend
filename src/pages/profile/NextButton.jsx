@@ -79,6 +79,7 @@ export function NextButton() {
           } catch {
             toast.error(`${errorMessages}`);
           }
+          setIsBuilding(false);
         });
       }
     },

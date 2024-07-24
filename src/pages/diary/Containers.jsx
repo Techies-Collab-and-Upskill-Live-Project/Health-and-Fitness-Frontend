@@ -41,7 +41,7 @@ export function InnerContainer({
   return (
     <div
       className="flex justify-between w-full min-h-[77px]
-       rounded border-grey-1 border p-1
+       rounded border-grey-1 border p-1 h-full
        "
     >
       <div className="w-full flex gap-3 items-center">

@@ -25,13 +25,13 @@ function ProfilePage() {
   const { step, isBuilding } = useContext(ProfileContext);
 
   return (
-    <AppWrapper>
+    <AppWrapper bg={isBuilding && "bg-white-4"}>
       <img
         className="h-[17px]"
         src="/Logo plain background.svg"
         alt="FudHouse logo"
       />
-      {isBuilding === "pending" ? (
+      {isBuilding === "idle" ? (
         <BuildingProfile />
       ) : (
         <>

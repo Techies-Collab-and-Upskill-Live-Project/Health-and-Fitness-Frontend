@@ -28,8 +28,12 @@ export async function getUserCalorie(date) {
         return { data, status: 200 };
       } else if (status === 404) {
         return { data, status: 404 };
+      } else {
+        return { data, status };
       }
     } else if (response.status === 200) {
+      return { data: resData, status: response.status };
+    } else {
       return { data: resData, status: response.status };
     }
   } catch (error) {
