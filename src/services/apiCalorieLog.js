@@ -41,7 +41,7 @@ export async function getUserCalorie(date) {
   }
 }
 
-async function createUserCalorie(date) {
+export async function createUserCalorie(date) {
   const jsonString = JSON.stringify({ date: date });
   try {
     const response = await fetch(

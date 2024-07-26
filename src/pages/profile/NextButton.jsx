@@ -19,6 +19,7 @@ export function NextButton() {
     weightHeight,
     weightHeightUnit,
     setIsBuilding,
+    setShowProfileOverview,
   } = useContext(ProfileContext);
 
   const isValid =
@@ -65,7 +66,7 @@ export function NextButton() {
     async (data) => {
       /** If user's credentials are correct **/
       if (data.status == 201) {
-        navigate("/diary");
+        setShowProfileOverview(true);
       } else if (data.status == 401) {
         /** If user's credentials are not correct **/
         navigate("/log-in");

@@ -16,68 +16,86 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserProfile } from "../../services/apiAuths";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../components/Spinner";
+import ProfileOverview from "./ProfileOverview";
+import { formatToBackendDate } from "../../utils/helpers";
+import { getUserCalorie } from "../../services/apiCalorieLog";
+import { DiaryProvider } from "../../contexts/DiaryContext";
 
 export default function Profile() {
   return (
     <ProfileProvider>
-      <ProfilePage />
+      <DiaryProvider>
+        <ProfilePage />
+      </DiaryProvider>
     </ProfileProvider>
   );
 }
 
 function ProfilePage() {
-  const { step, isBuilding } = useContext(ProfileContext);
+  const { step, isBuilding, showProfileOverview } = useContext(ProfileContext);
   const navigate = useNavigate();
+  const date = new Date();
 
   const { isLoading: isFetchingProfile, data: profileData } = useQuery({
     queryKey: ["profile"],
     queryFn: getUserProfile,
   });
 
+  const { isLoading: isFetchingCalorie, data: calorieData } = useQuery({
+    queryKey: ["calorie"],
+    queryFn: () => getUserCalorie(formatToBackendDate(date)),
+  });
+
   // If user is logged out, redirect to log in page
-  if (profileData?.status === 401) {
+  if (profileData?.status === 401 || calorieData?.status === 401) {
     navigate("/log-in");
   }
 
   // If user already have profile, redirect to diary page
   if (profileData?.status === 200) {
-    navigate("/diary");
+    return <ProfileOverview />;
   }
 
-  if (isFetchingProfile) return <Spinner />;
+  if (isFetchingProfile || isFetchingCalorie) return <Spinner />;
 
   return (
-    <AppWrapper bg={isBuilding && "bg-white-4"}>
-      <img
-        className="h-[17px]"
-        src="/Logo plain background.svg"
-        alt="FudHouse logo"
-      />
-      {isBuilding === "idle" ? (
-        <BuildingProfile />
+    <>
+      {showProfileOverview ? (
+        <ProfileOverview />
       ) : (
-        <>
-          {step > 0 && <NavBar />}
-          <ProfileNav />
-          <ProfileContent title={titles[step]} note={notes[step]}>
-            {step === 0 ? (
-              <GoalScreen />
-            ) : step === 1 ? (
-              <GenderScreen />
-            ) : step === 2 ? (
-              <DOBScreen />
-            ) : step === 3 ? (
-              <WeightScreen />
-            ) : step === 4 ? (
-              <HeightScreen />
-            ) : step === 5 ? (
-              <ActivityScreen />
-            ) : null}
-          </ProfileContent>
-          <NextButton />
-        </>
+        <AppWrapper bg={isBuilding && "bg-white-4"}>
+          <img
+            className="h-[17px]"
+            src="/Logo plain background.svg"
+            alt="FudHouse logo"
+          />
+          {isBuilding === "idle" ? (
+            <BuildingProfile />
+          ) : (
+            <>
+              {step > 0 && <NavBar />}
+              <ProfileNav />
+              <ProfileContent title={titles[step]} note={notes[step]}>
+                {step === 0 ? (
+                  <GoalScreen />
+                ) : step === 1 ? (
+                  <GenderScreen />
+                ) : step === 2 ? (
+                  <DOBScreen />
+                ) : step === 3 ? (
+                  <WeightScreen />
+                ) : step === 4 ? (
+                  <HeightScreen />
+                ) : step === 5 ? (
+                  <ActivityScreen />
+                ) : null}
+              </ProfileContent>
+              <NextButton />
+            </>
+          )}
+        </AppWrapper>
       )}
-    </AppWrapper>
+    </>
   );
 }
 

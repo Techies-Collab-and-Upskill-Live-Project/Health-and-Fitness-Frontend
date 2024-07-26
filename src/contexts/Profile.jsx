@@ -21,6 +21,7 @@ export function ProfileProvider({ children }) {
   });
 
   const [isBuilding, setIsBuilding] = useState(false);
+  const [showProfileOverview, setShowProfileOverview] = useState(false);
 
   return (
     <ProfileContext.Provider
@@ -38,6 +39,8 @@ export function ProfileProvider({ children }) {
         setWeightHeightUnit,
         isBuilding,
         setIsBuilding,
+        showProfileOverview,
+        setShowProfileOverview,
       }}
     >
       {children}
