@@ -83,7 +83,10 @@ export function NextButton() {
         });
       }
     },
-    (err) => toast.error(err.message)
+    (err) => {
+      setIsBuilding(false);
+      toast.error(err.message);
+    }
   );
 
   return (

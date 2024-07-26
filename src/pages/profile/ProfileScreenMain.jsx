@@ -12,6 +12,10 @@ import WeightScreen from "./ProfileWeightScreen";
 import HeightScreen from "./ProfileHeightScreen";
 import ActivityScreen from "./ProfileActivityLevel";
 import BuildingProfile from "./BuildingProfile";
+import { useQuery } from "@tanstack/react-query";
+import { getUserProfile } from "../../services/apiAuths";
+import { useNavigate } from "react-router-dom";
+import Spinner from "../../components/Spinner";
 
 export default function Profile() {
   return (
@@ -23,6 +27,24 @@ export default function Profile() {
 
 function ProfilePage() {
   const { step, isBuilding } = useContext(ProfileContext);
+  const navigate = useNavigate();
+
+  const { isLoading: isFetchingProfile, data: profileData } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getUserProfile,
+  });
+
+  // If user is logged out, redirect to log in page
+  if (profileData?.status === 401) {
+    navigate("/log-in");
+  }
+
+  // If user already have profile, redirect to diary page
+  if (profileData?.status === 200) {
+    navigate("/diary");
+  }
+
+  if (isFetchingProfile) return <Spinner />;
 
   return (
     <AppWrapper bg={isBuilding && "bg-white-4"}>

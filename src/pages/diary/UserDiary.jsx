@@ -76,6 +76,7 @@ export function DiaryPage() {
   if (calorieData?.status === 404) {
     navigate("/profile");
   }
+  
   if (
     calorieData?.status === 401 ||
     exerciseData?.status === 401 ||
