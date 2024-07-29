@@ -8,10 +8,13 @@ export function AccountProvider({ children }) {
   const [showEditName, setShowEditName] = useState(false);
   const [showEditSex, setShowEditSex] = useState(false);
   const [showLogOut, setShowLogOut] = useState(false);
+  const [showDeleteAccount, setShowDeleteAccount] = useState(false);
   const [showActivityLevel, setShowActivityLevel] = useState(false);
   const [showNotificationalPreferences, setShowNotificationalPreferences] =
     useState(false);
   const [showGoal, setShowGoal] = useState(false);
+  const [showEditWeight, setShowEditWeight] = useState(false);
+  const [showEditHeight, setShowEditHeight] = useState(false);
   const [preferences, setPreferences] = useState({});
   const [selectedGoal, setSelectedGoal] = useState("");
   const [selectedSex, setSelectedSex] = useState("");
@@ -43,6 +46,12 @@ export function AccountProvider({ children }) {
         setSelectedGoal,
         selectedSex,
         setSelectedSex,
+        showEditWeight,
+        setShowEditWeight,
+        showEditHeight,
+        setShowEditHeight,
+        showDeleteAccount,
+        setShowDeleteAccount,
       }}
     >
       {children}

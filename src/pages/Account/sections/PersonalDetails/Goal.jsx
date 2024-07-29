@@ -79,12 +79,15 @@ function SaveBtn() {
     <Button
       mt="mt-[50px]"
       handleClick={() => {
-        updateGoal({ nutritional_goal: selectedGoal });
+        updateGoalStatus !== "pending" &&
+          updateGoal({ nutritional_goal: selectedGoal });
       }}
       isValid={selectedGoal !== data.nutritional_goal}
       width="w-full"
       bgColor={`transition duration-300 ${
-        selectedGoal !== data.nutritional_goal ? "bg-primary-9" : "bg-grey-1"
+        updateGoalStatus !== "pending" && selectedGoal !== data.nutritional_goal
+          ? "bg-primary-9"
+          : "bg-grey-1"
       }`}
     >
       {updateGoalStatus === "pending" ? (

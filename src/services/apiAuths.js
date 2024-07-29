@@ -62,6 +62,15 @@ export async function logoutUser() {
   return { status: response.status };
 }
 
+export async function deleteAccount(id) {
+  const response = await fetch(`${BASE_URL}/api/v1/auth/users/${id}/delete/`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  return { status: response.status };
+}
+
 export async function updateKeepLoggedIn(payload) {
   const jsonFormData = { keep_logged_in: payload.value };
   const jsonString = JSON.stringify(jsonFormData);

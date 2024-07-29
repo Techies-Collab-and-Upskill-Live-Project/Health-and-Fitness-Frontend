@@ -34,7 +34,7 @@ export function SocialSignUp() {
           border="border-[1px] border-[#D0D5DD]"
           bgColor="bg-white-4"
         >
-          <img className="m-auto" src={"/apple.svg"} alt="Apple Icon" />
+          <img className="m-auto w-7 h-7" src={"/twitter.svg"} alt="Twitter Icon" />
         </Button>
       </Link>
     </div>

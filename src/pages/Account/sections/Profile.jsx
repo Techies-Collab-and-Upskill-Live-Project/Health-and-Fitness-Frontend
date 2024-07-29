@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { useGetQuery } from "../../../hooks/useGetQuery";
 import { AccountContext } from "../../../contexts/Account";
 import { LogOut } from "./LogOut";
+import { ConfirmDeleteAccount } from "./DeleteAccount";
 
 export default function Profile() {
   return (
@@ -50,8 +51,11 @@ function Customization() {
 }
 
 function PersonalCustomization() {
-  const { setShowPersonalDetails, setShowActivityLevel, setShowNotificationalPreferences } =
-    useContext(AccountContext);
+  const {
+    setShowPersonalDetails,
+    setShowActivityLevel,
+    setShowNotificationalPreferences,
+  } = useContext(AccountContext);
   return (
     <div className="w-full flex flex-col gap-1">
       <p className="text-grey-5 font-semibold text-base">
@@ -69,9 +73,9 @@ function PersonalCustomization() {
       />
       <ProfileData
         handleClick={() => setShowNotificationalPreferences(true)}
-
         icon="notification"
-        title="Notification Preferences" />
+        title="Notification Preferences"
+      />
     </div>
   );
 }
@@ -85,7 +89,7 @@ function AppCustomization() {
         <ProfileData icon="privacy" title="Privacy" />
         <ProfileData icon="termsAndConditions" title="Terms and Conditions" />
         <ProfileData
-          handleClick={() => setShowLogOut(true)}
+          handleClick={setShowLogOut}
           icon="logout"
           title="Log out"
         />
@@ -119,9 +123,19 @@ function ProfileData({ handleClick, isDelete = false, icon, title }) {
 }
 
 function DeleteAccount() {
+  const { showDeleteAccount, setShowDeleteAccount } =
+    useContext(AccountContext);
+
   return (
     <div className="w-full py-2">
-      <ProfileData isDelete={true} icon="delete" title="Delete Account" />
+      {showDeleteAccount && <ConfirmDeleteAccount />}
+
+      <ProfileData
+        handleClick={setShowDeleteAccount}
+        isDelete={true}
+        icon="delete"
+        title="Delete Account"
+      />
     </div>
   );
 }

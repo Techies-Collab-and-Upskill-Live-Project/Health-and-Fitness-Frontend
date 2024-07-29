@@ -15,6 +15,8 @@ import ActivityLevel from "./sections/ActivityLevel";
 import NotificationalPreferences from "./sections/NotificationalPreferences";
 import { getNotificationPreferences } from "../../services/apiAccount";
 import Goal from "./sections/PersonalDetails/Goal";
+import EditWeight from "./sections/PersonalDetails/EditWeight";
+import EditHeight from "./sections/PersonalDetails/EditHeight";
 
 export default function Account() {
   return (
@@ -33,6 +35,8 @@ export function AccountPage() {
     showActivityLevel,
     showNotificationalPreferences,
     showGoal,
+    showEditWeight,
+    showEditHeight,
   } = useContext(AccountContext);
 
   const { isLoading: isFetchingProfile, data: profileData } = useQuery({
@@ -62,7 +66,9 @@ export function AccountPage() {
         <NotificationalPreferences />
       ) : showGoal ? (
         <Goal />
-      ) : (
+      ) : showEditWeight ? (
+        <EditWeight />
+      ) : showEditHeight ? <EditHeight/> : (
         <Profile />
       )}
     </MainWrapper>

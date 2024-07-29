@@ -70,10 +70,16 @@ function SaveBtn() {
       handleClick={() => {
         updateActivity({ activity_level: selectedActivity });
       }}
-      isValid={selectedActivity !== data.activity_level}
+      isValid={
+        updateActivityStatus !== "pending" &&
+        selectedActivity !== data.activity_level
+      }
       width="w-full"
       bgColor={`transition duration-300 ${
-        selectedActivity !== data.activity_level ? "bg-primary-9" : "bg-grey-1"
+        updateActivityStatus !== "pending" &&
+        selectedActivity !== data.activity_level
+          ? "bg-primary-9"
+          : "bg-grey-1"
       }`}
     >
       {updateActivityStatus === "pending" ? (

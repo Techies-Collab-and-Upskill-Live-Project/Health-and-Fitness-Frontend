@@ -1,8 +1,30 @@
 /* eslint-disable react/prop-types */
 import { useNavigate } from "react-router-dom";
 import { useGetQuery } from "../../hooks/useGetQuery";
+import {
+  loseWeightAdvice,
+  gainWeightAdvice,
+  maintainWeightAdvice,
+} from "../../data/loseWeightAdvice";
+import { useContext } from "react";
+import { ProfileContext } from "../../contexts/Profile";
+import { getUserProfile } from "../../services/apiAuths";
+import { useQuery } from "@tanstack/react-query";
+import { formatToBackendDate } from "../../utils/helpers";
+import { getUserCalorie } from "../../services/apiCalorieLog";
 
 export default function ProfileOverview() {
+  const date = new Date();
+
+  const { isLoading: isFetchingProfile, data: profileData } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getUserProfile,
+  });
+
+  const { isLoading: isFetchingCalorie, data: calorieData } = useQuery({
+    queryKey: ["calorie"],
+    queryFn: () => getUserCalorie(formatToBackendDate(date)),
+  });
   return (
     <div
       className="items-center justify-center overflow-auto
@@ -17,11 +39,14 @@ export default function ProfileOverview() {
 }
 
 function SectionOne() {
+  const { data } = useContext(ProfileContext);
   const { data: profileData } = useGetQuery("profile");
   const { data: calorieData } = useGetQuery("calorie");
 
   const { calorie } = calorieData;
-  const { nutritional_goal: goal, username } = profileData;
+  const { nutritional_goal: goal, username } = profileData.Error
+    ? data
+    : profileData;
 
   return (
     <div
@@ -64,7 +89,7 @@ function SectionOne() {
           className="text-wrap absolute w-40 h-28 top-[30%] left-[12%]
            font-normal text-base text-white-4 flex flex-col gap-[6px]"
         >
-          <span>To {goal.toLowerCase()}</span>
+          <span>To {goal?.toLowerCase()}</span>
           <span>you need</span>
           <span className="block text-secondary-5 font-inter">
             <span className="text-lg font-medium">{Math.round(calorie)}</span>
@@ -89,11 +114,12 @@ export function Pentagon() {
 }
 
 function SectionTwo() {
+  const { data } = useContext(ProfileContext);
   const { data: calorieData } = useGetQuery("calorie");
   const { data: profileData } = useGetQuery("profile");
 
   const { carbs, fats, protein } = calorieData;
-  const { nutritional_goal: goal } = profileData;
+  const { nutritional_goal: goal } = profileData.Error ? data : profileData;
 
   const navigate = useNavigate();
 
@@ -123,18 +149,18 @@ function SectionTwo() {
       </div>
       <div className="bg-white-4 p-[10px] rounded-[3px] flex flex-col items-center gap-6">
         <p className="px-4 text-xl text-center font-semibold text-grey-6">
-          Things that can help you {goal.toLowerCase()}
+          Things that can help you {goal?.toLowerCase()}
         </p>
         <div className="flex flex-col gap-6 items-center">
-          {goal.toLowerCase().includes("lose")
+          {goal?.toLowerCase().includes("lose")
             ? loseWeightAdvice.map((advice, index) => {
                 return <Advice key={index} advice={advice} />;
               })
-            : goal.toLowerCase().includes("gain")
+            : goal?.toLowerCase().includes("gain")
             ? gainWeightAdvice.map((advice, index) => {
                 return <Advice key={index} advice={advice} />;
               })
-            : goal.toLowerCase().includes("maintain")
+            : goal?.toLowerCase().includes("maintain")
             ? maintainWeightAdvice.map((advice, index) => {
                 return <Advice key={index} advice={advice} />;
               })
@@ -174,85 +200,3 @@ function Advice({ advice }) {
     </div>
   );
 }
-
-const loseWeightAdvice = [
-  {
-    img: "/apple.png",
-    detail: "Eat varied, colorful, nutritionally dense foods.",
-  },
-  {
-    img: "/diary.png",
-    detail: "Keep a food and weight diary.",
-  },
-  {
-    img: "/can.png",
-    detail: "Reduce your intake of sodas.",
-  },
-  {
-    img: "/regular_activity.png",
-    detail: "Engage in regular physical activity and exercise.",
-  },
-  {
-    img: "/measure_servings.png",
-    detail: "Measure servings and control portions.",
-  },
-  {
-    img: "/eat_mindfully.png",
-    detail: "Eat mindfully.",
-  },
-  {
-    img: "/planner.png",
-    detail: "Plan your meals ahead with our meal planner.",
-  },
-];
-
-const gainWeightAdvice = [
-  {
-    img: "/apple.png",
-    detail: "Increase your calorie intake",
-  },
-  {
-    img: "/diary.png",
-    detail: "Keep a food and weight diary.",
-  },
-  {
-    img: "/measure_servings.png",
-    detail: "Eat nutrient dense meals.",
-  },
-  {
-    img: "/regular_activity.png",
-    detail: "Engage in strength training exercise",
-  },
-
-  {
-    img: "/rest.png",
-    detail: "Get enough rest and be mindful of stress.",
-  },
-  {
-    img: "/planner.png",
-    detail: "Plan your meals ahead with our meal planner.",
-  },
-];
-
-const maintainWeightAdvice = [
-  {
-    img: "/apple.png",
-    detail: "Eat varied, colorful, nutritionally dense foods.",
-  },
-  {
-    img: "/diary.png",
-    detail: "Keep a food and weight diary.",
-  },
-  {
-    img: "/can.png",
-    detail: "Reduce your intake of sodas.",
-  },
-  {
-    img: "/regular_activity.png",
-    detail: "Engage in regular physical activity and exercise.",
-  },
-  {
-    img: "/rest.png",
-    detail: "Manage stress",
-  },
-];

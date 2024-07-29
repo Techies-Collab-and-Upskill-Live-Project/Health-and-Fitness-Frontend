@@ -26,6 +26,8 @@ function Details() {
     setShowActivityLevel,
     setShowPersonalDetails,
     setShowGoal,
+    setShowEditWeight,
+    setShowEditHeight,
   } = useContext(AccountContext);
   const { data } = useGetQuery("profile");
   return (
@@ -37,10 +39,18 @@ function Details() {
           value={data.username}
         />
         <Detail
+          handleClick={() => {
+            setShowPersonalDetails(false);
+            setShowEditWeight(true);
+          }}
           title="Current Weight"
           value={`${roundUp(data.weight)}${data.weight_unit}`}
         />
         <Detail
+          handleClick={() => {
+            setShowPersonalDetails(false);
+            setShowEditHeight(true);
+          }}
           title="Height"
           value={`${roundUp(data.height)}${data.height_unit}`}
         />

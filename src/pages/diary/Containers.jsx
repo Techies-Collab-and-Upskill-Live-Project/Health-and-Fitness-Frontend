@@ -41,8 +41,7 @@ export function InnerContainer({
   return (
     <div
       className="flex justify-between w-full min-h-[77px]
-       rounded border-grey-1 border p-1 h-full
-       "
+       rounded border-grey-1 border p-1 h-full"
     >
       <div className="w-full flex gap-3 items-center">
         <img className="rounded w-16 h-[69]" src={image_url} alt={name} />

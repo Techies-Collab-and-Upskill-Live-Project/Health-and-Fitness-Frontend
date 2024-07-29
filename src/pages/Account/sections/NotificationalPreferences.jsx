@@ -87,10 +87,12 @@ function SaveBtn() {
     <Button
       mt="mt-3"
       handleClick={handleClick}
-      isValid={Object.keys(changes).length !== 0}
+      isValid={updateStatus !== "pending" && Object.keys(changes).length !== 0}
       width="w-full"
       bgColor={`${
-        Object.keys(changes).length !== 0 ? "bg-primary-9" : "bg-grey-1"
+        updateStatus !== "pending" && Object.keys(changes).length !== 0
+          ? "bg-primary-9"
+          : "bg-grey-1"
       }`}
     >
       {updateStatus === "pending" ? (

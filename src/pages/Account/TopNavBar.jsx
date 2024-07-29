@@ -12,6 +12,10 @@ function TopNavBar({ textColor, text }) {
     showNotificationalPreferences,
     setShowNotificationalPreferences,
     showGoal,
+    showEditWeight,
+    setShowEditWeight,
+    showEditHeight,
+    setShowEditHeight,
     setShowGoal,
   } = useContext(AccountContext);
 
@@ -24,6 +28,12 @@ function TopNavBar({ textColor, text }) {
       setShowNotificationalPreferences(false);
     } else if (showGoal) {
       setShowGoal(false);
+    } else if (showEditWeight) {
+      setShowEditWeight(false);
+      setShowPersonalDetails(true);
+    } else if (showEditHeight) {
+      setShowEditHeight(false);
+      setShowPersonalDetails(true);
     }
   }
 
