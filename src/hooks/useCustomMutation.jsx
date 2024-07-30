@@ -9,14 +9,14 @@ export function useCustomMutation(
   onError = null,
   onMutate = null
 ) {
-  const { isLoading, mutate, status } = useMutation({
+  const { mutate, status } = useMutation({
     mutationFn: mutationFn,
     networkMode: "always",
     onSuccess: onSuccess,
     onError: onError,
     onMutate: onMutate,
   });
-  return { isLoading, mutate, status };
+  return { mutate, status };
 }
 
 export function useDeleteMeal(

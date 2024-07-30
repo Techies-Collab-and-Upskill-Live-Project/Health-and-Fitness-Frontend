@@ -3,7 +3,7 @@ function HorizontalDash({ step }) {
   return (
     <>
       <div className="mt-6 flex h-full justify-center gap-1">
-        <div className="bg-success w-10 h-1 rounded-[100px_0px_0px_100px]"></div>
+        <div className="bg-success w-10 h-1 rounded-sm"></div>
         <div
           className={`${
             typeof step === "number"

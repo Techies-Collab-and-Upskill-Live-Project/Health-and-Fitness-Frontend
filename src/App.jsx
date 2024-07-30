@@ -9,7 +9,7 @@ import Spinner from "./components/Spinner";
 const SplashScreen = lazy(() => import("./components/SplashScreen"));
 const SignUp = lazy(() => import("./pages/signup/SignUp"));
 const Login = lazy(() => import("./pages/login/Login"));
-const ProfileScreen = lazy(() => import("./pages/profile/ProfileScreenMain"));
+const Profile = lazy(() => import("./pages/profile/ProfileScreenMain"));
 const ResetPassword = lazy(() =>
   import("./pages/reset-password/ResetPassword")
 );
@@ -26,6 +26,8 @@ const ActivateAccountSuccess = lazy(() =>
 
 const Diary = lazy(() => import("./pages/diary/UserDiary"));
 const MealPlanner = lazy(() => import("./pages/mealPlanner/MealPlanner"));
+const Account = lazy(() => import("./pages/Account/Account"));
+const Recipes = lazy(() => import("./pages/Recipes/Recipes"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -83,7 +85,7 @@ function App() {
             path="/profile"
             element={
               <Suspense fallback={<Spinner />}>
-                <ProfileScreen />
+                <Profile />
               </Suspense>
             }
           />
@@ -132,6 +134,22 @@ function App() {
             element={
               <Suspense fallback={<Spinner />}>
                 <MealPlanner />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/account"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <Account />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/recipe"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <Recipes />
               </Suspense>
             }
           />

@@ -29,7 +29,7 @@ export function SignUpForm() {
 
   const navigate = useNavigate();
 
-  const { isLoading: isSubmiting, mutate } = useCustomMutation(
+  const { mutate, status } = useCustomMutation(
     registerUser,
     (data) => {
       if (data.status == 201) {
@@ -150,13 +150,17 @@ export function SignUpForm() {
       <div className="mt-6 grid gap-4 h-[84px]">
         <Button
           type={"submit"}
-          isValid={isValid && !isSubmiting}
+          isValid={isValid && status !== "pending"}
           width="w-full"
           bgColor={`transition duration-300 ${
-            isValid ? "bg-primary-9" : "bg-grey-1"
+            isValid && status !== "pending" ? "bg-primary-9" : "bg-grey-1"
           }`}
         >
-          {isSubmiting ? <InlineSpinner type="Signing up" /> : "Sign Up"}
+          {status === "pending" ? (
+            <InlineSpinner type="Signing up" />
+          ) : (
+            "Sign Up"
+          )}
         </Button>
         <div className="grid gap-3 grid-cols-3 items-center w-full h-[20px]">
           <div className="bg-grey-2 border h-0"></div>

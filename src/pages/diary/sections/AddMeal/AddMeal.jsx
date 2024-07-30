@@ -1,15 +1,29 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import TopNavBar from "../../TopNavBar";
+import Spinner from "../../../../components/Spinner";
 
+import { useSearchMeal } from "../../../../hooks/useRecipes";
 import { DiaryContext } from "../../../../contexts/DiaryContext";
 import { MainWrapper } from "../../MainWrapper";
 import { SearchMeal } from "../MealSearchBar";
 import { MealManualInput } from "./MealManualInput";
 import { MealNutrFacts } from "./NutritionFacts";
 import { SaveBtn } from "./SaveBtn";
+import { useGetQuery } from "../../../../hooks/useGetQuery";
+import { formatToBackendDate } from "../../../../utils/helpers";
+import { createUserMeal, updateUserMeal } from "../../../../services/apiMeal";
+import { useCustomMutation } from "../../../../hooks/useCustomMutation";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import ScreenOverlay from "../../../../components/ScreenOverlay";
+import { InlineSpinner } from "../../../../components/InlineSpinner";
+import { loadMore } from "../../../../services/apiRecipe";
+import { Button } from "../../../../components/Button";
 
 export default function AddMeal() {
   return (
@@ -63,35 +77,227 @@ export function MealSearchOptions() {
 }
 
 function FoundMeals() {
+  const [meals, setMeals] = useState([]);
+
+  const { data: mealData, status: mealStatus } = useGetQuery("meals");
+
+  const {
+    meal,
+    isLoading,
+    setRecipes,
+    pagination,
+    setPagination,
+    setIsLoadingMore,
+    isLoadingMore,
+  } = useContext(DiaryContext);
+  const { recipes } = useSearchMeal(meal);
+
+  function handleClick() {
+    loadMore(pagination.next, setRecipes, setIsLoadingMore, setPagination);
+  }
+
+  useEffect(() => {
+    if (recipes.length === 0 && mealStatus === 404) {
+      setMeals([]);
+    } else if (recipes.length === 0) {
+      const filteredUserDiaryMeals = filterUserDiaryMeals(mealData, meal);
+      setMeals(filteredUserDiaryMeals);
+    } else if (mealStatus === 404) {
+      setMeals(recipes);
+    } else {
+      const filteredUserDiaryMeals = filterUserDiaryMeals(mealData, meal);
+      const filteredApiMeals = filterMeals(filteredUserDiaryMeals, recipes);
+      const combinedMeals = [...filteredUserDiaryMeals, ...filteredApiMeals];
+
+      setMeals(combinedMeals);
+    }
+  }, [recipes, meal, mealData, mealStatus]);
+
   return (
-    <div className="w-full p-3 overflow-auto text-grey-6 flex flex-col gap-1">
-      <MealOption />
-      <MealOption />
-      <MealOption />
-      <MealOption />
-      <MealOption />
-      <MealOption />
-      <MealOption />
-      <MealOption />
-    </div>
+    <>
+      {isLoading ? (
+        <InlineSpinner />
+      ) : (
+        <div className="w-full p-3 overflow-auto text-grey-6 flex flex-col gap-1">
+          {meals.map((meal, index) => {
+            const id = meal.id ? meal.id : index;
+            return (
+              <MealOption
+                key={id}
+                name={meal.name}
+                id={id}
+                servings={meal.servings}
+                energy={Math.round(meal.energy)}
+                carbs={Math.round(meal.carbs)}
+                protein={Math.round(meal.protein)}
+                fats={Math.round(meal.fats)}
+                selected={meal.date ? true : false}
+                img={meal.image_url}
+              />
+            );
+          })}
+          <div className="h-full m-auto">
+            {pagination.count > pagination.currentPage && !isLoading && (
+              <Button
+                handleClick={handleClick}
+                bgColor={isLoadingMore ? "bg-grey-2" : "bg-primary-9"}
+                isValid={!isLoadingMore}
+              >
+                {isLoadingMore ? <InlineSpinner /> : "Load more"}
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
-function MealOption() {
+function MealOption({
+  name,
+  id,
+  servings,
+  energy,
+  carbs,
+  protein,
+  fats,
+  selected,
+  img,
+}) {
+  const [newServings, setNewServings] = useState(servings);
+
+  const { step } = useContext(DiaryContext);
+
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const date = new Date();
+  date.setDate(date.getDate() + step);
+
+  function onClick() {
+    mutate({
+      date: formatToBackendDate(date),
+      name: name,
+      image_url: img ? img : null,
+      energy: (energy * newServings).toFixed(2),
+      servings: newServings,
+      carbs: (carbs * newServings).toFixed(2),
+      fats: (fats * newServings).toFixed(2),
+      protein: (protein * newServings).toFixed(2),
+    });
+  }
+
+  const { mutate, status } = useCustomMutation(
+    createUserMeal,
+    async (data) => {
+      /** If user's credentials are correct **/
+      if (data.status == 201) {
+        queryClient.invalidateQueries({
+          queryKey: ["meals"],
+        });
+        toast.success("Successfully added meal");
+      } else if (data.status == 401) {
+        /** If user's credentials are not correct **/
+        navigate("/log-in");
+      } else if (data.status == 400) {
+        /** If user does not provide one or more fields **/
+        Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
+          try {
+            errorMessages.forEach((errorMessage) => {
+              toast.error(`${fieldName}: ${errorMessage}`); //Make toast
+            });
+          } catch {
+            toast.error(`${errorMessages}`);
+          }
+        });
+      }
+    },
+    (err) => toast.error(err.message)
+  );
+
+  const { mutate: updateServings, status: updateServingsStatus } =
+    useCustomMutation(
+      updateUserMeal,
+      async (data) => {
+        /** If user's credentials are correct **/
+        if (data.status == 200) {
+          queryClient.invalidateQueries({
+            queryKey: ["meals"],
+          });
+
+          setNewServings((servings) =>
+            data.data.servings > servings ? servings + 1 : servings - 1
+          );
+        } else if (data.status == 401) {
+          /** If user's credentials are not correct **/
+          navigate("/log-in");
+        } else if (data.status == 400) {
+          /** If user does not provide one or more fields **/
+          Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
+            try {
+              errorMessages.forEach((errorMessage) => {
+                toast.error(`${fieldName}: ${errorMessage}`); //Make toast
+              });
+            } catch {
+              toast.error(`${errorMessages}`);
+            }
+          });
+        }
+      },
+      (err) => toast.error(err.message)
+    );
+
+  function handleChangeServings(action) {
+    if (selected) {
+      const change = action === "inc" ? newServings + 1 : newServings - 1;
+
+      if (action === "dec" && newServings === 1) return;
+
+      updateServings({
+        date: formatToBackendDate(date),
+        name,
+        servings: change,
+        energy:
+          action === "inc"
+            ? energy / newServings + energy
+            : energy - energy / newServings,
+        carbs:
+          action === "inc"
+            ? carbs / newServings + carbs
+            : carbs - carbs / newServings,
+        protein:
+          action === "inc"
+            ? protein / newServings + protein
+            : protein - protein / newServings,
+        fats:
+          action === "inc"
+            ? fats / newServings + fats
+            : fats - fats / newServings,
+      });
+    } else {
+      setNewServings((servings) =>
+        action === "inc" ? servings + 1 : servings > 1 ? servings - 1 : servings
+      );
+    }
+  }
+
   return (
-    <div className="w-full flex gap-2 border p-1 rounded border-grey-1">
+    <div
+      className={`${
+        selected && "bg-primary-1"
+      } w-full flex gap-2 border p-1 rounded border-grey-1`}
+    >
       <img
-        src="/Jollof Rice and Chicken.png"
-        alt=""
+        src={img ? img : "/mealPlaceholder.png"}
+        alt={name}
         className="rounded w-16 h-[69px]"
       />
       <div className="flex w-full flex-col justify-around items-center">
-        <p className="font-semibold text-[13px] leading-5">
-          Jollof rice with chicken
-        </p>
+        <p className="font-semibold text-[13px] leading-5">{name}</p>
         <div className="flex items-center gap-3">
           <p className="flex items-center gap-1">
             <svg
+              onClick={() => handleChangeServings("dec")}
               width="16"
               height="16"
               viewBox="0 0 14 15"
@@ -107,9 +313,12 @@ function MealOption() {
               />
             </svg>
 
-            <span>1 serving (200 ml)</span>
+            <span>
+              {newServings} serving ({newServings * 300} ml)
+            </span>
 
             <svg
+              onClick={() => handleChangeServings("inc")}
               width="16"
               height="16"
               viewBox="0 0 14 15"
@@ -125,12 +334,56 @@ function MealOption() {
               />
             </svg>
           </p>
-          <span>240kcal</span>
+          <span>
+            {selected ? energy : energy * newServings}
+            kcal
+          </span>
         </div>
       </div>
       <div className="flex justify-center items-center">
-        <img src="/PlusBtn.svg" alt="Select Meal" className="cursor-pointer" />
+        {selected ? (
+          <svg
+            width="12"
+            height="9"
+            viewBox="0 0 12 9"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M11.7174 1.48685C11.8942 1.27471 11.8655 0.959432 11.6534 0.78265C11.4413 0.605868 11.126 0.63453 10.9492 0.846668L7.35541 5.15921C6.63352 6.02548 6.1257 6.63299 5.68523 7.03073C5.25504 7.4192 4.95815 7.54266 4.66664 7.54266C4.37513 7.54266 4.07824 7.4192 3.64805 7.03073C3.20758 6.63298 2.69976 6.02548 1.97786 5.15921L1.05075 4.04667C0.873967 3.83453 0.558685 3.80587 0.346546 3.98265C0.134408 4.15943 0.105746 4.47471 0.282528 4.68685L1.23537 5.83027C1.92555 6.65851 2.47828 7.32179 2.97785 7.77291C3.49389 8.2389 4.0214 8.54266 4.66664 8.54266C5.31188 8.54266 5.83939 8.2389 6.35543 7.77291C6.85499 7.3218 7.40771 6.65852 8.09788 5.83029L11.7174 1.48685Z"
+              fill="#63626E"
+            />
+          </svg>
+        ) : (
+          <img
+            onClick={onClick}
+            src="/PlusBtn.svg"
+            alt="Select Meal"
+            className="cursor-pointer"
+          />
+        )}
       </div>
+      {status === "pending" && (
+        <ScreenOverlay>
+          <Spinner />
+        </ScreenOverlay>
+      )}
     </div>
+  );
+}
+
+function filterUserDiaryMeals(userDiaryMeals, keyword) {
+  const lowerKeyword = keyword.toLowerCase();
+
+  return userDiaryMeals.filter((meal) =>
+    meal.name.toLowerCase().includes(lowerKeyword)
+  );
+}
+
+function filterMeals(userDiaryMeals, apiMeals) {
+  const diaryMealNames = userDiaryMeals.map((meal) => meal.name.toLowerCase());
+
+  return apiMeals.filter(
+    (meal) => !diaryMealNames.includes(meal.name.toLowerCase())
   );
 }

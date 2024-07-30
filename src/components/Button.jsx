@@ -13,9 +13,9 @@ export function Button({
 }) {
   return (
     <button
-      className={`${
+      className={`transition-all duration-500 ${
         isValid
-          ? `${bgColor} cursor-pointer active:scale-97`
+          ? `${bgColor} cursor-pointer active:scale-[0.97]`
           : `${bgColor} cursor-auto`
       } ${width} ${height} rounded-lg
   font-4 text-white-2 flex items-center justify-center

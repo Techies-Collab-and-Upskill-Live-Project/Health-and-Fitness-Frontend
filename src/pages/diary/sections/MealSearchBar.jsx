@@ -10,6 +10,7 @@ export function SearchMeal() {
     setIsSearchMeal(true);
     setMeal(e.target.value);
   }
+  
   return (
     <div className="grid auto-rows-max gap-2 text-grey-5 w-full">
       <label className="relative grid auto-rows-max gap-2">

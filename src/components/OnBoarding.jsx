@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "./Button";
+import { getUserProfile } from "../services/apiAuths";
+import { useQuery } from "@tanstack/react-query";
+import Spinner from "./Spinner";
 
 const images = [
   { id: 0, name: "Group 26086143" },
@@ -25,6 +28,22 @@ function OnBoarding() {
   function handleClick() {
     navigate("/sign-up");
   }
+
+  const { isLoading: isFetchingProfile, data: profileData } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getUserProfile,
+  });
+
+  if (profileData?.status === 404) {
+    navigate("/profile");
+  }
+
+  // If user already have profile, redirect to diary page
+  if (profileData?.status === 200) {
+    navigate("/diary");
+  }
+
+  if (isFetchingProfile) return <Spinner />;
 
   return (
     <div

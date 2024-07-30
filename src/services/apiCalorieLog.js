@@ -26,8 +26,14 @@ export async function getUserCalorie(date) {
       const { data, status } = await createUserCalorie(date);
       if (status === 201) {
         return { data, status: 200 };
+      } else if (status === 404) {
+        return { data, status: 404 };
+      } else {
+        return { data, status };
       }
     } else if (response.status === 200) {
+      return { data: resData, status: response.status };
+    } else {
       return { data: resData, status: response.status };
     }
   } catch (error) {
@@ -35,7 +41,7 @@ export async function getUserCalorie(date) {
   }
 }
 
-async function createUserCalorie(date) {
+export async function createUserCalorie(date) {
   const jsonString = JSON.stringify({ date: date });
   try {
     const response = await fetch(

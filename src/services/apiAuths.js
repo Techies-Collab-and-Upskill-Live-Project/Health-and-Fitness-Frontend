@@ -53,15 +53,23 @@ export async function logInUser(formData) {
   }
 }
 
-export const logoutUser = async () => {
+export async function logoutUser() {
   const response = await fetch(`${BASE_URL}/api/v1/auth/jwt/logout/`, {
     method: "POST",
     credentials: "include",
   });
 
-  const jsonData = await response.json();
-  return { data: jsonData, status: response.status };
-};
+  return { status: response.status };
+}
+
+export async function deleteAccount(id) {
+  const response = await fetch(`${BASE_URL}/api/v1/auth/users/${id}/delete/`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  return { status: response.status };
+}
 
 export async function updateKeepLoggedIn(payload) {
   const jsonFormData = { keep_logged_in: payload.value };
@@ -84,14 +92,26 @@ export async function updateKeepLoggedIn(payload) {
 
 export async function getUserProfile() {
   try {
-    const response = await fetch(`${BASE_URL}/api/v1/profile/`, {
+    const response = await fetch(`${BASE_URL}/api/v1/profile`, {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
       credentials: "include",
     });
-    const jsonData = await response.json();
-    return { data: jsonData, status: response.status };
+    const resData = await response.json();
+    if (response.status === 401) {
+      const refresh = await refreshToken();
+      if (refresh.status === 200) {
+        return await getUserProfile();
+      } else if (refresh.status === 401) {
+        return { data: resData, status: response.status };
+      }
+    } else return { data: resData, status: response.status };
+
+    return { data: resData, status: response.status };
   } catch (error) {
-    console.log("Error fetching profile:", error);
+    console.error("Error fetching user profile", error);
   }
 }
 
