@@ -103,8 +103,10 @@ function OTPInput({
         <button
           disabled={resendDisabled}
           className={` ${
-            resendDisabled ? "text-grey-4 cursor-not-allowed" : "text-primary-8"
-          } cursor-pointer bg-transparent`}
+            resendDisabled
+              ? "text-grey-4 cursor-not-allowed"
+              : "text-primary-8 cursor-pointer"
+          } bg-transparent`}
           onClick={handleResendCode}
         >
           Resend code

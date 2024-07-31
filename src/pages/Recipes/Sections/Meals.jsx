@@ -71,6 +71,7 @@ export function Meals() {
       </div>
       {pagination.count > pagination.currentPage && !isLoading && (
         <Button
+          width="w-full"
           handleClick={handleClick}
           bgColor={isLoadingMore ? "bg-grey-2" : "bg-primary-9"}
           isValid={!isLoadingMore}

@@ -6,25 +6,42 @@ import {
   gainWeightAdvice,
   maintainWeightAdvice,
 } from "../../data/loseWeightAdvice";
-import { useContext } from "react";
-import { ProfileContext } from "../../contexts/Profile";
+import { useEffect } from "react";
 import { getUserProfile } from "../../services/apiAuths";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatToBackendDate } from "../../utils/helpers";
 import { getUserCalorie } from "../../services/apiCalorieLog";
+import Spinner from "../../components/Spinner";
 
 export default function ProfileOverview() {
   const date = new Date();
 
-  const { isLoading: isFetchingProfile, data: profileData } = useQuery({
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    // Define an array of query keys to be removed
+    const queryKeys = ["calorie", "profile"];
+
+    // Iterate over the array and remove each query
+    queryKeys.forEach((key) => {
+      queryClient.removeQueries({
+        queryKey: [key],
+      });
+    });
+  }, [queryClient]);
+
+  const { isLoading: isFetchingProfile } = useQuery({
     queryKey: ["profile"],
     queryFn: getUserProfile,
   });
 
-  const { isLoading: isFetchingCalorie, data: calorieData } = useQuery({
+  const { isLoading: isFetchingCalorie } = useQuery({
     queryKey: ["calorie"],
     queryFn: () => getUserCalorie(formatToBackendDate(date)),
   });
+
+  if (isFetchingCalorie || isFetchingProfile) return <Spinner />;
+
   return (
     <div
       className="items-center justify-center overflow-auto
@@ -39,14 +56,11 @@ export default function ProfileOverview() {
 }
 
 function SectionOne() {
-  const { data } = useContext(ProfileContext);
   const { data: profileData } = useGetQuery("profile");
   const { data: calorieData } = useGetQuery("calorie");
 
   const { calorie } = calorieData;
-  const { nutritional_goal: goal, username } = profileData.Error
-    ? data
-    : profileData;
+  const { nutritional_goal: goal, username } = profileData;
 
   return (
     <div
@@ -114,13 +128,11 @@ export function Pentagon() {
 }
 
 function SectionTwo() {
-  const { data } = useContext(ProfileContext);
   const { data: calorieData } = useGetQuery("calorie");
   const { data: profileData } = useGetQuery("profile");
 
   const { carbs, fats, protein } = calorieData;
-  const { nutritional_goal: goal } = profileData.Error ? data : profileData;
-
+  const { nutritional_goal: goal } = profileData;
   const navigate = useNavigate();
 
   return (

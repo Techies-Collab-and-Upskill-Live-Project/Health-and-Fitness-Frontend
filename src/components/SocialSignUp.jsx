@@ -26,7 +26,7 @@ export function SocialSignUp() {
           <img className="m-auto" src={"/facebook.svg"} alt="Facebook Icon" />
         </Button>
       </Link>
-      <Link to="http://localhost:8000/api/v1/auth/twitter-signup">
+      <Link to={import.meta.env.VITE_TWITTER_URL}>
         <Button
             width="w-full"
           height="h-11"
