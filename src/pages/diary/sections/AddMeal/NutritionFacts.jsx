@@ -146,7 +146,7 @@ function EditFact({ title, onCancel }) {
             <input
               type="number"
               className="focus:outline-none min-w-11
-    border-b border-grey-6 outline-none"
+    border-b border-grey-6 outline-none bg-white-4"
               value={factValue}
               onChange={(e) => {
                 setFactValue(e.target.value);
