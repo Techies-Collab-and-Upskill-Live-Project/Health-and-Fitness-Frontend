@@ -47,7 +47,7 @@ export function DiaryPage() {
 
     // Iterate over the array and remove each query
     queryKeys.forEach((key) => {
-      queryClient.removeQueries({
+      queryClient.refetchQueries({
         queryKey: [key],
       });
     });
@@ -76,7 +76,7 @@ export function DiaryPage() {
   if (calorieData?.status === 404) {
     navigate("/profile");
   }
-  
+
   if (
     calorieData?.status === 401 ||
     exerciseData?.status === 401 ||

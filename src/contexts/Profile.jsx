@@ -4,7 +4,6 @@ export const ProfileContext = createContext();
 
 export function ProfileProvider({ children }) {
   const [profile, setProfile] = useState({});
-  const [data, setData] = useState({});
   const [step, setStep] = useState(0);
 
   const [date, setDate] = useState({ day: "", month: "", year: "" });
@@ -42,8 +41,6 @@ export function ProfileProvider({ children }) {
         setIsBuilding,
         showProfileOverview,
         setShowProfileOverview,
-        data,
-        setData,
       }}
     >
       {children}
