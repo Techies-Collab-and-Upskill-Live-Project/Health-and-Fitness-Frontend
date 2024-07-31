@@ -47,7 +47,7 @@ export function DiaryPage() {
 
     // Iterate over the array and remove each query
     queryKeys.forEach((key) => {
-      queryClient.refetchQueries({
+      queryClient.removeQueries({
         queryKey: [key],
       });
     });
