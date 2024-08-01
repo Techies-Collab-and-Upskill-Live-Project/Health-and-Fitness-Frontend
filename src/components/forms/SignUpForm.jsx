@@ -33,7 +33,7 @@ export function SignUpForm() {
     registerUser,
     (data) => {
       if (data.status == 201) {
-        localStorage.setItem("email", data["email"]);
+        localStorage.setItem("email", data.data.email);
         navigate("/account/activate");
       } else {
         Object.entries(data.data).forEach(([fieldName, errorMessages]) => {

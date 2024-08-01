@@ -129,6 +129,24 @@ export async function getOTP(email) {
     console.log("Error requesting OTP:", error);
   }
 }
+export async function requestActivationLink(email) {
+  const jsonFormData = { email: email };
+  const jsonString = JSON.stringify(jsonFormData);
+
+  try {
+    const response = await fetch(`${BASE_URL}/auth/users/resend_activation/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonString,
+    });
+
+    return { status: response.status };
+  } catch (error) {
+    console.log("Error requesting new link:", error);
+  }
+}
 
 export async function getUserID() {
   try {
