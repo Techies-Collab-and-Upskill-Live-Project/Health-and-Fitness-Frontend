@@ -15,7 +15,6 @@ import Spinner from "../../components/Spinner";
 
 export default function ProfileOverview() {
   const date = new Date();
-
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -24,7 +23,7 @@ export default function ProfileOverview() {
 
     // Iterate over the array and remove each query
     queryKeys.forEach((key) => {
-      queryClient.removeQueries({
+      queryClient.refetchQueries({
         queryKey: [key],
       });
     });

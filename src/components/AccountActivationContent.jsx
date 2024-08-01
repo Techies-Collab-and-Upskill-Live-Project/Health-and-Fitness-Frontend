@@ -1,9 +1,14 @@
-function AccountActivationContent() {
+import toast from "react-hot-toast";
+import { useCustomMutation } from "../hooks/useCustomMutation";
+import { requestActivationLink } from "../services/apiAuths";
+
+/* eslint-disable react/prop-types */
+function AccountActivationContent({ email }) {
   return (
     <div className="px-4 font-montserrat text-grey-6 text-center">
       <MailBox />
-      <ActivationText />
-      <Footer />
+      <ActivationText email={email} />
+      <Footer email={email} />
     </div>
   );
 }
@@ -29,7 +34,7 @@ function MailBox() {
   );
 }
 
-function ActivationText() {
+function ActivationText({ email }) {
   return (
     <div
       className="flex items-center justify-center gap-5 
@@ -38,7 +43,7 @@ function ActivationText() {
     >
       <p>
         You are almost done! Click on the activation link sent to
-        <b> example@email.com</b> to activate your FudHouse account.
+        <b> {email}</b> to activate your FudHouse account.
       </p>
       <p>
         Also check your spam box if you can&apos;t find the mail in your inbox.
@@ -47,13 +52,33 @@ function ActivationText() {
   );
 }
 
-function Footer() {
+function Footer({ email }) {
+  const { mutate } = useCustomMutation(
+    requestActivationLink,
+    (data) => {
+      console.log(data);
+      if (data.status == 204) {
+        toast.success("New activation link has been sent!");
+      } else {
+        Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
+          errorMessages.forEach((errorMessage) => {
+            toast.error(`${fieldName}: ${errorMessage}`); //Make toast
+          });
+        });
+      }
+    },
+    (err) => toast.error(err.message)
+  );
+
   return (
     <div className="h-[96px] flex justify-end gap-4 items-center text-sm flex-col">
       <p className="w-full h-1 bg-grey-2"></p>
-      <p className=" text-nowrap">
+      <p>
         Didn&apos;t receive the email?{" "}
-        <span className="cursor-pointer text-primary-9 font-medium">
+        <span
+          onClick={() => mutate(email)}
+          className="block cursor-pointer text-primary-9 font-medium"
+        >
           Resend activation mail
         </span>
       </p>

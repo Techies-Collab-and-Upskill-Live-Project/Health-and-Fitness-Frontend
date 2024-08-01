@@ -21,7 +21,7 @@ export default function ActivateAccount() {
   return (
     <AppWrapper>
       <NavBar>Email Activation</NavBar>
-      <AccountActivationContent />
+      <AccountActivationContent email={localStorage.getItem("email")} />
     </AppWrapper>
   );
 }
