@@ -25,6 +25,8 @@ export function DiaryProvider({ children }) {
   const [exerciseObject, setExerciseObject] = useState(exerciseData);
   const [step, setStep] = useState(0);
   const [selectedExerciseTime, setSelectedExerciseTime] = useState(null);
+  const [getSettings, setGetSettings] = useState(false);
+  const [exerciseModalID, setExerciseModalID] = useState(null);
 
   /** Automatic meal addition from recipe */
   const [isLoading, setIsLoading] = useState(false);
@@ -92,6 +94,10 @@ export function DiaryProvider({ children }) {
         setRecipes,
         pagination,
         setPagination,
+        getSettings,
+        setGetSettings,
+        exerciseModalID,
+        setExerciseModalID,
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { useGetQuery } from "../../../hooks/useGetQuery";
 import { AccountContext } from "../../../contexts/Account";
 import { LogOut } from "./LogOut";
@@ -21,6 +21,19 @@ function Title() {
 
 function User() {
   const { data } = useGetQuery("profile");
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log("Selected file:", file);
+    }
+  };
+
+  const handleEditButtonClick = () => {
+    fileInputRef.current.click();
+  };
+
   return (
     <div className="w-full flex flex-col gap-4 items-center justify-center">
       <div className="relative w-24 h-20">
@@ -33,6 +46,14 @@ function User() {
           src="/editBtn.svg"
           alt="Change profile picture"
           className="absolute w-6 h-6 right-2 bottom-1 cursor-pointer"
+          onClick={handleEditButtonClick}
+        />
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+          accept="image/*"
         />
       </div>
       <p className="text-grey-6 font-semibold text-xl">{data.username}</p>

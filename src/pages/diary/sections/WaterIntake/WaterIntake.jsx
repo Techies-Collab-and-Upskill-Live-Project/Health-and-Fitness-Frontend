@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { OuterContainer } from "../../Containers";
 import ScreenOverlay from "../../../../components/ScreenOverlay";
 import { useGetQuery } from "../../../../hooks/useGetQuery";
@@ -27,9 +27,8 @@ export function WaterIntake() {
   const { data: waterIntake, status: waterIntakeStatus } =
     useGetQuery("waterIntake");
 
-  const [getSettings, setGetSettings] = useState(false);
-
-  const { setShowWaterSettings, step } = useContext(DiaryContext);
+  const { setShowWaterSettings, step, getSettings, setGetSettings } =
+    useContext(DiaryContext);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const date = new Date();
