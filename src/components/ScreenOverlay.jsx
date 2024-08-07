@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { DiaryContext } from "../contexts/DiaryContext";
 
 /* eslint-disable react/prop-types */
-export default function ScreenOverlay({ children }) {
+export default function ScreenOverlay({ dissmissable = false, children }) {
   const {
     setCurrentId,
     setCurrentExerciseId,
@@ -44,9 +44,7 @@ export default function ScreenOverlay({ children }) {
     w-screen h-screen max-w-screen-sm bg-[rgba(0,0,0,0.5)] 
     absolute top-0 z-10"
     >
-      <div className="mx-auto w-max h-max" ref={overlayRef}>
-        {children}
-      </div>
+      {dissmissable ? <div ref={overlayRef}>{children}</div> : children}
     </div>,
     document.getElementById("wrapper")
   );

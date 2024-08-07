@@ -74,7 +74,7 @@ export function Exercise({ exercise, id }) {
         </p>
       </div>
       {exerciseModalID === id && (
-        <ScreenOverlay>
+        <ScreenOverlay dissmissable={true}>
           <DeleteExerciseBtn id={id} handleCancel={setExerciseModalID} />
         </ScreenOverlay>
       )}

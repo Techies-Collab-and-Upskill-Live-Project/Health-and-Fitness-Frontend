@@ -167,7 +167,7 @@ export function WaterIntake() {
         </ScreenOverlay>
       ) : (
         getSettings && (
-          <ScreenOverlay>
+          <ScreenOverlay dissmissable={true}>
             <Modal numberOfGlass={numberOfGlass} textColor="text-grey-6">
               <div
                 onClick={handleGetSettings}

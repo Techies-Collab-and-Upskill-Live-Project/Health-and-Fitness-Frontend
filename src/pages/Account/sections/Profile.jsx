@@ -4,6 +4,13 @@ import { useGetQuery } from "../../../hooks/useGetQuery";
 import { AccountContext } from "../../../contexts/Account";
 import { LogOut } from "./LogOut";
 import { ConfirmDeleteAccount } from "./DeleteAccount";
+import { useCustomMutation } from "../../../hooks/useCustomMutation";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import ScreenOverlay from "../../../components/ScreenOverlay";
+import Spinner from "../../../components/Spinner";
+import { setAvatar } from "../../../services/apiAccount";
 
 export default function Profile() {
   return (
@@ -22,11 +29,13 @@ function Title() {
 function User() {
   const { data } = useGetQuery("profile");
   const fileInputRef = useRef(null);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      console.log("Selected file:", file);
+      updateAvatar(file);
     }
   };
 
@@ -34,11 +43,39 @@ function User() {
     fileInputRef.current.click();
   };
 
+  const { mutate: updateAvatar, status: updateAvatarStatus } =
+    useCustomMutation(
+      setAvatar,
+      async (data) => {
+        /** If user's credentials are correct **/
+        if (data.status == 200) {
+          queryClient.invalidateQueries({
+            queryKey: ["profile"],
+          });
+        } else if (data.status == 401) {
+          /** If user's credentials are not correct **/
+          navigate("/log-in");
+        } else if (data.status == 400) {
+          /** If user does not provide one or more fields **/
+          Object.entries(data.data).forEach(([fieldName, errorMessages]) => {
+            try {
+              errorMessages.forEach((errorMessage) => {
+                toast.error(`${fieldName}: ${errorMessage}`); //Make toast
+              });
+            } catch {
+              toast.error(`${errorMessages}`);
+            }
+          });
+        }
+      },
+      (err) => toast.error(err.message)
+    );
+
   return (
     <div className="w-full flex flex-col gap-4 items-center justify-center">
       <div className="relative w-24 h-20">
         <img
-          className="absolute top-0 left-0 w-[72px]"
+          className="absolute rounded-full h-[72px] top-0 left-0 w-[72px]"
           src={data.avatar !== null ? `${data.avatar}` : "/Union.svg"}
           alt="User Picture"
         />
@@ -54,9 +91,15 @@ function User() {
           style={{ display: "none" }}
           onChange={handleFileChange}
           accept="image/*"
+          capture="camera"
         />
       </div>
       <p className="text-grey-6 font-semibold text-xl">{data.username}</p>
+      {updateAvatarStatus === "pending" && (
+        <ScreenOverlay>
+          <Spinner />
+        </ScreenOverlay>
+      )}
     </div>
   );
 }

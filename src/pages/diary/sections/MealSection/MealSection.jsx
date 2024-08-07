@@ -61,7 +61,7 @@ export function Meal({ id, meal }) {
         </p>
       </div>
       {currentId === id && (
-        <ScreenOverlay>
+        <ScreenOverlay dissmissable={true}>
           <DeleteMealBtn id={id} />
         </ScreenOverlay>
       )}

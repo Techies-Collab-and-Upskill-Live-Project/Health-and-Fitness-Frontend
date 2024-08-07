@@ -29,11 +29,11 @@ export function LogOut() {
   );
 
   return (
-    <ScreenOverlay>
-      <>
-        {logOutStatus === "pending" ? (
-          <Spinner />
-        ) : (
+    <>
+      {logOutStatus === "pending" ? (
+        <Spinner />
+      ) : (
+        <ScreenOverlay>
           <Modal
             handleAction={handleLogOut}
             handleCancel={onCancel}
@@ -46,8 +46,8 @@ export function LogOut() {
               Are you sure you want to log out?
             </p>
           </Modal>
-        )}
-      </>
-    </ScreenOverlay>
+        </ScreenOverlay>
+      )}
+    </>
   );
 }

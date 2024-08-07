@@ -1,4 +1,10 @@
 import { BASE_URL, refreshToken } from "./apiAuths";
+import { createClient } from "@supabase/supabase-js";
+
+const PURL = import.meta.env.VITE_PROJECT_URL;
+
+// Create Supabase client
+const supabase = createClient(PURL, import.meta.env.VITE_SUPABASE_KEY);
 
 export async function setNewUsername(data) {
   const jsonString = JSON.stringify(data);
@@ -50,6 +56,28 @@ export async function updateProfile(data) {
     } else return { status: response.status };
   } catch (error) {
     console.error("Error updating profile", error);
+  }
+}
+
+export async function setAvatar(file) {
+  const response = await uploadFile(file);
+  const avatar = `${PURL}/storage/v1/object/public/${response.fullPath}`;
+
+  const res = await updateProfile({ avatar: avatar });
+  return { status: res.status };
+}
+
+// Upload file using standard upload
+async function uploadFile(file) {
+  const imagePath = `${Math.random()}-${file.name}`.replaceAll("/", "");
+
+  const { data, error } = await supabase.storage.from("avatars").upload(imagePath, file);
+  if (error) {
+    // Handle error
+    return error;
+  } else {
+    // Handle success
+    return data;
   }
 }
 
