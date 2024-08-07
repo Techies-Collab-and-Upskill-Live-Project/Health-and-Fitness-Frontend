@@ -53,11 +53,11 @@ export default function ExerciseSection() {
 }
 
 export function Exercise({ exercise, id }) {
-  const [showExerciseModal, setShowExerciseModal] = useState(false);
+  const { exerciseModalID, setExerciseModalID } = useContext(DiaryContext);
 
   return (
     <InnerContainer
-      handleHamburgerClick={() => setShowExerciseModal(true)}
+      handleHamburgerClick={() => setExerciseModalID(id)}
       image_url={"/exercise.png"}
       name="Exercise"
     >
@@ -73,9 +73,9 @@ export function Exercise({ exercise, id }) {
           </span>
         </p>
       </div>
-      {showExerciseModal && (
-        <ScreenOverlay>
-          <DeleteExerciseBtn id={id} handleCancel={setShowExerciseModal} />
+      {exerciseModalID === id && (
+        <ScreenOverlay dissmissable={true}>
+          <DeleteExerciseBtn id={id} handleCancel={setExerciseModalID} />
         </ScreenOverlay>
       )}
     </InnerContainer>
@@ -86,9 +86,9 @@ function DeleteExerciseBtn({ id, handleCancel }) {
   const [isConfirmDelete, setIsConfirmDelete] = useState(false);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  
+
   function onCancel() {
-    handleCancel(false);
+    handleCancel(null);
   }
 
   const { mutate, status } = useCustomMutation(

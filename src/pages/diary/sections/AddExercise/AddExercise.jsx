@@ -121,7 +121,7 @@ function ExerciseOption({ id, name, timeSpent, energyPerMinute }) {
         </div>
       </div>
       {currentExerciseId === id && (
-        <ScreenOverlay>
+        <ScreenOverlay dissmissable={true}>
           <EditExerciseBtn id={id} />
         </ScreenOverlay>
       )}
@@ -230,7 +230,7 @@ function EditExerciseBtn() {
   return (
     <>
       {status === "pending" ? (
-        <div className="flex items-center justify-center w-full h-full">
+        <div className="flex items-center justify-center w-full h-full">          
           <InlineSpinner type="Creating exercise" />
         </div>
       ) : showEditTime ? (

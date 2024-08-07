@@ -1,14 +1,51 @@
+import { useContext, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { DiaryContext } from "../contexts/DiaryContext";
 
 /* eslint-disable react/prop-types */
-export default function ScreenOverlay({ children }) {
+export default function ScreenOverlay({ dissmissable = false, children }) {
+  const {
+    setCurrentId,
+    setCurrentExerciseId,
+    setShowWaterSettings,
+    setGetSettings,
+
+    setExerciseModalID,
+  } = useContext(DiaryContext);
+
+  const overlayRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (overlayRef.current && !overlayRef.current.contains(event.target)) {
+        setCurrentId(null);
+        setCurrentExerciseId(false);
+        setShowWaterSettings(false);
+        setGetSettings(false);
+        setExerciseModalID(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [
+    setCurrentId,
+    setCurrentExerciseId,
+    setShowWaterSettings,
+    setGetSettings,
+    setExerciseModalID,
+  ]);
+
   return createPortal(
     <div
       className="
     w-screen h-screen max-w-screen-sm bg-[rgba(0,0,0,0.5)] 
     absolute top-0 z-10"
     >
-      {children}
-    </div>
-  , document.getElementById("wrapper"));
+      {dissmissable ? <div ref={overlayRef}>{children}</div> : children}
+    </div>,
+    document.getElementById("wrapper")
+  );
 }

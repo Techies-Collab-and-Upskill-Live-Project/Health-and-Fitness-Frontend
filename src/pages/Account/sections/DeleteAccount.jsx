@@ -33,24 +33,22 @@ export function ConfirmDeleteAccount() {
 
   return (
     <ScreenOverlay>
-      <>
-        {deleteAccountStatus === "pending" ? (
-          <Spinner />
-        ) : (
-          <Modal
-            handleAction={handleDeleteAccount}
-            handleCancel={onCancel}
-            title="Delete Account?"
-            bg="bg-accent-1"
-            action="Yes, Delete"
-            actionColor="error"
-          >
-            <p className="font-medium text-[11px] leading-[18px] text-grey-4">
-              Are you sure you want to Deletet?
-            </p>
-          </Modal>
-        )}
-      </>
+      {deleteAccountStatus === "pending" ? (
+        <Spinner />
+      ) : (
+        <Modal
+          handleAction={handleDeleteAccount}
+          handleCancel={onCancel}
+          title="Delete Account?"
+          bg="bg-accent-1"
+          action="Yes, Delete"
+          actionColor="error"
+        >
+          <p className="font-medium text-[11px] leading-[18px] text-grey-4">
+            Are you sure you want to Delete?
+          </p>
+        </Modal>
+      )}
     </ScreenOverlay>
   );
 }
