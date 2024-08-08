@@ -130,6 +130,14 @@ function App() {
             }
           />
           <Route
+            path="*"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <Diary />
+              </Suspense>
+            }
+          />
+          <Route
             path="/meal-planner"
             element={
               <Suspense fallback={<Spinner />}>
